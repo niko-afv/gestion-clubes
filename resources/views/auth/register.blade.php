@@ -1,77 +1,87 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<head>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+    <title>AMCH | Activa tu Club</title>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+    <link rel="stylesheet" href="{!! asset('css/vendor.css') !!}" />
+    <link rel="stylesheet" href="{!! asset('css/app.css') !!}" />
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+    <style>
+        h1{
+            font-size: 110px !important;
+        }
+    </style>
+</head>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+<body class="gray-bg">
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+<div class="middle-box text-center loginscreen   animated fadeInDown">
+    <div>
+        <div>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+            <h1 class="logo-name">AMCH</h1>
 
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
+        <h3 class="text-center">Activación de Acceso</h3>
+        <p class="text-center">Para acceder al sistema de gestión, el club debe ser activado por el director.</p>
+
+        @if (session('alert'))
+            <div class="alert alert-{{ session('type') }}">
+                {{ session('msg') }}
+            </div>
+        @endif
+        <form class="m-t" role="form" action="{{ url('register') }}" method="post">
+            <div class="form-group">
+                <select class="chosen-select form-control" required name="club">
+                    @foreach($clubes as $club)
+                        <option value="{{ $club->id }}">{{ $club->nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Password" required="">
+            </div>
+
+            <button type="submit" class="btn btn-primary block full-width m-b">Activar</button>
+
+            {{ csrf_field() }}
+
+            <p class="text-muted text-center"><small>Si tu club no aparece, puede deberse a que ya fue activado o a que no está registrado en nuestro campo</small></p>
+            <a class="btn btn-sm btn-white btn-block" href="{{ url('login') }}">Volver</a>
+        </form>
+        <p class="m-t"> <small>Conquistadores AMCH 2018</small> </p>
     </div>
 </div>
-@endsection
+
+<!-- Mainly scripts -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<!-- iCheck -->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('.i-checks').iCheck({
+      checkboxClass: 'icheckbox_square-green',
+      radioClass: 'iradio_square-green',
+    });
+  });
+</script>
+</body>
+
+</html>

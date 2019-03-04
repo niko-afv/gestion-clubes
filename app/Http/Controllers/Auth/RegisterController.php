@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Club;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -68,5 +69,63 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function showRegistrationForm()
+    {
+        $clubes = Club::disabled()->get();
+
+        return view('auth.register', [
+            'clubes' => $clubes
+        ]);
+    }
+
+    public function register(Request $request){
+        $error      = false;
+        $msg        = '';
+        $email      = $request->get('email');
+        $password   = $request->get('password');
+        $club       = $request->get('club');
+        $oUser = new User();
+
+        $oUser->email             =  $email;
+        $oUser->password         =  \Hash::make($password);
+        $oUser->activation_token =  str_random(150);
+
+        $oClub = ClubModel::findOrFail($club);
+
+        /*
+        if(!$oClub->tieneDirector()){
+            $error = true;
+            $msg = 'Club no tiene Director';
+        }
+        */
+
+        if(!$error){
+            $oUser->save();
+            $oClub->idUsuario = $oUser->id;
+            $oClub->save();
+
+            $data = array(
+                'id_club'   => $oClub->id,
+                'club'      => $oClub->nombre,
+                //'email'     => MiembroModel::directorDeClub($oClub->id)->first()->email,
+                'email'  => $email,
+                'password'  => $password,
+                'token'     => $oUser->activation_token,
+                'domain'    => App::make('url')->to('/')
+            );
+
+            $message = "Benvenido";
+            \Mail::send('emails.RegisterTmpl', $data, function($message) use ($data)
+            {
+                $message
+                    ->to($data['email'], $data['club'])
+                    ->subject("Activación de Cuenta - Regional AMCH");
+            });
+            return redirect('/login')->with(['alert'=>true,'type'=>'success', 'msg'=>'Se ha enviado un E-Mail al director del club '.$data['club'].' para que active el acceso.']);
+        }else{
+            return redirect('/register')->with(['alert'=>true,'type'=>'danger', 'msg'=> $msg]);
+        }
     }
 }
