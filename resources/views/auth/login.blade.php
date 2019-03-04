@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <select class="chosen-select form-control" required name="club">
                             @foreach($clubes as $club)
-                                <option value="{{ $club->id }}">{{ $club->nombre }}</option>
+                                <option value="{{ $club->id }}">{{ $club->name }}</option>
                             @endforeach
                         </select>
                     </div>

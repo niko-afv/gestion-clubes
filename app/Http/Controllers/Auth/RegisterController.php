@@ -108,7 +108,7 @@ class RegisterController extends Controller
 
             $data = array(
                 'id_club'   => $oClub->id,
-                'club'      => $oClub->nombre,
+                'club'      => $oClub->name,
                 //'email'     => MiembroModel::directorDeClub($oClub->id)->first()->email,
                 'email'  => $email,
                 'password'  => $password,
