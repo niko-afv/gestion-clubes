@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{!! asset('css/vendor.css') !!}" />
     <link rel="stylesheet" href="{!! asset('css/app.css') !!}" />
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         img{
             display: block;
@@ -73,7 +75,6 @@
                         <input type="password" name="password" class="form-control" placeholder="Contraseña" required="">
                     </div>
                     {{ csrf_field() }}
-                    <meta name="csrf-token" content="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-primary block full-width m-b">Ingresar</button>
 
                     <a href="#">
