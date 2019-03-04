@@ -73,6 +73,7 @@
                         <input type="password" name="password" class="form-control" placeholder="Contraseña" required="">
                     </div>
                     {{ csrf_field() }}
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-primary block full-width m-b">Ingresar</button>
 
                     <a href="#">

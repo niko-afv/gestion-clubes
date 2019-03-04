@@ -58,6 +58,7 @@
             <button type="submit" class="btn btn-primary block full-width m-b">Activar</button>
 
             {{ csrf_field() }}
+            <meta name="csrf-token" content="{{ csrf_token() }}">
 
             <p class="text-muted text-center"><small>Si tu club no aparece, puede deberse a que ya fue activado o a que no está registrado en nuestro campo</small></p>
             <a class="btn btn-sm btn-white btn-block" href="{{ url('login') }}">Volver</a>
