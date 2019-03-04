@@ -8,10 +8,7 @@
 
     <title>AMCH | Activa tu Club</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
 
@@ -45,13 +42,14 @@
         <form class="m-t" role="form" action="{{ url('register') }}" method="post">
             <div class="form-group">
                 <select class="chosen-select form-control" required name="club">
+                    <option value="">Selecciona un Club</option>
                     @foreach($clubes as $club)
                         <option value="{{ $club->id }}">{{ $club->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <input type="email" name="email" class="form-control" placeholder="Email" required="">
+                <input type="email" name="email" class="form-control" placeholder="Email del director" required="">
             </div>
             <div class="form-group">
                 <input type="password" name="password" class="form-control" placeholder="Password" required="">
@@ -69,9 +67,8 @@
 </div>
 
 <!-- Mainly scripts -->
-<script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/popper.min.js"></script>
-<script src="js/bootstrap.js"></script>
+<script src="js/app.js"></script>
 <!-- iCheck -->
 <script src="js/plugins/iCheck/icheck.min.js"></script>
 <script>

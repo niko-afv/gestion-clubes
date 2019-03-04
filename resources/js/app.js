@@ -1,33 +1,168 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
+/*
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ *   INSPINIA - Responsive Admin Theme
+ *   version 2.7.1
+ *
  */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app'
+$(document).ready(function () {
+  
+  console.info("ready app");
+  
+  
+  
+  // Add body-small class if window less than 768px
+  if ($(this).width() < 769) {
+    $('body').addClass('body-small')
+  } else {
+    $('body').removeClass('body-small')
+  }
+  
+  // MetsiMenu
+  $('#side-menu').metisMenu();
+  
+  // Collapse ibox function
+  $('.collapse-link').on('click', function () {
+    var ibox = $(this).closest('div.ibox');
+    var button = $(this).find('i');
+    var content = ibox.children('.ibox-content');
+    content.slideToggle(200);
+    button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+    ibox.toggleClass('').toggleClass('border-bottom');
+    setTimeout(function () {
+      ibox.resize();
+      ibox.find('[id^=map-]').resize();
+    }, 50);
+  });
+  
+  // Close ibox function
+  $('.close-link').on('click', function () {
+    var content = $(this).closest('div.ibox');
+    content.remove();
+  });
+  
+  // Fullscreen ibox function
+  $('.fullscreen-link').on('click', function () {
+    var ibox = $(this).closest('div.ibox');
+    var button = $(this).find('i');
+    $('body').toggleClass('fullscreen-ibox-mode');
+    button.toggleClass('fa-expand').toggleClass('fa-compress');
+    ibox.toggleClass('fullscreen');
+    setTimeout(function () {
+      $(window).trigger('resize');
+    }, 100);
+  });
+  
+  // Minimalize menu
+  $('.navbar-minimalize').on('click', function (event) {
+    event.preventDefault();
+    $("body").toggleClass("mini-navbar");
+    SmoothlyMenu();
+    
+  });
+  
+  $('.logout').on('click', function (event) {
+    $.post('http://127.0.0.1:8000/logout', function(response){
+      "use strict";
+      console.log(response)
+    });
+    SmoothlyMenu();
+  });
+  
+  $('.next_login').on('click', function (event) {
+    event.preventDefault();
+    $('.login_1').fadeOut(function () {
+      $('.login_2').removeClass('hidden');
+      $('.login_2').fadeIn();
+      
+      $('.club_title').text($('select[name="club"] option:selected').text());
+    });
+  });
+  
+  $('.back_login').on('click', function (event) {
+    event.preventDefault();
+    $('.login_2').fadeOut(function () {
+      $('.login_1').fadeIn();
+    });
+  });
+  
+  // Full height of sidebar
+  function fix_height() {
+    var heightWithoutNavbar = $("body > #wrapper").height() - 61;
+    $(".sidebard-panel").css("min-height", heightWithoutNavbar + "px");
+    
+    var navbarHeight = $('nav.navbar-default').height();
+    var wrapperHeight = $('#page-wrapper').height();
+    
+    if (navbarHeight > wrapperHeight) {
+      $('#page-wrapper').css("min-height", navbarHeight + "px");
+    }
+    
+    if (navbarHeight < wrapperHeight) {
+      $('#page-wrapper').css("min-height", $(window).height() + "px");
+    }
+    
+    if ($('body').hasClass('fixed-nav')) {
+      if (navbarHeight > wrapperHeight) {
+        $('#page-wrapper').css("min-height", navbarHeight + "px");
+      } else {
+        $('#page-wrapper').css("min-height", $(window).height() - 60 + "px");
+      }
+    }
+    
+  }
+  
+  fix_height();
+  
+  // Fixed Sidebar
+  $(window).bind("load", function () {
+    if ($("body").hasClass('fixed-sidebar')) {
+      $('.sidebar-collapse').slimScroll({
+        height: '100%',
+        railOpacity: 0.9
+      });
+    }
+  });
+  
+  $(window).bind("load resize scroll", function () {
+    if (!$("body").hasClass('body-small')) {
+      fix_height();
+    }
+  });
+  
+  // Add slimscroll to element
+  $('.full-height-scroll').slimscroll({
+    height: '100%'
+  })
 });
+
+
+// Minimalize menu when screen is less than 768px
+$(window).bind("resize", function () {
+  if ($(this).width() < 769) {
+    $('body').addClass('body-small')
+  } else {
+    $('body').removeClass('body-small')
+  }
+});
+
+function SmoothlyMenu() {
+  if (!$('body').hasClass('mini-navbar') || $('body').hasClass('body-small')) {
+    // Hide menu in order to smoothly turn on when maximize menu
+    $('#side-menu').hide();
+    // For smoothly turn on menu
+    setTimeout(
+      function () {
+        $('#side-menu').fadeIn(400);
+      }, 200);
+  } else if ($('body').hasClass('fixed-sidebar')) {
+    $('#side-menu').hide();
+    setTimeout(
+      function () {
+        $('#side-menu').fadeIn(400);
+      }, 100);
+  } else {
+    // Remove all inline style from jquery fadeIn function to reset menu state
+    $('#side-menu').removeAttr('style');
+  }
+}
