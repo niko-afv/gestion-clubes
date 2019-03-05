@@ -19,9 +19,9 @@ class CreateClubsTable extends Migration
             $table->string('logo', 255);
             $table->string('photo', 255);
             $table->tinyInteger('active')->default(0);
-            $table->integer('idZona')->unsigned();
-            $table->integer('idCampo')->unsigned();
-            $table->integer('idUsuario')->unsigned()->nullable();
+            $table->integer('zone_id')->unsigned();
+            $table->integer('field_id')->unsigned();
+            $table->integer('member_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }
