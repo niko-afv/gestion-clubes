@@ -13,6 +13,7 @@ class ClubsTableSeeder extends Seeder
     {
         DB::table('clubs')->truncate();
 
+
         $clubs = [
             [
                 'id' => 1,
@@ -23,6 +24,7 @@ class ClubsTableSeeder extends Seeder
                 'zone_id' => 4,
                 'active' => 1
             ],
+            /*
             [
                 'id' => 2,
                 'name' => 'Porvenir',
@@ -59,9 +61,9 @@ class ClubsTableSeeder extends Seeder
                 'zone_id' => 3,
                 'active' => 0
             ],
+            */
 
         ];
-
         foreach ($clubs as $club){
             DB::table('clubs')->insert([
                 'id' => $club['id'],
@@ -73,5 +75,6 @@ class ClubsTableSeeder extends Seeder
                 'active' => $club['active']
             ]);
         }
+
     }
 }

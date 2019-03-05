@@ -12,7 +12,7 @@ class MembersTableSeeder extends Seeder
     public function run()
     {
         DB::table('members')->truncate();
-
+        /*
         $members = [
             [
                 'dni' => '173908784',
@@ -22,43 +22,7 @@ class MembersTableSeeder extends Seeder
                 'birth_date'=> '1990-02-26',
                 'club_id' => 1,
                 'position_id' => 1
-            ],
-            [
-                'dni' => '111111111',
-                'name' => 'Asdf Qwerty',
-                'email' => 'email@gmail.com',
-                'phone' => '+56912345678',
-                'birth_date'=> '1990-02-26',
-                'club_id' => 2,
-                'position_id' => 1
-            ],
-            [
-                'dni' => '111111111',
-                'name' => 'Asdf Qwerty',
-                'email' => 'email@gmail.com',
-                'phone' => '+56912345678',
-                'birth_date'=> '1990-02-26',
-                'club_id' => 3,
-                'position_id' => 1
-            ],
-            [
-                'dni' => '111111111',
-                'name' => 'Asdf Qwerty',
-                'email' => 'email@gmail.com',
-                'phone' => '+56912345678',
-                'birth_date'=> '1990-02-26',
-                'club_id' => 4,
-                'position_id' => 1
-            ],
-            [
-                'dni' => '111111111',
-                'name' => 'Asdf Qwerty',
-                'email' => 'email@gmail.com',
-                'phone' => '+56912345678',
-                'birth_date'=> '1990-02-26',
-                'club_id' => 5,
-                'position_id' => 1
-            ],
+            ]
         ];
 
         foreach ($members as $member){
@@ -71,5 +35,6 @@ class MembersTableSeeder extends Seeder
                 'club_id' => $member['club_id']
             ]);
         }
+        */
     }
 }

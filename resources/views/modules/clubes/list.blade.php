@@ -53,7 +53,7 @@
                                 @foreach($clubes as $club)
                                 <tr class="">
                                     <td>{{ $club->name }}</td>
-                                    <td>{{ $club->director->name }}</td>
+                                    <td>{{ ($club->hasDirector())?$club->director->name:'Sin Director' }}</td>
                                     <td>{{ $club->zone->name }}</td>
                                     <td class="center"></td>
                                     <td class="center"></td>

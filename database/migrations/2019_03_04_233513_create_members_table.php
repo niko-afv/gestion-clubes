@@ -19,7 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('name',255);
             $table->string('email',255)->nullable();
             $table->string('phone',20)->nullable();
-            $table->date('birth_date');
+            $table->date('birth_date')->nullable();
             $table->integer('range_ud')->nullable();
             $table->integer('club_id');
             $table->timestamps();

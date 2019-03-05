@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model
 {
+    protected $fillable = ['name','logo', 'photo', 'field_id', 'zone_id', 'active'];
+
+
+    public function hasDirector(){
+        return $this->director()->count();
+
+    }
+
     public function scopeActivated($query){
         return $query->where('active',1);
     }

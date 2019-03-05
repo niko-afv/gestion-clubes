@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('clubes')->namespace('Clubs')->group(function (){
         Route::get('/list', 'ClubsListController@index')->name('clubes_list');
+        Route::get('/import', 'ClubsListController@import')->name('clubes_import');
 
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
     });
