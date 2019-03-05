@@ -15,7 +15,9 @@ mix
   .js('resources/js/app.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .copy('resources/css', 'public/css')
-  .copy('resources/images', 'public/images');
+  .copy('resources/images', 'public/images')
+  .copy('resources/vendor/font-awesome/fonts', 'public/fonts')
+;
 
 mix.styles([
   'resources/vendor/bootstrap/css/bootstrap.css',

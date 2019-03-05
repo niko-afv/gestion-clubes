@@ -15,4 +15,15 @@ Auth::routes();
 
 Route::middleware('auth')->group(function (){
     Route::get('/', 'HomeController@index')->name('home');
+
+    Route::prefix('clubes')->namespace('Clubs')->group(function (){
+        Route::get('/list', 'ClubesListController@index')->name('clubes_list');
+
+        Route::get('/create', 'ClubesFormController@index')->name('clubes_create');
+    });
+
+    Route::prefix('perfil')->namespace('Profile')->group(function (){
+        Route::get('/', 'VerPerfilController@index')->name('profile');
+    });
 });
+
