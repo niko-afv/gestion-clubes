@@ -20,6 +20,7 @@ class ClubsTableSeeder extends Seeder
             'photo'=> '',
             'field_id' => 1,
             'zone_id' => 1,
+            'active' => 1
         ]);
     }
 }

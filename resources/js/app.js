@@ -69,12 +69,16 @@ $(document).ready(function () {
   
   $('.next_login').on('click', function (event) {
     event.preventDefault();
-    $('.login_1').fadeOut(function () {
-      $('.login_2').removeClass('hidden');
-      $('.login_2').fadeIn();
-      
-      $('.club_title').text($('select[name="club"] option:selected').text());
-    });
+    var $input_club_name = $('select[name="club"] option:selected');
+    var name_val = $input_club_name.val();
+    if(name_val != 'false'){
+      $('.login_1').fadeOut(function () {
+        $('.login_2').removeClass('hidden');
+        $('.login_2').fadeIn();
+    
+        $('.club_title').text($input_club_name.text());
+      });
+    }
   });
   
   $('.back_login').on('click', function (event) {

@@ -50,6 +50,7 @@
                 <form class="m-t" role="form" action="index.html">
                     <div class="form-group">
                         <select class="chosen-select form-control" required name="club">
+                            <option value="false">Selecciona tu Club</option>
                             @foreach($clubes as $club)
                                 <option value="{{ $club->id }}">{{ $club->name }}</option>
                             @endforeach
