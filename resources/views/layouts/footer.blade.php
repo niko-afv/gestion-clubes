@@ -3,6 +3,6 @@
         Example text
     </div>
     <div>
-        <strong>Copyright</strong> Example Company &copy; 2014-2017
+        <strong>Copyright</strong> Conquistadores AMCH &copy;2019
     </div>
 </div>

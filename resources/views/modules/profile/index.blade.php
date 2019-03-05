@@ -76,12 +76,14 @@
                         <div class="ibox-content profile-content">
                             <h4><strong>{{ $user->name }}</strong></h4>
                             <!--<p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>-->
+                            @if($user->resume)
                             <h5>
                                 Acerca de mi
                             </h5>
                             <p>
                                 {{ $user->resume }}
                             </p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -89,7 +91,7 @@
             <div class="col-md-8">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Activites</h5>
+                        <h5>Mi Actividad</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -120,10 +122,12 @@
                                         <small class="float-right text-navy">{{ $log->created_at->diffForHumans() }}</small>
                                         <strong>{{ $log->user->name }}</strong> {{ $log->log_type->description }}. <br>
                                         <small class="text-muted">{{ $log->created_at->format('d/ M/ Y H:i') }}</small>
+                                        <!--
                                         <div class="actions">
                                             <a href=""  class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
                                             <a href="" class="btn btn-xs btn-danger"><i class="fa fa-heart"></i> Love</a>
                                         </div>
+                                        -->
                                     </div>
                                 </div>
                                 @endforeach

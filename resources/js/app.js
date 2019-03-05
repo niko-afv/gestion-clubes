@@ -61,9 +61,7 @@ $(document).ready(function () {
   
   $('.logout').on('click', function (event) {
     console.log('logout');
-    $.post('http://localhost:8000/logout', function () {
-      window.location.replace("http://localhost:8000");
-    });
+    $('#logout_form').submit();
     SmoothlyMenu();
   });
   
