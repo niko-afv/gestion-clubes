@@ -25,4 +25,8 @@ class Club extends Model
     public function director(){
         return $this->hasOne(Member::class);
     }
+
+    public function zone(){
+        return $this->belongsTo(Zone::class);
+    }
 }

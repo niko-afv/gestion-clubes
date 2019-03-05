@@ -8,7 +8,7 @@
             <h2>Lista de Clubes</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Dashboard</a>
+                    <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>Clubes</a>
@@ -44,17 +44,17 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Director</th>
+                                    <th>Zona</th>
                                     <th>Unidades</th>
                                     <th>Miembros</th>
-                                    <th>CSS grade</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($clubes as $club)
                                 <tr class="">
                                     <td>{{ $club->name }}</td>
-                                    <td>{{ $club->director()->first()->name }}</td>
-                                    <td></td>
+                                    <td>{{ $club->director->name }}</td>
+                                    <td>{{ $club->zone->name }}</td>
                                     <td class="center"></td>
                                     <td class="center"></td>
                                 </tr>
@@ -64,9 +64,9 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Director</th>
+                                    <th>Zona</th>
                                     <th>Unidades</th>
                                     <th>Miembros</th>
-                                    <th>CSS grade</th>
                                 </tr>
                                 </tfoot>
                             </table>

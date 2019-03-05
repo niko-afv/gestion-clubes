@@ -60,9 +60,9 @@ $(document).ready(function () {
   });
   
   $('.logout').on('click', function (event) {
-    $.post('http://127.0.0.1:8000/logout', function(response){
-      "use strict";
-      console.log(response)
+    console.log('logout');
+    $.post('http://localhost:8000/logout', function () {
+      window.location.replace("http://localhost:8000");
     });
     SmoothlyMenu();
   });

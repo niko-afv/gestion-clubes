@@ -118,7 +118,7 @@
                                     -->
                                     <div class="media-body ">
                                         <small class="float-right text-navy">{{ $log->created_at->diffForHumans() }}</small>
-                                        <strong>{{ $log->user->name }}</strong> {{ $log->tipo->description }}. <br>
+                                        <strong>{{ $log->user->name }}</strong> {{ $log->log_type->description }}. <br>
                                         <small class="text-muted">{{ $log->created_at->format('d/ M/ Y H:i') }}</small>
                                         <div class="actions">
                                             <a href=""  class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>

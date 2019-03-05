@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Club;
+use App\Events\LoginEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;

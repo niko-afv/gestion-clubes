@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function (){
     });
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){
-        Route::get('/', 'VerPerfilController@index')->name('profile');
+        Route::get('/', 'ProfileController@index')->name('profile');
     });
 });
 

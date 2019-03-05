@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->text('avatar')->nullable();
             $table->longText('resume')->nullable();
             $table->integer('member_id')->unsigned()->nullable();
+            $table->integer('profile_id')->unsigned()->default(2);
             $table->rememberToken();
             $table->timestamps();
         });

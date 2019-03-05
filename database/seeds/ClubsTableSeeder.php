@@ -20,7 +20,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => 4,
                 'active' => 1
             ],
             [
@@ -29,7 +29,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => 4,
                 'active' => 0
             ],
             [
@@ -38,7 +38,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => 2,
                 'active' => 0
             ],
             [
@@ -47,7 +47,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => 2,
                 'active' => 0
             ],
             [
@@ -56,7 +56,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => 3,
                 'active' => 0
             ],
 
@@ -69,7 +69,7 @@ class ClubsTableSeeder extends Seeder
                 'logo' => '',
                 'photo'=> '',
                 'field_id' => 1,
-                'zone_id' => 1,
+                'zone_id' => $club['zone_id'],
                 'active' => $club['active']
             ]);
         }
