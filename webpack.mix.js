@@ -20,7 +20,8 @@ mix
 ;
 
 mix.styles([
-  'resources/vendor/bootstrap/css/bootstrap.css',
+  'resources/vendor/bootstrap/css/bootstrap.min.css',
+  'resources/css/style.css',
   'resources/vendor/animate/animate.css',
   'resources/vendor/font-awesome/css/font-awesome.css',
   'resources/vendor/dataTables/datatables.css',
@@ -28,10 +29,11 @@ mix.styles([
 
 mix.scripts([
     'resources/vendor/jquery/jquery-3.1.1.min.js',
-    'resources/vendor/bootstrap/js/bootstrap.js',
+    'resources/js/popper.min.js',
+    'resources/js/bootstrap.min.js',
     'resources/vendor/metisMenu/jquery.metisMenu.js',
     'resources/vendor/dataTables/datatables.js',
     'resources/vendor/slimscroll/jquery.slimscroll.min.js',
     'resources/vendor/pace/pace.min.js',
-    'resources/js/app.js'
+    'resources/js/inspinia.js'
   ], 'public/js/app.js', './');

@@ -3,23 +3,19 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <img alt="image" class="rounded-circle" src="{{ url('images/avatar.jpeg') }}" width="48"/>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear">
-                            <span class="block m-t-xs">
-                                <strong class="font-bold">{{ Auth::user()->email }}</strong>
-                            </span> <span class="text-muted text-xs block">{{ Auth::user()->profile->name }} <b class="caret"></b></span>
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a class="" href="{{ route('profile') }}">Ver mi perfil</a></li>
-                        <li><a class="" href="#">Mensajes</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li><a class="logout" href="#">Salir</a></li>
-                    </ul>
-                </div>
+                        <img alt="image" class="rounded-circle" src="{{ url('images/avatar.jpeg') }}" width="48" />
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold">{{ Auth::user()->email }}</span>
+                            <span class="text-muted text-xs block">{{ Auth::user()->profile->name }}<b class="caret"></b></span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a class="" href="{{ route('profile') }}">Ver mi perfil</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a class="dropdown-item logout" href="#">Salir</a></li>
+                        </ul>
+                    </div>
                 <div class="logo-element">
-                    IN+
+                    AMCH
                 </div>
             </li>
             @if(Auth::user()->profile->id <= 3)

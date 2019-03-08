@@ -65,7 +65,7 @@
                 <a class="btn btn-sm btn-white btn-block" href="/register">Activa tu Club</a>
             </div>
         </div>
-        <div class="col-md-6 hidden login_2">
+        <div class="col-md-6 login_2" hidden>
             <div class="ibox-content">
                 <h3 class="text-center club_title"></h3>
                 <form class="m-t" role="form" action="{{ url('login') }}" method="post">
