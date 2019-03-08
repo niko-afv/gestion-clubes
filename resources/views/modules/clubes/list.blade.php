@@ -10,11 +10,8 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item">
-                    <a>Clubes</a>
-                </li>
                 <li class="breadcrumb-item active">
-                    <strong>Listar Clubes</strong>
+                    <a>Clubes</a>
                 </li>
             </ol>
         </div>
@@ -45,30 +42,23 @@
                                     <th>Nombre</th>
                                     <th>Director</th>
                                     <th>Zona</th>
-                                    <th>Unidades</th>
-                                    <th>Miembros</th>
+                                    <th>Status</th>
+                                    <th>Ver Club</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($clubes as $club)
                                 <tr class="">
                                     <td>{{ $club->name }}</td>
-                                    <td>{{ ($club->hasDirector())?$club->director->name:'Sin Director' }}</td>
+                                    <td>{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</td>
                                     <td>{{ $club->zone->name }}</td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
+                                    <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
+                                    <td class="center">
+                                        <a href="{{ route('club_detail',['club'=>$club->id]) }}" title="Ver Club" class="btn"><i class="fa fa-eye"></i></a>
+                                    </td>
                                 </tr>
                                 @endforeach
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Director</th>
-                                    <th>Zona</th>
-                                    <th>Unidades</th>
-                                    <th>Miembros</th>
-                                </tr>
-                                </tfoot>
                             </table>
                         </div>
 
