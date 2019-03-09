@@ -20,8 +20,12 @@ class CreateMembersTable extends Migration
             $table->string('email',255)->nullable();
             $table->string('phone',20)->nullable();
             $table->date('birth_date')->nullable();
-            $table->integer('range_ud')->nullable();
-            $table->integer('club_id');
+            $table->integer('degree_id')->nullable();
+            $table->integer('institutable_id')->unsigned();
+            $table->string('institutable_type');
+            $table->integer('groupable_id')->unsigned()->nullable();
+            $table->string('groupable_type')->nullable();
+            $table->integer('active')->default(0);
             $table->timestamps();
         });
     }

@@ -20,7 +20,8 @@ class MembersImport implements ToModel
             'dni' => $row[1],
             'email' => mb_strtolower($row[2]),
             'phone' => $row[3],
-            'club_id' => $row[5]
+            'institutable_id' => $row[5],
+            'institutable_type' => 'App\\Club',
         ]);
     }
 }

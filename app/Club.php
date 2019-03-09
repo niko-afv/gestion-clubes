@@ -22,19 +22,25 @@ class Club extends Model
         return $query->where('active',0);
     }
 
-    /*
-    public function scopeDirector($query, $club){
-        return $query->
-        join('member_position', 'member.id', '=', 'member_position.member_id')->
-        where('club_id',$club)->where('member_position.position_id',1);
-    }
-    */
-
     public function director(){
-        return $this->hasOne(Member::class);
+        return $this->morphOne(Member::class, 'institutable')->whereHas('position', function($query){
+            $query->where('positions.id',1);
+        });;
+    }
+
+    public function members(){
+        return $this->morphMany(Member::class, 'institutable');
     }
 
     public function zone(){
         return $this->belongsTo(Zone::class);
+    }
+
+    public function units(){
+        return $this->morphMany(Group::class, 'groupable')->where('type_id','1');
+    }
+
+    public function directive(){
+        return $this->morphMany(Group::class, 'groupable')->where('type_id','2');
     }
 }

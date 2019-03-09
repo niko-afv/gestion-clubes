@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Imports\ClubsImport;
+use Illuminate\Support\Facades\App;
+use \Maatwebsite\Excel\Excel;
 
 class ClubsTableSeeder extends Seeder
 {
@@ -24,44 +27,6 @@ class ClubsTableSeeder extends Seeder
                 'zone_id' => 4,
                 'active' => 1
             ],
-            /*
-            [
-                'id' => 2,
-                'name' => 'Porvenir',
-                'logo' => '',
-                'photo'=> '',
-                'field_id' => 1,
-                'zone_id' => 4,
-                'active' => 0
-            ],
-            [
-                'id' => 3,
-                'name' => 'Alameda',
-                'logo' => '',
-                'photo'=> '',
-                'field_id' => 1,
-                'zone_id' => 2,
-                'active' => 0
-            ],
-            [
-                'id' => 4,
-                'name' => 'Exploradores',
-                'logo' => '',
-                'photo'=> '',
-                'field_id' => 1,
-                'zone_id' => 2,
-                'active' => 0
-            ],
-            [
-                'id' => 5,
-                'name' => 'Aguila Fiel',
-                'logo' => '',
-                'photo'=> '',
-                'field_id' => 1,
-                'zone_id' => 3,
-                'active' => 0
-            ],
-            */
 
         ];
         foreach ($clubs as $club){
@@ -75,6 +40,9 @@ class ClubsTableSeeder extends Seeder
                 'active' => $club['active']
             ]);
         }
+
+        $excel = App::make(Excel::class);
+        $excel->import(new ClubsImport(), storage_path('app/import/clubes_import.csv'));
 
     }
 }

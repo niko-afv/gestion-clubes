@@ -114,6 +114,7 @@
                                     <div id="tab-2" class="tab-pane">
                                         <div class="full-height-scroll">
                                             <div class="row">
+                                                @foreach($club->units as $unit)
                                                 <div class="col-lg-4">
                                                     <div class="ibox">
                                                         <div class="ibox-title">
@@ -155,10 +156,11 @@
                                                                 </div>
                                                                 -->
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endforeach
+
                                             </div>
                                         </div>
                                     </div>
