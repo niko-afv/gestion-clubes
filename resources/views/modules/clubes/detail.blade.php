@@ -49,11 +49,11 @@
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Unidades:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ '0' }}</dd></div>
+                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ $club->units->count() }}</dd></div>
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Zona:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="#" class="text-navy">Zona {{ $club->zone->name }}</a> </dd></div>
+                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="#" class="text-navy">{{ $club->zone->name }}</a> </dd></div>
                         </dl>
 
                     </div>
@@ -84,8 +84,8 @@
                         <div class="ibox-content">
                             <div class="clients-list">
                                 <ul class="nav nav-tabs">
-                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i> Directiva</a></li>
-                                    <li><a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i> Unidades</a></li>
+                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Miembros</a></li>
+                                    <li><a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Unidades</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
@@ -93,7 +93,7 @@
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <tbody>
-                                                    @foreach($club->directive->members as $member)
+                                                    @foreach($club->members as $member)
                                                     <tr>
                                                         <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
                                                         <td><a href="#" class="client-link">{{ $member->name }}</a></td>

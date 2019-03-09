@@ -41,6 +41,8 @@ class Club extends Model
     }
 
     public function directive(){
-        return $this->morphOne(Group::class, 'groupable')->where('type_id','2');
+        return $this->morphMany(Member::class, 'institutable')->whereHas('position', function($query){
+            $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
+        });;
     }
 }

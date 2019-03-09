@@ -21,9 +21,7 @@ class MembersImport implements ToModel
             'email' => mb_strtolower($row[2]),
             'phone' => $row[3],
             'institutable_id' => $row[5],
-            'institutable_type' => 'App\\Club',
-            'groupable_id' => 2,
-            'groupable_type' => 'App\\Group',
+            'institutable_type' => 'App\\Club'
         ]);
     }
 }
