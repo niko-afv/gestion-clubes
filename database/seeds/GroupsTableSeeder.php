@@ -28,6 +28,13 @@ class GroupsTableSeeder extends Seeder
                 'type_id' => 3,
                 'groupable_type' => 'App\\Field'
             ],
+            [
+                'id' => 3,
+                'name' => 'Directiva Rejas Sur',
+                'groupable_id' => 18,
+                'type_id' => 2,
+                'groupable_type' => 'App\\Club'
+            ],
         ];
 
         foreach ($groups as $group){

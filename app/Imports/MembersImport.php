@@ -22,6 +22,8 @@ class MembersImport implements ToModel
             'phone' => $row[3],
             'institutable_id' => $row[5],
             'institutable_type' => 'App\\Club',
+            'groupable_id' => 2,
+            'groupable_type' => 'App\\Group',
         ]);
     }
 }

@@ -93,19 +93,19 @@
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <tbody>
-                                                    @if($club->hasDirector())
+                                                    @foreach($club->directive->members as $member)
                                                     <tr>
-                                                        <td class="client-avatar"><img alt="image" src="{{ $club->director->avatar }}"> </td>
-                                                        <td><a href="#" class="client-link">{{ $club->director->name }}</a></td>
+                                                        <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
+                                                        <td><a href="#" class="client-link">{{ $member->name }}</a></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
-                                                        <td>{{ $club->director->phone }}</td>
+                                                        <td>{{ $member->phone }}</td>
                                                         <td class="contact-type"><i class="fa fa-envelope"> </i></td>
-                                                        <td>{{ $club->director->email }}</td>
+                                                        <td>{{ $member->email }}</td>
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>
                                                         -->
                                                     </tr>
-                                                    @endif
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -129,9 +129,9 @@
                                                                 <a href="#"><img alt="member" class="rounded-circle" src="img/a1.jpg"></a>
                                                                 -->
                                                             </div>
-                                                            <h4>Unidad: Nombre de Unidad</h4>
+                                                            <h4>Unidad: {{ $unit->name }}</h4>
                                                             <p>
-                                                                Una Breve descripción de cada unidad
+                                                                {{ $unit->description }}
                                                             </p>
                                                             <div>
                                                                 <span>Puntaje:</span>
@@ -143,7 +143,7 @@
                                                             <div class="row  m-t-sm">
                                                                 <div class="col-sm-4">
                                                                     <div class="font-bold">Fuerza</div>
-                                                                    8
+                                                                    {{ '0' }}
                                                                 </div>
                                                                 <!--
                                                                 <div class="col-sm-4">
