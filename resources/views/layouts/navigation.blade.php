@@ -19,12 +19,12 @@
                 </div>
             </li>
             @if(Auth::user()->profile->id <= 3)
-            <li class="{{ isActiveRoute('clubes_list') }}">
+            <li class="{{ isActiveRoute('/clubes') }}">
                 <a href="{{ route('clubes_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Clubes</span></a>
             </li>
             @endif
 
-            <li class="{{ isActiveRoute('events_list') }}">
+            <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Eventos</span> </a>
             </li>
         </ul>

@@ -3,7 +3,7 @@
 
     function isActiveRoute($route, $output = 'active')
     {
-        if (Route::currentRouteName() == $route) {
+        if( \Illuminate\Support\Facades\Request::route()->getPrefix() == $route){
             return $output;
         }
     }

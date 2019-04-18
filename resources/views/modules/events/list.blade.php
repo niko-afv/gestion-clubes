@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de Clubes')
+@section('title', 'Lista de Eventos')
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -11,7 +11,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <a>Clubes</a>
+                    <a>Eventos</a>
                 </li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Lista de todos los clubes registrados para el campo</h5>
+                        <h5>Lista de todos los eventos registrados para el campo</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -40,21 +40,21 @@
                                 <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>Director</th>
-                                    <th>Zona</th>
+                                    <th>description</th>
+                                    <th>Campo / Zona</th>
                                     <th>Status</th>
-                                    <th>Ver Club</th>
+                                    <th>Ver Evento</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($clubes as $club)
+                                @foreach($events as $event)
                                 <tr class="">
-                                    <td>{{ $club->name }}</td>
-                                    <td>{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</td>
-                                    <td>{{ $club->zone->name }}</td>
-                                    <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
+                                    <td>{{ $event->name }}</td>
+                                    <td>{{ $event->description }}</td>
+                                    <td>{{ $event->eventable->name }}</td>
+                                    <td><span class="label {{($event->active)?'label-primary':'label-danger'}}">{{ ($event->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
-                                        <a href="{{ route('club_detail',['club'=>$club->id]) }}" title="Ver Club" class="btn"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('event_detail',['event'=>$event->id]) }}" title="Ver Evento" class="btn"><i class="fa fa-eye"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
