@@ -24,8 +24,8 @@
             </li>
             @endif
 
-            <li class="{{ isActiveRoute('minor') }}">
-                <a href="{{ url('/minor') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Eventos</span> </a>
+            <li class="{{ isActiveRoute('events_list') }}">
+                <a href="{{ route('events_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Eventos</span> </a>
             </li>
         </ul>
 

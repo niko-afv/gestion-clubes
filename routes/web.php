@@ -24,6 +24,15 @@ Route::middleware('auth')->group(function (){
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
     });
 
+
+    Route::prefix('eventos')->namespace('Events')->group(function (){
+
+        Route::get('/list', 'EventsController@index')->name('events_list');
+        Route::get('/detail/{event}', 'EventsController@detail')->name('event_detail');
+
+        Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
+    });
+
     Route::prefix('perfil')->namespace('Profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
     });
