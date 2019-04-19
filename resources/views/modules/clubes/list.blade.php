@@ -54,7 +54,7 @@
                                     <td>{{ $club->zone->name }}</td>
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
-                                        <a href="{{ route('club_detail',['club'=>$club->id]) }}" title="Ver Club" class="btn"><i class="fa fa-eye"></i></a>
+                                        <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>
                                     </td>
                                 </tr>
                                 @endforeach
