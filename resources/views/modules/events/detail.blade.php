@@ -11,7 +11,7 @@
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('clubes_list') }}">Clubes</a>
+                    <a href="{{ route('events_list') }}">Eventos</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>{{ $event->name }}</strong>

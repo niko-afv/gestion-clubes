@@ -65,9 +65,7 @@
                                         </div>
                                     </td>
                                     <td class="center">
-                                        <a href="{{ route('event_detail',['event'=>$event->id]) }}" title="Ver Evento" class="btn"><i class="fa fa-eye"></i></a>
-                                        <a href="{{ route('event_detail',['event'=>$event->id]) }}" title="Ver Evento" class="btn"><i class="fa fa-power-off"></i></a>
-
+                                        <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>
                                     </td>
                                 </tr>
                                 @endforeach
