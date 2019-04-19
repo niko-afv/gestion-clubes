@@ -26,10 +26,11 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Lista de todos los eventos registrados para el campo</h5>
+                        <h5>Eventos registrados</h5>
                         <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
+                            <a class="" href="{{ route('events_create') }}">
+                                <i class="fa fa-plus"></i>
+                                Agregar un evento nuevo
                             </a>
                         </div>
                     </div>
@@ -52,16 +53,28 @@
                                     <td>{{ $event->name }}</td>
                                     <td>{{ $event->description }}</td>
                                     <td>{{ $event->eventable->name }}</td>
-                                    <td><span class="label {{($event->active)?'label-primary':'label-danger'}}">{{ ($event->active)?'Activo':'Inactivo' }}</span></td>
+                                    <td>
+                                        <div class="switch">
+                                            <div class="onoffswitch">
+                                                <input type="checkbox" {{ ($event->active)?'checked':'' }} class="onoffswitch-checkbox" id="event-{{ $event->id }}">
+                                                <label class="onoffswitch-label" data-event="{{ $event->id }}" for="event-{{ $event->id }}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td class="center">
                                         <a href="{{ route('event_detail',['event'=>$event->id]) }}" title="Ver Evento" class="btn"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('event_detail',['event'=>$event->id]) }}" title="Ver Evento" class="btn"><i class="fa fa-power-off"></i></a>
+
                                     </td>
                                 </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
-
+                        {{ csrf_field() }}
                     </div>
                 </div>
             </div>
@@ -73,28 +86,40 @@
 @section('scripts')
 <script>
   $(document).ready(function(){
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "progressBar": true,
+      "preventDuplicates": false,
+      "positionClass": "toast-top-right",
+      "onclick": null,
+      "showDuration": "400",
+      "hideDuration": "1000",
+      "timeOut": "7000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+
+    $('.onoffswitch-label').click(function () {
+      var event = $(this).data('event');
+      var token = $("input[name='_token']").val();
+
+      $.post('http://127.0.0.1:8000/eventos/'+event+'/toggle', {event: event, _token: token }, function (response) {
+        if (response.isActived == 0){
+          toastr.warning(response.message, 'Cuidado');
+        }else {
+          toastr.success(response.message, 'Excelente');
+        }
+      })
+    });
+
     $('.dataTables-example').DataTable({
       pageLength: 10,
       responsive: true,
-      dom: '<"html5buttons"B>lTfgitp',
-      buttons: [
-        //{ extend: 'copy'},
-        //{extend: 'csv'},
-        //{extend: 'excel', title: 'ExampleFile'},
-        //{extend: 'pdf', title: 'ExampleFile'},
-
-        {extend: 'print',
-          customize: function (win){
-            $(win.document.body).addClass('white-bg');
-            $(win.document.body).css('font-size', '10px');
-
-            $(win.document.body).find('table')
-              .addClass('compact')
-              .css('font-size', 'inherit');
-          }
-        }
-      ]
-
+      dom: '<"html5buttons"B>lTfgitp'
     });
 
   });

@@ -23,8 +23,11 @@ mix.styles([
   'resources/vendor/bootstrap/css/bootstrap.min.css',
   'resources/css/style.css',
   'resources/vendor/animate/animate.css',
+  'resources/vendor/datepicker/datepicker3.css',
   'resources/vendor/font-awesome/css/font-awesome.css',
   'resources/vendor/dataTables/datatables.css',
+  'resources/vendor/select2/select2.min.css',
+  'resources/vendor/toastr/toastr.min.css',
 ], 'public/css/vendor.css', './');
 
 mix.scripts([
@@ -34,6 +37,9 @@ mix.scripts([
     'resources/vendor/metisMenu/jquery.metisMenu.js',
     'resources/vendor/dataTables/datatables.js',
     'resources/vendor/slimscroll/jquery.slimscroll.min.js',
+    'resources/vendor/datepicker/bootstrap-datepicker.js',
+    'resources/vendor/select2/select2.full.min.js',
+    'resources/vendor/toastr/toastr.min.js',
     'resources/vendor/pace/pace.min.js',
     'resources/js/inspinia.js'
   ], 'public/js/app.js', './');

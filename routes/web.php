@@ -30,7 +30,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/list', 'EventsController@index')->name('events_list');
         Route::get('/detail/{event}', 'EventsController@detail')->name('event_detail');
 
-        Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
+        Route::get('/create', 'EventsController@create')->name('events_create');
+        Route::post('/save', 'EventsController@save')->name('events_save');
+        Route::post('/{event}/toggle', 'EventsController@toggle')->name('event_toggle');
     });
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){
