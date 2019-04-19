@@ -126,6 +126,6 @@ class RegisterController extends Controller
         $oClub = Club::find($request->club);
         $oClub->activation_token = $token;
         $oClub->save();
-        Mail::send(new ClubActivationConfirm($oClub));
+        Mail::queue(new ClubActivationConfirm($oClub));
     }
 }

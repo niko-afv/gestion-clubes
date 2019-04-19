@@ -64,8 +64,16 @@
             {{ csrf_field() }}
 
             <p class="text-muted text-center"><small>Si tu club no aparece, puede deberse a que ya fue activado o a que no está registrado en nuestro campo</small></p>
-            <a class="btn btn-sm btn-white btn-block" href="{{ url('login') }}">Volver</a>
         </form>
+
+        <div class="alert alert-success show-alert" style="display: none">
+            Se ha enviado un email de confirmación al director del Club.
+        </div>
+
+        &nbsp;
+
+        <a class="btn btn-sm btn-white btn-block" href="{{ url('login') }}">Volver</a>
+
         <p class="m-t"> <small>Conquistadores AMCH 2018</small> </p>
     </div>
 </div>
@@ -80,7 +88,9 @@
       var token = $("input[name='_token']").val();
 
       $.post('/register/activate', {club: club, _token: token }, function (response) {
-
+        $('form').fadeOut(1000, function () {
+          $('.show-alert').show();
+        })
       })
     })
   });
