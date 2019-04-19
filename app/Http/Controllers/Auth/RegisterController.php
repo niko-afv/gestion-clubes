@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Club;
+use App\Http\Requests\ClubActivateRequest;
+use App\Mail\ClubActivationConfirm;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -127,5 +131,10 @@ class RegisterController extends Controller
         }else{
             return redirect('/register')->with(['alert'=>true,'type'=>'danger', 'msg'=> $msg]);
         }
+    }
+
+
+    public function activate(ClubActivateRequest $request){
+        Mail::send(new ClubActivationConfirm(Club::find($request->club)));
     }
 }

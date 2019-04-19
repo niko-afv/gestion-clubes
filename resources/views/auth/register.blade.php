@@ -8,7 +8,6 @@
 
     <title>AMCH | Activa tu Club</title>
 
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
 
@@ -41,7 +40,7 @@
                 {{ session('msg') }}
             </div>
         @endif
-        <form class="m-t" role="form" action="{{ url('register') }}" method="post">
+        <form class="m-t" role="form" action="{{ url('activate') }}" method="post">
             <div class="form-group">
                 <select class="chosen-select form-control" required name="club">
                     <option value="">Selecciona un Club</option>
@@ -50,13 +49,16 @@
                     @endforeach
                 </select>
             </div>
+            <!--
             <div class="form-group">
                 <input type="email" name="email" class="form-control" placeholder="Email del director" required="">
             </div>
             <div class="form-group">
                 <input type="password" name="password" class="form-control" placeholder="Password" required="">
             </div>
+            -->
 
+            {{ csrf_field() }}
             <button type="submit" class="btn btn-primary block full-width m-b">Activar</button>
 
             {{ csrf_field() }}
@@ -69,16 +71,18 @@
 </div>
 
 <!-- Mainly scripts -->
-<script src="js/popper.min.js"></script>
 <script src="js/app.js"></script>
-<!-- iCheck -->
-<script src="js/plugins/iCheck/icheck.min.js"></script>
 <script>
   $(document).ready(function(){
-    $('.i-checks').iCheck({
-      checkboxClass: 'icheckbox_square-green',
-      radioClass: 'iradio_square-green',
-    });
+    $('form').on('submit', function (e) {
+      e.preventDefault();
+      var club = $("select[name='club']").children("option:selected").val();
+      var token = $("input[name='_token']").val();
+
+      $.post('/register/activate', {club: club, _token: token }, function (response) {
+
+      })
+    })
   });
 </script>
 </body>
