@@ -22,7 +22,7 @@ class CreateMembersTable extends Migration
             $table->date('birth_date')->nullable();
             $table->integer('degree_id')->nullable();
             $table->integer('institutable_id')->unsigned();
-            $table->string('institutable_type');
+            $table->string('institutable_type')->default('App\Club');
             $table->integer('groupable_id')->unsigned()->nullable();
             $table->string('groupable_type')->nullable();
             $table->integer('active')->default(0);
