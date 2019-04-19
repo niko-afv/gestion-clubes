@@ -23,7 +23,7 @@ class Club extends Model
     }
 
     public function director(){
-        return $this->morphOne(Member::class, 'institutable')->whereHas('position', function($query){
+        return $this->morphOne(Member::class, 'institutable')->whereHas('positions', function($query){
             $query->where('positions.id',1);
         });;
     }

@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PositionsTableSeeder::class);
         $this->call(ZonesTableSeeder::class);
         $this->call(ClubsTableSeeder::class);
-        $this->call(MembersTableSeeder::class);
         $this->call(MemberPositionsTableSeeder::class);
+        $this->call(MembersTableSeeder::class);
         $this->call(ProfilesTableSeeder::class);
         $this->call(LogTypesTableSeeder::class);
         $this->call(GroupTypesTableSeeder::class);

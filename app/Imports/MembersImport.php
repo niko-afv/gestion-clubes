@@ -15,7 +15,7 @@ class MembersImport implements ToModel
     */
     public function model(array $row)
     {
-        return new Member([
+        $oMember = new Member([
             'name' => ucwords(mb_strtolower($row[0])),
             'dni' => $row[1],
             'email' => mb_strtolower($row[2]),
@@ -23,5 +23,10 @@ class MembersImport implements ToModel
             'institutable_id' => $row[5],
             'institutable_type' => 'App\\Club'
         ]);
+
+        $oMember->save();
+        $res = $oMember->positions()->attach($row[4]);
+
+        return $oMember;
     }
 }
