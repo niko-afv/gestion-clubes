@@ -107,7 +107,7 @@
       var event = $(this).data('event');
       var token = $("input[name='_token']").val();
 
-      $.post('http://127.0.0.1:8000/eventos/'+event+'/toggle', {event: event, _token: token }, function (response) {
+      $.post('/eventos/'+event+'/toggle', {event: event, _token: token }, function (response) {
         if (response.isActived == 0){
           toastr.warning(response.message, 'Cuidado');
         }else {
