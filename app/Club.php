@@ -45,4 +45,8 @@ class Club extends Model
             $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
         });;
     }
+
+    public function hasToken(){
+        return !is_null($this->activation_token);
+    }
 }

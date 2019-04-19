@@ -124,8 +124,22 @@ class RegisterController extends Controller
     public function activate(ClubActivateRequest $request){
         $token = Str::random(50);
         $oClub = Club::find($request->club);
-        $oClub->activation_token = $token;
-        $oClub->save();
-        Mail::queue(new ClubActivationConfirm($oClub));
+        $message = "";
+        $error = false;
+
+        if(!$oClub->hasToken()){
+            $oClub->activation_token = $token;
+            $oClub->save();
+            Mail::queue(new ClubActivationConfirm($oClub));
+            $message = "Se ha enviado un email de confirmación al director del Club.";
+        }else{
+            $error = true;
+            $message = "Este club ya tiene un intento de activación pendiente y debe completarse mediante el email enviado al director.";
+        }
+
+        return response()->json([
+            'error' => $error,
+            'message' => $message
+        ]);
     }
 }

@@ -66,8 +66,8 @@
             <p class="text-muted text-center"><small>Si tu club no aparece, puede deberse a que ya fue activado o a que no está registrado en nuestro campo</small></p>
         </form>
 
-        <div class="alert alert-success show-alert" style="display: none">
-            Se ha enviado un email de confirmación al director del Club.
+        <div class="alert show-alert" style="display: none">
+
         </div>
 
         &nbsp;
@@ -89,7 +89,11 @@
 
       $.post('/register/activate', {club: club, _token: token }, function (response) {
         $('form').fadeOut(1000, function () {
-          $('.show-alert').show();
+          if(response.error){
+            $('.show-alert').addClass('alert-danger').show().text(response.message);
+          }else{
+            $('.show-alert').addClass('alert-success').show().text(response.message);
+          }
         })
       })
     })
