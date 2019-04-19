@@ -15,6 +15,7 @@ Auth::routes();
 
 
 Route::post('register/activate', 'Auth\RegisterController@activate')->name('activate_club');
+Route::get('register/confirm_activation/{token}', 'Auth\RegisterController@confirmActivation')->name('confirm_activation');
 
 Route::middleware('auth')->group(function (){
     Route::get('/', 'HomeController@index')->name('home');

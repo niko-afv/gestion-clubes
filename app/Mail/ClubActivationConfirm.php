@@ -31,6 +31,7 @@ class ClubActivationConfirm extends Mailable
      */
     public function build()
     {
+
         return $this->view('emails.clubActivationConfirm')
             ->subject('Conquistadores AMCH | Activar Club')
             ->from('conquistadoresamch@gmail.com')

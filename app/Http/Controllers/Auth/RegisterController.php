@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Club;
 use App\Http\Requests\ClubActivateRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Mail\ClubActivationConfirm;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -79,62 +81,51 @@ class RegisterController extends Controller
     {
         $clubes = Club::disabled()->get();
 
-        return view('auth.register', [
+        return view('auth.activate', [
             'clubes' => $clubes
         ]);
     }
 
-    public function register(Request $request){
+    public function register(RegisterRequest $request){
         $error      = false;
         $msg        = '';
         $email      = $request->get('email');
         $password   = $request->get('password');
         $club       = $request->get('club');
+
         $oUser = new User();
+        $oClub = Club::findOrFail($club);
 
-        $oUser->email             =  $email;
+        $oUser->name             =  $oClub->director->name;
+        $oUser->email            =  $oClub->director->email;
         $oUser->password         =  \Hash::make($password);
-        $oUser->activation_token =  str_random(150);
-
-        $oClub = ClubModel::findOrFail($club);
-
-        /*
-        if(!$oClub->tieneDirector()){
-            $error = true;
-            $msg = 'Club no tiene Director';
-        }
-        */
 
         if(!$error){
             $oUser->save();
-            $oClub->idUsuario = $oUser->id;
+            $oClub->member_id = $oUser->id;
+            $oClub->active = 1;
+            $oClub->activation_token = null;
             $oClub->save();
 
-            $data = array(
-                'id_club'   => $oClub->id,
-                'club'      => $oClub->name,
-                //'email'     => MiembroModel::directorDeClub($oClub->id)->first()->email,
-                'email'  => $email,
-                'password'  => $password,
-                'token'     => $oUser->activation_token,
-                'domain'    => App::make('url')->to('/')
-            );
-
-            $message = "Benvenido";
-            \Mail::send('emails.RegisterTmpl', $data, function($message) use ($data)
-            {
-                $message
-                    ->to($data['email'], $data['club'])
-                    ->subject("Activación de Cuenta - Regional AMCH");
-            });
-            return redirect('/login')->with(['alert'=>true,'type'=>'success', 'msg'=>'Se ha enviado un E-Mail al director del club '.$data['club'].' para que active el acceso.']);
+            return redirect('/login')->with(['alert'=>true,'type'=>'success', 'msg'=>'El Club de Conquistadores '. $oClub->name .' ha sido activado con éxito!.']);
         }else{
             return redirect('/register')->with(['alert'=>true,'type'=>'danger', 'msg'=> $msg]);
         }
     }
 
+    public function confirmActivation($token){
+        $oClub = Club::where('activation_token',$token)->first();
+        return view('auth.confirm', [
+            'club' => $oClub
+        ]);
+    }
+
 
     public function activate(ClubActivateRequest $request){
-        Mail::send(new ClubActivationConfirm(Club::find($request->club)));
+        $token = Str::random(50);
+        $oClub = Club::find($request->club);
+        $oClub->activation_token = $token;
+        $oClub->save();
+        Mail::send(new ClubActivationConfirm($oClub));
     }
 }
