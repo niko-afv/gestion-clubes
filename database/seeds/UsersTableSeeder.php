@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => 'David Martin',
-            'email' => 'david.martin.lope@gmail.com ',
+            'email' => 'david.martin.lope@gmail.com',
             'password'=> Hash::make('regionaldavid'),
             'profile_id' => 2
         ]);
