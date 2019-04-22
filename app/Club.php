@@ -40,6 +40,7 @@ class Club extends Model
         return $this->morphMany(Group::class, 'groupable')->where('type_id','1');
     }
 
+
     public function directive(){
         return $this->morphMany(Member::class, 'institutable')->whereHas('position', function($query){
             $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
@@ -48,5 +49,10 @@ class Club extends Model
 
     public function hasToken(){
         return !is_null($this->activation_token);
+    }
+
+
+    public function avaliableEvents(){
+        return Event::byZone($this->zone_id)->byField($this->field_id)->get();
     }
 }

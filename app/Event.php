@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class   Event extends Model
+class Event extends Model
 {
     protected $fillable = ['name', 'description', 'start', 'end', 'eventable_id', 'eventable_type'];
 
@@ -29,5 +29,20 @@ class   Event extends Model
             $this->enable();
         }
         return $this->active;
+    }
+
+
+    public function scopeByZone($query, $zone_ids){
+        return $query->orWhere([
+            ['eventable_id','in', $zone_ids],
+            ['eventable_type', '=','\\App\\Zone']
+        ]);
+    }
+
+    public function scopeByField($query, $field_id){
+        return $query->orWhere([
+            ['eventable_id','=', $field_id],
+            ['eventable_type', '=','\\App\\Field']
+        ]);
     }
 }

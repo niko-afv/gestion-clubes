@@ -5,16 +5,18 @@ namespace App\Http\Controllers\Events;
 use App\Event;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveEventRequest;
+use App\User;
 use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Excel;
 
 class EventsController extends Controller
 {
     public function index(){
-        $events = Event::all();
+        $events = Auth::user()->member->institutable->avaliableEvents();
         return view('modules.events.list', [
             'events' => $events
         ]);

@@ -41,7 +41,15 @@ class User extends Authenticatable
         return $this->belongsTo(Profile::class);
     }
 
+    public function member(){
+        return $this->belongsTo(Member::class);
+    }
+
     public function logs(){
         return $this->hasMany(Log::class)->orderBy('created_at','DESC');
     }
+
+
+
+
 }

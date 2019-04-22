@@ -5,6 +5,7 @@
                 <div class="dropdown profile-element">
                         <img alt="image" class="rounded-circle" src="{{ url('images/avatar.jpeg') }}" width="48" />
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="block m-t-xs font-bold">{{ Auth::user()->name }}</span>
                             <span class="block m-t-xs font-bold">{{ Auth::user()->email }}</span>
                             <span class="text-muted text-xs block">{{ Auth::user()->profile->name }}<b class="caret"></b></span>
                         </a>
@@ -18,7 +19,7 @@
                     AMCH
                 </div>
             </li>
-            @if(Auth::user()->profile->id <= 3)
+            @if(Auth::user()->profile->level < 3)
             <li class="{{ isActiveRoute('/clubes') }}">
                 <a href="{{ route('clubes_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Clubes</span></a>
             </li>

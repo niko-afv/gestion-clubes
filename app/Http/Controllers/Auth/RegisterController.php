@@ -99,6 +99,8 @@ class RegisterController extends Controller
         $oUser->name             =  $oClub->director->name;
         $oUser->email            =  $oClub->director->email;
         $oUser->password         =  \Hash::make($password);
+        $oUser->profile_id       = 4;
+        $oUser->member_id        = $oClub->director->id;
 
         if(!$error){
             $oUser->save();
