@@ -33,10 +33,11 @@ class Event extends Model
 
 
     public function scopeByZone($query, $zone_ids){
-        return $query->orWhere([
-            ['eventable_id','in', $zone_ids],
-            ['eventable_type', '=','\\App\\Zone']
-        ]);
+        return $query->orWhere(function ($query) use($zone_ids){
+            $query
+                ->wherein('eventable_id', $zone_ids)
+                ->where('eventable_type', '\\App\\Zone');
+        });
     }
 
     public function scopeByField($query, $field_id){
