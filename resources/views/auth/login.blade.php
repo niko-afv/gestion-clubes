@@ -47,6 +47,11 @@
                         {{ session('msg') }}
                     </div>
                 @endif
+                @if ($errors->has('email'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
                 <form class="m-t" role="form" action="index.html">
                     <div class="form-group">
                         <select class="chosen-select form-control" required name="club">
