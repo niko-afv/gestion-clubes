@@ -92,7 +92,7 @@
                                         <div class="full-height-scroll">
                                             <div class="">
                                                 <p>
-                                                    <button class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</button>
+                                                    <button onclick="window.location.replace('{{ route('add_member') }}');" class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</button>
                                                 </p>
                                             </div>
                                             <div class="table-responsive">

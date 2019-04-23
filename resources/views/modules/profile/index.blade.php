@@ -72,7 +72,7 @@
                         </div>
                         <div class="ibox-content profile-content">
                             <h4><i class="fa fa-user"></i> <strong>{{ $user->name }}</strong></h4>
-                            <h5><i class="fa fa-at"></i> {{ Auth::user()->email }}</h5>
+                            <h5><i class="fa fa-envelope"></i> {{ Auth::user()->email }}</h5>
                             <h5><i class="fa fa-puzzle-piece"></i> {{ Auth::user()->profile->name }}</h5>
                             <h5><i class="fa fa-home"></i> {{ Auth::user()->member->institutable->name }}</h5>
                             <!--<p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>-->

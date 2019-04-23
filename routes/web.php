@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('mi_club')->namespace('Clubs')->group(function (){
         Route::get('/', 'MyClubController@index')->name('my_club');
+        Route::get('/miebros/nuevo', 'MyClubController@addMember')->name('add_member');
+        Route::post('/miebros/guardar', 'MyClubController@saveMember')->name('member_save');
     });
 });
 
