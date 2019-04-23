@@ -18,7 +18,7 @@ class CreateGroupsTable extends Migration
             $table->string('name','55');
             $table->longText('description')->nullable();
             $table->string('photo')->nullable();
-            $table->integer('type_id')->insigned()->default(1);
+            $table->integer('type_id')->unsigned()->default(1);
             $table->integer('groupable_id')->unsigned();
             $table->string('groupable_type');//Club o Campo
             $table->timestamps();
