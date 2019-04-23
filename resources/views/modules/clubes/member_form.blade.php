@@ -5,16 +5,16 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Crear un evento</h2>
+            <h2>Crear un miembro</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('events_list') }}">Eventos</a>
+                    <a href="{{ route('my_club') }}">Mi Club</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Nuevo evento</strong>
+                    <strong>Nuevo Miembro</strong>
                 </li>
             </ol>
         </div>
@@ -29,7 +29,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Ingrese los datos del nuevo evento</h5>
+                        <h5>Ingrese los datos del nuevo miembro</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>

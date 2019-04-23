@@ -90,11 +90,13 @@
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
                                         <div class="full-height-scroll">
+                                            @if(Auth::user()->profile->level >=3)
                                             <div class="">
                                                 <p>
                                                     <button onclick="window.location.replace('{{ route('add_member') }}');" class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</button>
                                                 </p>
                                             </div>
+                                            @endif
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <tbody>
@@ -117,6 +119,11 @@
                                         </div>
                                     </div>
                                     <div id="tab-2" class="tab-pane">
+                                        @if(Auth::user()->profile->level >=3)
+                                            <p>
+                                                <button onclick="window.location.replace('{{ route('add_unit') }}');" class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Unidad</button>
+                                            </p>
+                                        @endif
                                         <div class="full-height-scroll">
                                             <div class="row">
                                                 @foreach($club->units as $unit)
@@ -134,21 +141,21 @@
                                                                 <a href="#"><img alt="member" class="rounded-circle" src="img/a1.jpg"></a>
                                                                 -->
                                                             </div>
-                                                            <h4>Unidad: {{ $unit->name }}</h4>
+                                                            <h4>{{ $unit->name }}</h4>
                                                             <p>
-                                                                {{ $unit->description }}
+
                                                             </p>
                                                             <div>
-                                                                <span>Puntaje:</span>
-                                                                <div class="stat-percent">0 pts</div>
+                                                                <span>Fuerza:</span>
+                                                                <div class="stat-percent">0 Miembros</div>
                                                                 <div class="progress progress-mini">
                                                                     <div style="width: 0%;" class="progress-bar"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="row  m-t-sm">
-                                                                <div class="col-sm-4">
-                                                                    <div class="font-bold">Fuerza</div>
-                                                                    {{ '0' }}
+                                                                <div class="col-sm-12">
+                                                                    <div class="font-bold">Consejero</div>
+                                                                    {{ 'No Asignado' }}
                                                                 </div>
                                                                 <!--
                                                                 <div class="col-sm-4">
