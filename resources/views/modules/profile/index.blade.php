@@ -8,10 +8,7 @@
             <h2>Mi Perfil</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a>Perfil</a>
+                    <a href="{{ route('home') }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>Mi Perfil</strong>
@@ -74,7 +71,10 @@
                             </div>
                         </div>
                         <div class="ibox-content profile-content">
-                            <h4><strong>{{ $user->name }}</strong></h4>
+                            <h4><i class="fa fa-user"></i> <strong>{{ $user->name }}</strong></h4>
+                            <h5><i class="fa fa-at"></i> {{ Auth::user()->email }}</h5>
+                            <h5><i class="fa fa-puzzle-piece"></i> {{ Auth::user()->profile->name }}</h5>
+                            <h5><i class="fa fa-home"></i> {{ Auth::user()->member->institutable->name }}</h5>
                             <!--<p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>-->
                             @if($user->resume)
                             <h5>

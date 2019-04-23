@@ -56,6 +56,7 @@
                                     <td>{{ $event->description }}</td>
                                     <td>{{ $event->eventable->name }}</td>
                                     <td>
+                                        @if(Auth::user()->profile->level < 3)
                                         <div class="switch">
                                             <div class="onoffswitch">
                                                 <input type="checkbox" {{ ($event->active)?'checked':'' }} class="onoffswitch-checkbox" id="event-{{ $event->id }}">
@@ -65,6 +66,10 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        @else
+                                            <dd class="mb-1"><span class="label {{($event->active)?'label-primary':'label-danger'}}">{{ ($event->active)?'Activo':'Inactivo' }}</span></dd>
+                                        @endif
+
                                     </td>
                                     <td class="center">
                                         <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>

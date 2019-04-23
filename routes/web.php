@@ -24,7 +24,6 @@ Route::middleware('auth')->group(function (){
         Route::get('/list', 'ClubsListController@index')->name('clubes_list');
         Route::get('/import', 'ClubsListController@import')->name('clubes_import');
         Route::get('/detail/{club}', 'ClubsListController@detail')->name('club_detail');
-
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
     });
 
@@ -41,6 +40,10 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
+    });
+
+    Route::prefix('mi_club')->namespace('Clubs')->group(function (){
+        Route::get('/', 'MyClubController@index')->name('my_club');
     });
 });
 

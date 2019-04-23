@@ -41,7 +41,7 @@
                     <div class="col-lg-6">
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></dd></div>
+                            <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Director:</dt> </div>
@@ -90,6 +90,11 @@
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
                                         <div class="full-height-scroll">
+                                            <div class="">
+                                                <p>
+                                                    <button class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</button>
+                                                </p>
+                                            </div>
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <tbody>

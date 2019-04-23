@@ -25,6 +25,12 @@
             </li>
             @endif
 
+            @if(Auth::user()->profile->level >= 3)
+                <li class="{{ isActiveRoute('/perfil') }}">
+                    <a href="{{ route('my_club') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Mi Club</span></a>
+                </li>
+            @endif
+
             <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Eventos</span> </a>
             </li>
