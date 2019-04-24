@@ -38,7 +38,7 @@
                     </div>
                     <div class="ibox-content">
 
-                        @if($unit)
+                        @if(isset($unit))
                         <form method="post" action="{{ route('update_unit', $unit) }}">
                         @else
                         <form method="post" action="{{ route('save_unit') }}">
@@ -47,8 +47,8 @@
                                 <label class="col-sm-2 col-form-label">Nombre</label>
 
                                 <div class="col-sm-10">
-                                    <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ ($unit)?$unit->name:old('name') }}">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($unit)?$unit->name:old('name') }}">
                                     </div>
                                     @if ($errors->has('name'))
                                         <div class="alert alert-danger">
@@ -61,7 +61,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Descripción</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description">{{ ($unit)?$unit->description:old('description') }}</textarea>
+                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description">{{ isset($unit)?$unit->description:old('description') }}</textarea>
                                     @if ($errors->has('description'))
                                         <div class="alert alert-danger">
                                             {{ $errors->first('description') }}
@@ -94,11 +94,12 @@
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
+                            @if(isset($unit))
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Integrantes Actuales</label>
                                 <div class="col-sm-9">
                                     <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                        <table class="table table-striped table-bordered table-hover dataTables-example" >
                                     <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -116,9 +117,11 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                            </div>
+                                    </div>
+
                                 </div>
                             </div>
+                            @endif
                         </form>
 
                     </div>
@@ -132,6 +135,23 @@
 @section('scripts')
     <script>
       $(document).ready(function(){
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "progressBar": true,
+          "preventDuplicates": false,
+          "positionClass": "toast-top-right",
+          "onclick": null,
+          "showDuration": "400",
+          "hideDuration": "1000",
+          "timeOut": "7000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+
         $('#data_3 .input-group.date').datepicker({
           startView: 2,
           todayBtn: "linked",
@@ -145,19 +165,23 @@
           alowClear: true
         })
 
-        $(".touchspin1").TouchSpin({
-          buttondown_class: 'btn btn-white',
-          buttonup_class: 'btn btn-white'
-        });
-
+        @if(isset($unit))
         $('.remove_member').click(function () {
           var member_id = $(this).data('id');
           var token = $("input[name='_token']").val();
+          $element = $(this);
 
           $.post('{{ route('remove_member', $unit->id) }}', {member: member_id, _token: token }, function (response) {
-            console.log(response);
+
+            if (response.error){
+              toastr.warning(response.message, 'Cuidado');
+            }else {
+              toastr.success(response.message, 'Excelente');
+              $element.parent().parent().fadeOut(1000);
+            }
           })
         })
+        @endif
 
       });
 

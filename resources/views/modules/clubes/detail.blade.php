@@ -126,6 +126,7 @@
                                         @endif
                                         <div class="full-height-scroll">
                                             <div class="row">
+
                                                 @foreach($club->units as $unit)
                                                 <div class="col-lg-4">
                                                     <div class="ibox">
@@ -140,7 +141,6 @@
                                                             </div>
                                                             <h4>{{ $unit->name }}</h4>
                                                             <p>
-
                                                             </p>
                                                             <div>
                                                                 <span>Fuerza:</span>
@@ -149,6 +149,7 @@
                                                                     <div style="width: 0%;" class="progress-bar"></div>
                                                                 </div>
                                                             </div>
+
                                                             <div class="row  m-t-sm">
                                                                 <div class="col-sm-12">
                                                                     <div class="font-bold">Consejero</div>

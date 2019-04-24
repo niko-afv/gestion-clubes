@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Field extends Model
 {
     public function regional(){
-        return $this->morphMany(Group::class, 'groupable')->where('type_id','3');
+        return $this->morphMany(Unit::class, 'groupable')->where('type_id','3');
     }
 
     public function zones(){

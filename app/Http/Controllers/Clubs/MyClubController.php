@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Clubs;
 
 use App\Club;
-use App\Group;
+use App\Unit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddMemberRequest;
 use App\Http\Requests\AddUnitRequest;
@@ -22,7 +22,6 @@ class MyClubController extends Controller
 {
     public function index(){
         $club = Auth::user()->member->institutable;
-
         return view('modules.clubes.detail',[
             'club' => $club
         ]);
@@ -52,14 +51,14 @@ class MyClubController extends Controller
 
 
     public function showAddUnit(){
-        $members = Member::all();
+        $members = Auth::user()->member->institutable->members()->loose()->get();
         return view('modules.clubes.unit_form', [
             'members' => $members
         ]);
     }
 
-    public function showUpdateUnit(Group $unit){
-        $members = Auth::user()->member->institutable->members()->where('groupable_id', null)->get();
+    public function showUpdateUnit(Unit $unit){
+        $members = Auth::user()->member->institutable->members()->loose()->get();
         return view('modules.clubes.unit_form', [
             'members' => $members,
             'unit' => $unit
@@ -68,17 +67,19 @@ class MyClubController extends Controller
 
     public function saveUnit(AddUnitRequest $request){
 
-        Group::create([
+        $oUnit = Unit::create([
             'name' => $request->name,
             'description' => $request->description,
-            'groupable_id' => $request->club_id,
-            'groupable_type' => 'App\\Club',
-            'type_id' => 1
+            'club_id' => $request->club_id
         ]);
+
+        foreach ($request->members as $member_id){
+            $oUnit->members()->save(Member::find($member_id));
+        }
         return redirect(route('my_club'));
     }
 
-    public function updateUnit(AddUnitRequest $request, Group $oUnit){
+    public function updateUnit(AddUnitRequest $request, Unit $oUnit){
         $oUnit->name = $request->name;
         $oUnit->description = $request->description;
         $oUnit->save();
@@ -90,8 +91,22 @@ class MyClubController extends Controller
         return redirect(route('my_club'));
     }
 
-    public function removeMember(Request $request, Group $unit){
-        $response = $unit->members()->dissociate($request->member);
-        dd($response);
+    public function removeMember(Request $request, Unit $unit){
+        $oMember = Member::find($request->member)->unit()->dissociate();
+        $response = $oMember->save();
+
+        if ($response){
+            $error = false;
+            $message ='El miembro <strong>' . $oMember->name . '</strong> fue desviculado con éxito de la unidad.';
+        }else{
+            $error = true;
+            $message ='Ocurrió un problema al intentar desvincular a <strong>' . $oMember->name . '</strong> de la unidad.';
+        }
+
+
+        return response()->json([
+            'error'=> $error,
+            'message' => $message
+        ]);
     }
 }

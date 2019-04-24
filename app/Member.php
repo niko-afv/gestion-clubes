@@ -17,6 +17,10 @@ class Member extends Model
     }
 
     public function unit(){
-        return $this->morphOne(Group::class);
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function scopeLoose($query){
+        return $query->whereNull('unit_id');
     }
 }

@@ -20,8 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MembersTableSeeder::class);
         $this->call(ProfilesTableSeeder::class);
         $this->call(LogTypesTableSeeder::class);
-        $this->call(GroupTypesTableSeeder::class);
-        $this->call(GroupsTableSeeder::class);
+        $this->call(UnitsTableSeeder::class);
         $this->call(EventsTableSeeder::class);
     }
 }

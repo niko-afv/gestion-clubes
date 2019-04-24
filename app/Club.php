@@ -37,7 +37,7 @@ class Club extends Model
     }
 
     public function units(){
-        return $this->morphMany(Group::class, 'groupable')->where('type_id','1');
+        return $this->hasMany(Unit::class);
     }
 
 
