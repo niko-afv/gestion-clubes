@@ -118,7 +118,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Cargos</label>
                                 <div class="col-sm-9">
-                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true" name="position">
+                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true" name="positions[]">
                                         <option>Selecciona una alternativa</option>
                                         @foreach($positions as $position)
                                             <option value="{{ $position->id }}" {{ (old('position') == $position->id)?'selected':'' }}>{{ $position->name }}</option>

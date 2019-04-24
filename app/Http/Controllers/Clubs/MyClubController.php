@@ -46,6 +46,13 @@ class MyClubController extends Controller
             'institutable_type' => 'App\\Club',
             'active' => 1
         ]);
+
+        if ($request->has('positions')){
+            foreach ($request->positions as $position_id){
+                $oMember->positions()->save(Position::find($position_id));
+            }
+        }
+
         return redirect(route('my_club'));
     }
 
