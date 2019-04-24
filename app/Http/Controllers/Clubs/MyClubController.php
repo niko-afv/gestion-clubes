@@ -73,9 +73,12 @@ class MyClubController extends Controller
             'club_id' => $request->club_id
         ]);
 
-        foreach ($request->members as $member_id){
-            $oUnit->members()->save(Member::find($member_id));
+        if ($request->has('members')){
+            foreach ($request->members as $member_id){
+                $oUnit->members()->save(Member::find($member_id));
+            }
         }
+
         return redirect(route('my_club'));
     }
 
