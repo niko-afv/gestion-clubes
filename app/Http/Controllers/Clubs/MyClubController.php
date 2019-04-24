@@ -7,11 +7,13 @@ use App\Group;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddMemberRequest;
 use App\Http\Requests\AddUnitRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Imports\ClubsImport;
 use App\Imports\MembersImport;
 use App\Member;
 use App\Position;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Excel;
@@ -49,10 +51,18 @@ class MyClubController extends Controller
     }
 
 
-    public function addUnit(){
-        $position = Position::all();
+    public function showAddUnit(){
+        $members = Member::all();
         return view('modules.clubes.unit_form', [
-            'positions' => $position
+            'members' => $members
+        ]);
+    }
+
+    public function showUpdateUnit(Group $unit){
+        $members = Auth::user()->member->institutable->members()->where('groupable_id', null)->get();
+        return view('modules.clubes.unit_form', [
+            'members' => $members,
+            'unit' => $unit
         ]);
     }
 
@@ -66,5 +76,22 @@ class MyClubController extends Controller
             'type_id' => 1
         ]);
         return redirect(route('my_club'));
+    }
+
+    public function updateUnit(AddUnitRequest $request, Group $oUnit){
+        $oUnit->name = $request->name;
+        $oUnit->description = $request->description;
+        $oUnit->save();
+
+        foreach ($request->members as $member_id){
+            $oUnit->members()->save(Member::find($member_id));
+        }
+
+        return redirect(route('my_club'));
+    }
+
+    public function removeMember(Request $request, Group $unit){
+        $response = $unit->members()->dissociate($request->member);
+        dd($response);
     }
 }

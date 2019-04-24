@@ -48,8 +48,11 @@ Route::middleware('auth')->group(function (){
         Route::get('/miebros/nuevo', 'MyClubController@addMember')->name('add_member');
         Route::post('/miebros/guardar', 'MyClubController@saveMember')->name('member_save');
 
-        Route::get('/unidad/nueva', 'MyClubController@addUnit')->name('add_unit');
-        Route::post('/unidad/guardar', 'MyClubController@saveUnit')->name('unit_save');
+        Route::get('/unidad/nueva', 'MyClubController@showAddUnit')->name('add_unit');
+        Route::get('/unidad/{unit}', 'MyClubController@showUpdateUnit')->name('edit_unit');
+        Route::post('/unidad/guardar/', 'MyClubController@saveUnit')->name('save_unit');
+        Route::post('/unidad/guardar/{oUnit}', 'MyClubController@updateUnit')->name('update_unit');
+        Route::post('/unidad/{oUnit}/remover_miembro', 'MyClubController@removeMember')->name('remove_member');
     });
 });
 

@@ -15,4 +15,8 @@ class Member extends Model
     public function institutable(){
         return $this->morphTo();
     }
+
+    public function unit(){
+        return $this->morphOne(Group::class);
+    }
 }

@@ -137,9 +137,6 @@
                                                         </div>
                                                         <div class="ibox-content">
                                                             <div class="team-members">
-                                                                <!--
-                                                                <a href="#"><img alt="member" class="rounded-circle" src="img/a1.jpg"></a>
-                                                                -->
                                                             </div>
                                                             <h4>{{ $unit->name }}</h4>
                                                             <p>
@@ -147,7 +144,7 @@
                                                             </p>
                                                             <div>
                                                                 <span>Fuerza:</span>
-                                                                <div class="stat-percent">0 Miembros</div>
+                                                                <div class="stat-percent">{{ $unit->members->count() }} Miembros</div>
                                                                 <div class="progress progress-mini">
                                                                     <div style="width: 0%;" class="progress-bar"></div>
                                                                 </div>
@@ -157,16 +154,10 @@
                                                                     <div class="font-bold">Consejero</div>
                                                                     {{ 'No Asignado' }}
                                                                 </div>
-                                                                <!--
-                                                                <div class="col-sm-4">
-                                                                    <div class="font-bold">Promedio Asis.</div>
-                                                                    7
-                                                                </div>
                                                                 <div class="col-sm-4 text-right">
-                                                                    <div class="font-bold">BUDGET</div>
-                                                                    $200,913 <i class="fa fa-level-up text-navy"></i>
+                                                                    <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
                                                                 </div>
-                                                                -->
+
                                                             </div>
                                                         </div>
                                                     </div>

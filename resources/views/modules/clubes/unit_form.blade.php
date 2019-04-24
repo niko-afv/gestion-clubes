@@ -38,13 +38,17 @@
                     </div>
                     <div class="ibox-content">
 
-                        <form method="post" action="{{ route('unit_save') }}">
+                        @if($unit)
+                        <form method="post" action="{{ route('update_unit', $unit) }}">
+                        @else
+                        <form method="post" action="{{ route('save_unit') }}">
+                        @endif
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Nombre</label>
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ ($unit)?$unit->name:old('name') }}">
                                     </div>
                                     @if ($errors->has('name'))
                                         <div class="alert alert-danger">
@@ -57,10 +61,26 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Descripción</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description">{{ old('description') }}</textarea>
+                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description">{{ ($unit)?$unit->description:old('description') }}</textarea>
                                     @if ($errors->has('description'))
                                         <div class="alert alert-danger">
                                             {{ $errors->first('description') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Añadir Integrantes</label>
+                                <div class="col-sm-9">
+                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple tabindex="-1" aria-hidden="true" name="members[]">
+                                        @foreach($members as $member)
+                                            <option value="{{ $member->id }}">{{ $member->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('zone'))
+                                        <div class="alert alert-danger">
+                                            {{ $errors->first('zone') }}
                                         </div>
                                     @endif
                                 </div>
@@ -71,6 +91,32 @@
                                     {{ csrf_field() }}
                                     <input hidden name="club_id" value="{{ Auth::user()->member->institutable->id }}">
                                     <button class="btn btn-primary btn-lg pull-right" type="submit">Guardar</button>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Integrantes Actuales</label>
+                                <div class="col-sm-9">
+                                    <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Remover</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($unit->members as $member)
+                                        <tr class="">
+                                            <td>{{ $member->name }}</td>
+                                            <td class="center">
+                                                <a class="remove_member" data-id="{{ $member->id }}" title="Ver Evento" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                                 </div>
                             </div>
                         </form>
@@ -95,7 +141,7 @@
         });
 
         $('.select2_demo_3').select2({
-          placeholder : "Selecciona un campo",
+          placeholder : "Selecciona un miembro del Club",
           alowClear: true
         })
 
@@ -103,6 +149,16 @@
           buttondown_class: 'btn btn-white',
           buttonup_class: 'btn btn-white'
         });
+
+        $('.remove_member').click(function () {
+          var member_id = $(this).data('id');
+          var token = $("input[name='_token']").val();
+
+          $.post('{{ route('remove_member', $unit->id) }}', {member: member_id, _token: token }, function (response) {
+            console.log(response);
+          })
+        })
+
       });
 
     </script>
