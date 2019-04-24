@@ -24,7 +24,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-12">
             <div class="wrapper wrapper-content animated fadeInUp">
         <div class="ibox">
             <div class="ibox-content">
@@ -100,14 +100,37 @@
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <tbody>
+                                                    <tr>
+                                                        <td>Rut</td>
+                                                        <td>Nombre</td>
+                                                        <td>Edad</td>
+                                                        <td></td>
+                                                        <td>Telefono</td>
+                                                        <td></td>
+                                                        <td>E-mail</td>
+                                                        <td>Cargos</td>
+                                                        <td>Modificar</td>
+                                                    </tr>
                                                     @foreach($club->members as $member)
                                                     <tr>
+                                                        <!--
                                                         <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
+                                                        -->
+                                                        <td><a href="#" class="client-link">{{ $member->dni }}</a></td>
                                                         <td><a href="#" class="client-link">{{ $member->name }}</a></td>
+                                                        <td><a href="#" class="client-link">{{ ($member->age() == 0)?'No Especificado':$member->age() }}</a></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
                                                         <td>{{ $member->phone }}</td>
                                                         <td class="contact-type"><i class="fa fa-envelope"> </i></td>
                                                         <td>{{ $member->email }}</td>
+                                                        <td>
+                                                            @foreach($member->positions as $position)
+                                                                <span class="tag label label-primary">{{ strtoupper($position->name) }}</span>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
+                                                        </td>
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>
                                                         -->

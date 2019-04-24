@@ -38,13 +38,18 @@
                     </div>
                     <div class="ibox-content">
 
-                        <form method="post" action="{{ route('member_save') }}">
+                        @if(isset($member))
+                            <form method="post" action="{{ route('update_member', $member) }}">
+                        @else
+                            <form method="post" action="{{ route('save_member') }}">
+                        @endif
+
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Nombre Completo</label>
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-user"></i></span> <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($member)?$member->name:old('name') }}">
                                     </div>
                                     @if ($errors->has('name'))
                                         <div class="alert alert-danger">
@@ -59,7 +64,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-id-card"></i></span> <input type="text" class="form-control" name="dni" value="{{ old('dni') }}">
+                                        <span class="input-group-addon"><i class="fa fa-id-card"></i></span> <input type="text" class="form-control" name="dni" value="{{ isset($member)?$member->dni:old('dni') }}">
                                     </div>
                                     @if ($errors->has('dni'))
                                         <div class="alert alert-danger">
@@ -74,7 +79,7 @@
                                 <div class="col-sm-10">
                                     <div class="form-group" id="data_3">
                                         <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" name="birthdate" value="{{ old('birthdate') }}">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" name="birthdate" value="{{ isset($member)?$member->birth_date:old('birthdate') }}">
                                         </div>
                                     </div>
                                     @if ($errors->has('birthdate'))
@@ -90,7 +95,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span><input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
+                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span><input type="text" class="form-control" name="phone" value="{{ isset($member)?$member->phone:old('phone') }}">
                                     </div>
                                     @if ($errors->has('phone'))
                                         <div class="alert alert-danger">
@@ -105,7 +110,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span><input type="text" class="form-control" name="email" value="{{ old('email') }}">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span><input type="text" class="form-control" name="email" value="{{ isset($member)?$member->email:old('email') }}">
                                     </div>
                                     @if ($errors->has('email'))
                                         <div class="alert alert-danger">
@@ -116,7 +121,7 @@
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Cargos</label>
+                                <label class="col-sm-2 col-form-label">Nuevos Cargos</label>
                                 <div class="col-sm-9">
                                     <select class="select2_demo_3 form-control select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true" name="positions[]">
                                         <option>Selecciona una alternativa</option>
@@ -131,7 +136,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="hr-line-dashed"></div>
+
                             <div class="form-group row">
                                 <div class="col-sm-6 col-sm-offset-2">
                                     {{ csrf_field() }}
@@ -139,6 +144,35 @@
                                     <button class="btn btn-primary btn-lg pull-right" type="submit">Guardar</button>
                                 </div>
                             </div>
+
+                            @if(isset($member) && $member->positions()->count())
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Cargos Actuales</label>
+                                    <div class="col-sm-9">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                                <thead>
+                                                <tr>
+                                                    <th>Cargo</th>
+                                                    <th>Remover</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($member->positions as $position)
+                                                    <tr class="">
+                                                        <td>{{ $position->name }}</td>
+                                                        <td class="center">
+                                                            <a class="remove_member" data-id="{{ $position->id }}" title="Ver Evento" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endif
                         </form>
 
                     </div>
@@ -152,6 +186,23 @@
 @section('scripts')
     <script>
       $(document).ready(function(){
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "progressBar": true,
+          "preventDuplicates": false,
+          "positionClass": "toast-top-right",
+          "onclick": null,
+          "showDuration": "400",
+          "hideDuration": "1000",
+          "timeOut": "7000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+
         $('#data_3 .input-group.date').datepicker({
           startView: 2,
           todayBtn: "linked",
@@ -165,10 +216,23 @@
           alowClear: true
         })
 
-        $(".touchspin1").TouchSpin({
-          buttondown_class: 'btn btn-white',
-          buttonup_class: 'btn btn-white'
-        });
+        @if(isset($member))
+        $('.remove_member').click(function () {
+          var position_id = $(this).data('id');
+          var token = $("input[name='_token']").val();
+          $element = $(this);
+
+          $.post('{{ route('remove_position', $member->id) }}', {position: position_id, _token: token }, function (response) {
+
+            if (response.error){
+              toastr.warning(response.message, 'Cuidado');
+            }else {
+              toastr.success(response.message, 'Excelente');
+              $element.parent().parent().fadeOut(1000);
+            }
+          })
+        })
+          @endif
       });
 
     </script>

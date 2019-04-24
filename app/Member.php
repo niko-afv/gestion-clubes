@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
@@ -22,5 +23,9 @@ class Member extends Model
 
     public function scopeLoose($query){
         return $query->whereNull('unit_id');
+    }
+
+    public function age(){
+        return Carbon::parse($this->birth_date)->age;
     }
 }

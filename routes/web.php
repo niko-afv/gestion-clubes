@@ -45,8 +45,11 @@ Route::middleware('auth')->group(function (){
     Route::prefix('mi_club')->namespace('Clubs')->group(function (){
         Route::get('/', 'MyClubController@index')->name('my_club');
 
-        Route::get('/miebros/nuevo', 'MyClubController@addMember')->name('add_member');
-        Route::post('/miebros/guardar', 'MyClubController@saveMember')->name('member_save');
+        Route::get('/miembros/nuevo', 'MyClubController@showAddMember')->name('add_member');
+        Route::get('/miembros/{member}', 'MyClubController@showUpdateMember')->name('edit_member');
+        Route::post('/miembros/guardar', 'MyClubController@saveMember')->name('save_member');
+        Route::post('/miembros/guardar/{member}', 'MyClubController@updateMember')->name('update_member');
+        Route::post('/unidad/{member}/remover_cargo', 'MyClubController@removePosition')->name('remove_position');
 
         Route::get('/unidad/nueva', 'MyClubController@showAddUnit')->name('add_unit');
         Route::get('/unidad/{unit}', 'MyClubController@showUpdateUnit')->name('edit_unit');

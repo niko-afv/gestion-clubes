@@ -27,7 +27,7 @@ class MyClubController extends Controller
         ]);
     }
 
-    public function addMember(){
+    public function showAddMember(){
         $position = Position::all();
         return view('modules.clubes.member_form', [
             'positions' => $position
@@ -56,6 +56,54 @@ class MyClubController extends Controller
         return redirect(route('my_club'));
     }
 
+    public function showUpdateMember(Member $member){
+        $newarray = [];
+        foreach ($member->positions as $position){
+            $newarray[] = $position->id;
+        }
+
+        $position = Position::all()->except($newarray)->all();
+        return view('modules.clubes.member_form', [
+            'positions' => $position,
+            'member' => $member
+        ]);
+    }
+
+    public function updateMember(AddMemberRequest $request, Member $member){
+        $member->name = $request->name;
+        $member->birth_date = Carbon::create($request->birthdate)->format('Y/m/d');
+        $member->email = $request->email;
+        $member->phone = $request->phone;
+        $member->dni = $request->dni;
+        $member->save();
+
+        if ($request->has('positions')){
+            foreach ($request->positions as $position_id){
+                $member->positions()->save(Position::find($position_id));
+            }
+        }
+
+        return redirect(route('my_club'));
+    }
+
+    public function removePosition(Request $request, Member $member){
+        $member->positions()->detach([$request->position]);
+        $response = $member->save();
+
+        if ($response){
+            $error = false;
+            $message ='El cargo fue desviculado con éxito.';
+        }else{
+            $error = true;
+            $message ='Ocurrió un problema al intentar desvincular el cargo del miembro.';
+        }
+
+
+        return response()->json([
+            'error'=> $error,
+            'message' => $message
+        ]);
+    }
 
     public function showAddUnit(){
         $members = Auth::user()->member->institutable->members()->loose()->get();

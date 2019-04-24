@@ -55,6 +55,11 @@ class PositionsTableSeeder extends Seeder
                 'name' => 'Capitán/a',
                 'level' => 2
             ],
+            [
+                'id' => 8,
+                'name' => 'Equipo de Apoyo',
+                'level' => 2
+            ],
         ];
 
         foreach ($positions as $position){
