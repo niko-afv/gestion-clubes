@@ -37,7 +37,6 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-
                         <form method="post" action="{{ route('events_save') }}">
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Nombre</label>
@@ -76,6 +75,11 @@
                                     @if ($errors->has('end'))
                                         <div class="alert alert-danger">
                                             {{ $errors->first('end') }}
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('start'))
+                                        <div class="alert alert-danger">
+                                            {{ $errors->first('start') }}
                                         </div>
                                     @endif
                                 </div>
@@ -122,7 +126,9 @@
         $('#data_5 .input-daterange').datepicker({
           keyboardNavigation: false,
           forceParse: false,
-          autoclose: true
+          autoclose: true,
+          startDate: '+1d'
+
         });
 
         $('.select2_demo_3').select2({
