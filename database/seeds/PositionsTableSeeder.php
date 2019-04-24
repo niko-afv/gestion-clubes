@@ -56,9 +56,9 @@ class PositionsTableSeeder extends Seeder
                 'level' => 2
             ],
             [
-                'id' => 8,
+                'id' => 9,
                 'name' => 'Equipo de Apoyo',
-                'level' => 2
+                'level' => 1
             ],
         ];
 
