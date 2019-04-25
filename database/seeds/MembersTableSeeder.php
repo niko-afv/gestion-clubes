@@ -14,8 +14,7 @@ class MembersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('members')->truncate();
-
+        /*
         $members = [
             [
                 'id' => 1,
@@ -36,6 +35,7 @@ class MembersTableSeeder extends Seeder
                 'active' => $member['active']
             ]);
         }
+        */
 
         $excel = App::make(Excel::class);
         $excel->import(new MembersImport(), storage_path('app/import/members_import.csv'));
