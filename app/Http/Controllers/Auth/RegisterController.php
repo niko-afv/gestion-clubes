@@ -35,7 +35,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -117,6 +117,12 @@ class RegisterController extends Controller
 
     public function confirmActivation($token){
         $oClub = Club::where('activation_token',$token)->first();
+
+
+        if(is_null($oClub)){
+            return redirect(route('register'))->with('error_message', 'Su solicitud de activación no está activa');
+        }
+
         return view('auth.confirm', [
             'club' => $oClub
         ]);

@@ -64,6 +64,12 @@
             {{ csrf_field() }}
 
             <p class="text-muted text-center"><small>Si tu club no aparece, puede deberse a que ya fue activado o a que no está registrado en nuestro campo</small></p>
+
+            @if (session('error_message'))
+                <div class="alert alert-danger">
+                    {{ session('error_message') }}
+                </div>
+            @endif
         </form>
 
         <div class="alert show-alert" style="display: none">
