@@ -120,7 +120,7 @@ class RegisterController extends Controller
 
 
         if(is_null($oClub)){
-            return redirect(route('register'))->with('error_message', 'Su solicitud de activación no está activa');
+            return redirect(route('register'))->with('error_message', 'Su solicitud de activación ha expirado, favor vuelva a intentarlo');
         }
 
         return view('auth.confirm', [
