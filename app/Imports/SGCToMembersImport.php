@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 
 class SGCToMembersImport implements ToModel, WithHeadingRow
 {
@@ -31,22 +32,29 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        $oMember = new Member([
-            'name' => ucwords(mb_strtolower($row['nombre'])),
-            'dni' => $row['rut'],
-            'email' => mb_strtolower($row['email']),
-            'phone' => $row['telefono'],
-            'birth_date' => Carbon::createFromFormat('d/m/Y',$row['fecha_nacimiento']),
-            'institutable_id' => Auth::user()->member->institutable->id,
-            'sgc_code' => $row['codigo_sgc'],
-            'institutable_type' => 'App\\Club'
-        ]);
+        if($row['cargo'] != 'DIRETOR DE CLUBE'){
+            $query = Member::where('dni', $row['rut']);
+            if($query->count()){
+                return;
+            }
 
-        $oMember->save();
-        if($row['cargo'] !== 'DESBRAVADOR'){
-            $oMember->positions()->attach($this->postions_map[$row['cargo']]);
+            $oMember = new Member([
+                'name' => ucwords(mb_strtolower($row['nombre'])),
+                'dni' => $row['rut'],
+                'email' => mb_strtolower($row['email']),
+                'phone' => $row['telefono'],
+                'birth_date' => Carbon::createFromFormat('d/m/Y',$row['fecha_nacimiento']),
+                'institutable_id' => Auth::user()->member->institutable->id,
+                'sgc_code' => $row['codigo_sgc'],
+                'institutable_type' => 'App\\Club'
+            ]);
+
+            $oMember->save();
+            if(!is_null($row['cargo']) && $row['cargo'] !== 'DESBRAVADOR'){
+                $oMember->positions()->attach($this->postions_map[$row['cargo']]);
+            }
+
+            return $oMember;
         }
-
-        return $oMember;
     }
 }
