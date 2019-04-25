@@ -219,7 +219,7 @@ class MyClubController extends Controller
         Excel::import(new SGCToMembersImport(), $file_path);
         return response()->json([
             'error' => false,
-            'message' => 'Todo Ok'
+            'message' => 'Los datos se han importado correctamente!'
         ]);
 
     }

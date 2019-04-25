@@ -156,6 +156,9 @@
             }else {
               toastr.success(response.message, 'Excelente');
               $element.parent().parent().fadeOut(1000);
+              setTimeout(function(){
+                window.location.replace("{{ route('my_club') }}");
+              }, 2500)
             }
           })
         })
