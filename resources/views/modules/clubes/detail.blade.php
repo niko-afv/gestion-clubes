@@ -101,8 +101,9 @@
                                                     <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
                                                     &nbsp;
                                                     <!--
-                                                    <a href="{{ route('import_member') }}" class="btn btn-outline btn-primary" disabled=""><i class="fa fa-table"></i>&nbsp;Importar</a>
+                                                    <a href="{{ route('import_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-table"></i>&nbsp;Importar</a>
                                                     -->
+
                                                 </p>
                                             </div>
                                             @endif

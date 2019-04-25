@@ -128,6 +128,10 @@
         @endif
     </div>
 
+    @if (session('error_message'))
+        <span id="error_message">{{ session('error_message') }}</span>
+    @endif
+
     <!--
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -149,4 +153,14 @@
     -->
 </div>
 
+@endsection
+
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+          if( $('#error_message').length )
+            toastr.warning($('#error_message').html(), 'Cuidado');
+        });
+    </script>
 @endsection

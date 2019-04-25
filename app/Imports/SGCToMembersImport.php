@@ -10,6 +10,19 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SGCToMembersImport implements ToModel, WithHeadingRow
 {
+
+    private $postions_map = [
+        'APOIO' => 9,
+        'DESBRAVADOR' => null,
+        'CONSELHEIRO' => 7,
+        'DIRETOR DE CLUBE' => 1,
+        'INSTRUTOR' => 6,
+        'DIRETOR ASSOCIADO' => 2,
+        'CAPELÃO DO CLUBE' => 3,
+        'SECRETÁRIO DO CLUBE' => 5,
+        'TESOUREIRO DO CLUBE' => 4
+    ];
+
     /**
     * @param array $row
     *
@@ -28,7 +41,9 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
         ]);
 
         $oMember->save();
-        //$res = $oMember->positions()->attach($row[4]);
+        if($row['cargo'] !== 'DESBRAVADOR'){
+            $oMember->positions()->attach($this->postions_map[$row['cargo']]);
+        }
 
         return $oMember;
     }
