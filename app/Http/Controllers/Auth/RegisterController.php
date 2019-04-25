@@ -79,7 +79,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $clubes = Club::disabled()->get();
+        $clubes = Club::disabled()->orderBy('name')->get();
 
         return view('auth.activate', [
             'clubes' => $clubes
