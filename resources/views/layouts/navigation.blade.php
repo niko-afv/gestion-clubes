@@ -24,7 +24,7 @@
             </li>
             @if(Auth::user()->profile->level < 3)
             <li class="{{ isActiveRoute('/clubes') }}">
-                <a href="{{ route('clubes_list') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Clubes</span></a>
+                <a href="{{ route('clubes_list') }}"><i class="fa fa-object-group fa-2x"></i> <span class="nav-label">Clubes</span></a>
             </li>
             @endif
 

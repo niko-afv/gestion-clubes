@@ -14,9 +14,7 @@ class ClubsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('clubs')->truncate();
-
-
+        /*
         $clubs = [
             [
                 'id' => 1,
@@ -40,6 +38,7 @@ class ClubsTableSeeder extends Seeder
                 'active' => $club['active']
             ]);
         }
+        */
 
         $excel = App::make(Excel::class);
         $excel->import(new ClubsImport(), storage_path('app/import/clubes_import.csv'));
