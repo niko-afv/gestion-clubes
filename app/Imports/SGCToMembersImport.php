@@ -22,7 +22,10 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
         'DIRETOR ASSOCIADO' => 2,
         'CAPELÃO DO CLUBE' => 3,
         'SECRETÁRIO DO CLUBE' => 5,
-        'TESOUREIRO DO CLUBE' => 4
+        'TESOUREIRO DO CLUBE' => 4,
+        'CONSELHEIRO ASSOCIADO' => 7,
+        'AVENTUREIRO' => 9
+
     ];
 
     /**
