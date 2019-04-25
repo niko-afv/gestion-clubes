@@ -8,7 +8,7 @@
             <h2>{{ $club->name }}</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">Dashboard</a>
+                    <a href="{{ route('home') }}">Principal</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{{ route('clubes_list') }}">Clubes</a>
@@ -57,6 +57,7 @@
                         </dl>
 
                     </div>
+                    <!--
                     <div class="col-lg-6" id="cluster_info">
 
                         <dl class="row mb-0">
@@ -76,6 +77,7 @@
                             </div>
                         </dl>
                     </div>
+                    -->
                 </div>
 
                 <div class="row m-t-sm">
@@ -98,7 +100,7 @@
                                                 <p style="text-align: right">
                                                     <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
                                                     &nbsp;
-                                                    <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary" ><i class="fa fa-table"></i>&nbsp;Importar</a>
+                                                    <a href="{{ route('import_member') }}" class="btn btn-outline btn-primary" ><i class="fa fa-table"></i>&nbsp;Importar</a>
                                                 </p>
                                             </div>
                                             @endif
@@ -114,7 +116,7 @@
                                                         <td></td>
                                                         <td>E-mail</td>
                                                         <td>Cargos</td>
-                                                        <td>Modificar</td>
+                                                        <td>Acciones</td>
                                                     </tr>
                                                     @foreach($club->members as $member)
                                                     <tr>
@@ -134,7 +136,8 @@
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            <a href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
+                                                            <a style="color: #1c84c6;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
+                                                            <a style="color: #ED5565;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
                                                         </td>
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>
@@ -186,49 +189,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                    <!--
-                                                <div class="col-lg-4">
-                                                    <div class="ibox">
-                                                        <div class="ibox-title">
-                                                            <!--
-                                                            <span class="label label-primary float-right">NEW</span>
-                                                            <h5>Unidad: Nombre de Unidad</h5>
-                                                            --
-                                                        </div>
-                                                        <div class="ibox-content">
-                                                            <div class="team-members">
-                                                            </div>
-                                                            <h4>{{ $unit->name }}</h4>
-                                                            <p>
-                                                            </p>
-                                                            <div>
-                                                                <span>Fuerza:</span>
-                                                                <div class="stat-percent">{{ $unit->members->count() }} Miembros</div>
-                                                                <div class="progress progress-mini">
-                                                                    <div style="width: 0%;" class="progress-bar"></div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="row  m-t-sm">
-                                                                <div class="col-sm-12">
-                                                                    <div class="font-bold">Consejero</div>
-                                                                    {{ 'No Asignado' }}
-                                                            </div>
-                                                            <div class="col-sm-4 text-right">
-                                                                <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                    -->
                                                     @endforeach
 
                                                 </div>
                                             </div>
-
+                                            {{ csrf_field() }}
                                         </div>
                                     </div>
                                 </div>
@@ -248,9 +213,26 @@
 
 @section('scripts')
     <script>
-      $(document).ready(function(){
+        $(document).ready(function(){
+        @if(Auth::user()->profile->level >= 3)
+            $('.delete_member').click(function (event) {
+                event.preventDefault();
+                var member_id = $(this).data('id');
+                var token = $("input[name='_token']").val();
+                var url = $(this).attr('href');
+                $element = $(this);
 
-      });
+                $.post(url, {member_id: member_id, _token: token }, function (response) {
+                    if (response.error){
+                      toastr.warning(response.message, 'Cuidado');
+                    }else {
+                      toastr.success(response.message, 'Excelente');
+                      $element.parent().parent().fadeOut(1000);
+                    }
+                })
+            })
+        @endif
+        });
 
     </script>
 @endsection

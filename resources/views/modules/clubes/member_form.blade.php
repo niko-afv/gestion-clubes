@@ -8,7 +8,7 @@
             <h2>Crear un miembro</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">Dashboard</a>
+                    <a href="{{ route('home') }}">Principal</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{{ route('my_club') }}">Mi Club</a>

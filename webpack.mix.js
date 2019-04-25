@@ -28,6 +28,8 @@ mix.styles([
   'resources/vendor/dataTables/datatables.css',
   'resources/vendor/select2/select2.min.css',
   'resources/vendor/toastr/toastr.min.css',
+  'resources/vendor/dropzone/dropzone.css',
+  'resources/vendor/dropzone/basic.css',
 ], 'public/css/vendor.css', './');
 
 mix.scripts([
@@ -41,5 +43,6 @@ mix.scripts([
     'resources/vendor/select2/select2.full.min.js',
     'resources/vendor/toastr/toastr.min.js',
     'resources/vendor/pace/pace.min.js',
+    'resources/vendor/dropzone/dropzone.js',
     'resources/js/inspinia.js'
   ], 'public/js/app.js', './');

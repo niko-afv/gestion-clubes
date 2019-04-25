@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Clubs;
 
-use App\Club;
+use App\Imports\SGCMembersImport;
+use App\Imports\SGCToMembersImport;
 use App\Unit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddMemberRequest;
 use App\Http\Requests\AddUnitRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Imports\ClubsImport;
-use App\Imports\MembersImport;
 use App\Member;
 use App\Position;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MyClubController extends Controller
 {
+
     public function index(){
         $club = Auth::user()->member->institutable;
         return view('modules.clubes.detail',[
@@ -168,5 +167,59 @@ class MyClubController extends Controller
             'error'=> $error,
             'message' => $message
         ]);
+    }
+
+
+    public function deleteMember(Request $request){
+        $member = Member::find($request->member_id);
+        $response = $member->delete();
+
+        if ($response){
+            $error = false;
+            $message ='El miembro <strong>' . $member->name . '</strong> fue eliminado con éxito.';
+        }else{
+            $error = true;
+            $message ='Ocurrió un problema al intentar eliminar a <strong>' . $member->name . '</strong> del sistema.';
+        }
+
+
+        return response()->json([
+            'error'=> $error,
+            'message' => $message
+        ]);
+    }
+
+
+
+    public function showMemberImport(){
+        $members = Auth::user()->member->institutable->members()->get();
+        return view('modules.clubes.member_import', [
+            'members' => $members
+        ]);
+    }
+
+    public function uploadMembers(Request $request){
+        $file = $request->file('file');
+
+        $path = $file->storeAs('csv', Str::slug($file->getClientOriginalName()) . '.'. $file->getClientOriginalExtension());
+        $file_path = storage_path('app/'.$path);
+
+        $collection = Excel::toCollection(new SGCMembersImport(), $file_path);
+        $imported = $collection->collapse();
+        return response()->json([
+            'error' => false,
+            'data' => $imported,
+            'file_path' => $file_path
+        ]);
+    }
+
+    public function importMembers(Request $request){
+        $file_path = $request->file_path;
+        Excel::import(new SGCToMembersImport(), $file_path);
+        return response()->json([
+            'error' => false,
+            'message' => 'Todo Ok'
+        ]);
+
     }
 }
