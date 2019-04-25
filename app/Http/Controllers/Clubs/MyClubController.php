@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Clubs;
 
+use App\Http\Requests\MyClubRequest;
 use App\Imports\SGCMembersImport;
 use App\Imports\SGCToMembersImport;
 use App\Unit;
@@ -19,14 +20,14 @@ use Maatwebsite\Excel\Facades\Excel;
 class MyClubController extends Controller
 {
 
-    public function index(){
+    public function index(MyClubRequest $request){
         $club = Auth::user()->member->institutable;
         return view('modules.clubes.detail',[
             'club' => $club
         ]);
     }
 
-    public function showAddMember(){
+    public function showAddMember(MyClubRequest $request){
         $position = Position::all();
         return view('modules.clubes.member_form', [
             'positions' => $position
@@ -55,7 +56,7 @@ class MyClubController extends Controller
         return redirect(route('my_club'));
     }
 
-    public function showUpdateMember(Member $member){
+    public function showUpdateMember(MyClubRequest $request, Member $member){
         $newarray = [];
         foreach ($member->positions as $position){
             $newarray[] = $position->id;
@@ -85,7 +86,7 @@ class MyClubController extends Controller
         return redirect(route('my_club'));
     }
 
-    public function removePosition(Request $request, Member $member){
+    public function removePosition(MyClubRequest $request, Member $member){
         $member->positions()->detach([$request->position]);
         $response = $member->save();
 
@@ -104,14 +105,14 @@ class MyClubController extends Controller
         ]);
     }
 
-    public function showAddUnit(){
+    public function showAddUnit(MyClubRequest $request){
         $members = Auth::user()->member->institutable->members()->loose()->get();
         return view('modules.clubes.unit_form', [
             'members' => $members
         ]);
     }
 
-    public function showUpdateUnit(Unit $unit){
+    public function showUpdateUnit(MyClubRequest $request, Unit $unit){
         $members = Auth::user()->member->institutable->members()->loose()->get();
         return view('modules.clubes.unit_form', [
             'members' => $members,
@@ -150,7 +151,7 @@ class MyClubController extends Controller
         return redirect(route('my_club'));
     }
 
-    public function removeMember(Request $request, Unit $unit){
+    public function removeMember(MyClubRequest $request, Unit $unit){
         $oMember = Member::find($request->member)->unit()->dissociate();
         $response = $oMember->save();
 
@@ -170,7 +171,7 @@ class MyClubController extends Controller
     }
 
 
-    public function deleteMember(Request $request){
+    public function deleteMember(MyClubRequest $request){
         $member = Member::find($request->member_id);
         $response = $member->delete();
 
@@ -191,14 +192,14 @@ class MyClubController extends Controller
 
 
 
-    public function showMemberImport(){
+    public function showMemberImport(MyClubRequest $request){
         $members = Auth::user()->member->institutable->members()->get();
         return view('modules.clubes.member_import', [
             'members' => $members
         ]);
     }
 
-    public function uploadMembers(Request $request){
+    public function uploadMembers(MyClubRequest $request){
         $file = $request->file('file');
 
         $path = $file->storeAs('csv', Str::slug($file->getClientOriginalName()) . '.'. $file->getClientOriginalExtension());
@@ -213,7 +214,7 @@ class MyClubController extends Controller
         ]);
     }
 
-    public function importMembers(Request $request){
+    public function importMembers(MyClubRequest $request){
         $file_path = $request->file_path;
         Excel::import(new SGCToMembersImport(), $file_path);
         return response()->json([
