@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Member;
 use App\Position;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -35,6 +36,7 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
             'dni' => $row['rut'],
             'email' => mb_strtolower($row['email']),
             'phone' => $row['telefono'],
+            'birth_date' => Carbon::createFromFormat('d/m/Y',$row['fecha_nacimiento']),
             'institutable_id' => Auth::user()->member->institutable->id,
             'sgc_code' => $row['codigo_sgc'],
             'institutable_type' => 'App\\Club'
