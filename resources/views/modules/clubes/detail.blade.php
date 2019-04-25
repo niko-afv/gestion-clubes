@@ -93,7 +93,12 @@
                                             @if(Auth::user()->profile->level >=3)
                                             <div class="">
                                                 <p>
-                                                    <button onclick="window.location.replace('{{ route('add_member') }}');" class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</button>
+
+                                                </p>
+                                                <p style="text-align: right">
+                                                    <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
+                                                    &nbsp;
+                                                    <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary" ><i class="fa fa-table"></i>&nbsp;Importar</a>
                                                 </p>
                                             </div>
                                             @endif
@@ -143,21 +148,53 @@
                                     </div>
                                     <div id="tab-2" class="tab-pane">
                                         @if(Auth::user()->profile->level >=3)
-                                            <p>
-                                                <button onclick="window.location.replace('{{ route('add_unit') }}');" class="btn btn-primary pull-right" type="button"><i class="fa fa-plus"></i>&nbsp;Nuevo Unidad</button>
-                                            </p>
+                                            <div class="">
+                                                <p>
+
+                                                </p>
+                                                <p style="text-align: right">
+                                                    <a href="{{ route('add_unit') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Unidad</a>
+                                                </p>
+                                            </div>
                                         @endif
                                         <div class="full-height-scroll">
-                                            <div class="row">
+                                            <div class="container">
+                                                <div class="row">
 
-                                                @foreach($club->units as $unit)
+                                                    @foreach($club->units as $unit)
+
+                                                        <div class="col-lg-3">
+                                                            <div class="ibox ">
+                                                                <div class="ibox-title">
+                                                                    <p></p>
+                                                                    <p>
+                                                                        @if(Auth::user()->profile->level >= 3)
+                                                                            <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline pull-right" title="Modificar"><i class="fa fa-edit fa-2x"></i></a>
+                                                                        @endif
+                                                                    </p>
+
+                                                                    <h5>{{ $unit->name }}</h5>
+                                                                </div>
+                                                                <div class="ibox-content">
+                                                                    <h3>Fuerza:</h3>
+                                                                    <h1 class="no-margins">{{ $unit->members->count() }}</h1>
+                                                                    <!--
+                                                                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
+                                                                    -->
+
+                                                                    <small>Miembros</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    <!--
                                                 <div class="col-lg-4">
                                                     <div class="ibox">
                                                         <div class="ibox-title">
                                                             <!--
                                                             <span class="label label-primary float-right">NEW</span>
                                                             <h5>Unidad: Nombre de Unidad</h5>
-                                                            -->
+                                                            --
                                                         </div>
                                                         <div class="ibox-content">
                                                             <div class="team-members">
@@ -177,18 +214,21 @@
                                                                 <div class="col-sm-12">
                                                                     <div class="font-bold">Consejero</div>
                                                                     {{ 'No Asignado' }}
-                                                                </div>
-                                                                <div class="col-sm-4 text-right">
-                                                                    <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
+                                                            </div>
+                                                            <div class="col-sm-4 text-right">
+                                                                <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline btn-link" title="Editar Unidad"><i class="fa fa-edit"></i></a>
                                                                 </div>
 
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @endforeach
+                                                    -->
+                                                    @endforeach
 
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
