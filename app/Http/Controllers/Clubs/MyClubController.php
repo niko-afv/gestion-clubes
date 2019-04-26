@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Matrix\Exception;
 
 class MyClubController extends Controller
 {
@@ -216,7 +217,15 @@ class MyClubController extends Controller
 
     public function importMembers(MyClubRequest $request){
         $file_path = $request->file_path;
-        Excel::import(new SGCToMembersImport(), $file_path);
+        try{
+            Excel::import(new SGCToMembersImport(), $file_path);
+        }catch (Exception $exception){
+            return response()->json([
+                'error' => true,
+                'message' => 'Lo sentimos ha ocurrido un error inesperado al procesar el archivo, solicite ayuda.'
+            ]);
+        }
+
         return response()->json([
             'error' => false,
             'message' => 'Los datos se han importado correctamente!'
