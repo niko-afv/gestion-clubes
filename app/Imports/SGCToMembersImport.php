@@ -54,7 +54,9 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
 
             $oMember->save();
             if(!is_null($row['cargo']) && $row['cargo'] !== 'DESBRAVADOR'){
-                $oMember->positions()->attach($this->postions_map[$row['cargo']]);
+                if (in_array($row['cargo'], $this->postions_map)){
+                    $oMember->positions()->attach($this->postions_map[$row['cargo']]);
+                }
             }
 
             return $oMember;
