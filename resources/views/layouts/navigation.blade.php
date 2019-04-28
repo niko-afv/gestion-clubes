@@ -28,6 +28,12 @@
             </li>
             @endif
 
+            @if(Auth::user()->profile->level < 3)
+                <li class="{{ isActiveRoute('/unidades') }}">
+                    <a href="{{ route('unidades_list') }}"><i class="fa fa-object-group fa-2x"></i> <span class="nav-label">Unidades</span></a>
+                </li>
+            @endif
+
             @if(Auth::user()->profile->level >= 3)
                 <li class="{{ isActiveRoute('/mi_club') }}">
                     <a href="{{ route('my_club') }}"><i class="fa fa-home fa-2x"></i> <span class="nav-label">Mi Club</span></a>

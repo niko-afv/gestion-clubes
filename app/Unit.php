@@ -8,8 +8,8 @@ class Unit extends Model
 {
     protected $fillable = ['name', 'description', 'club_id'];
 
-    public function groupable(){
-        return $this->morphTo();
+    public function club(){
+        return $this->belongsTo(Club::class);
     }
 
     public function members(){

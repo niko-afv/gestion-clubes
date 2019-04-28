@@ -28,6 +28,11 @@ Route::middleware('auth')->group(function (){
     });
 
 
+    Route::prefix('unidades')->namespace('Clubs')->group(function (){
+        Route::get('/list', 'ClubsListController@unidades')->name('unidades_list');
+    });
+
+
     Route::prefix('eventos')->namespace('Events')->group(function (){
 
         Route::get('/list', 'EventsController@index')->name('events_list');

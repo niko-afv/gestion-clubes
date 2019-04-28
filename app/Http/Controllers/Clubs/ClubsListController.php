@@ -6,6 +6,7 @@ use App\Club;
 use App\Http\Controllers\Controller;
 use App\Imports\ClubsImport;
 use App\Imports\MembersImport;
+use App\Unit;
 use Illuminate\Support\Facades\App;
 use Maatwebsite\Excel\Excel;
 
@@ -30,5 +31,13 @@ class ClubsListController extends Controller
         //$excel->import(new MembersImport(), storage_path('app/import/members_import.csv'));
 
         return redirect(route('clubes_list'))->with('success', 'All good!');
+    }
+
+
+    public function unidades(){
+        $unidades = Unit::all();
+        return view('modules.unidades.list', [
+            'unidades' => $unidades
+        ]);
     }
 }
