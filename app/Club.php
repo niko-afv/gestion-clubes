@@ -29,7 +29,7 @@ class Club extends Model
     }
 
     public function members(){
-        return $this->morphMany(Member::class, 'institutable');
+        return $this->morphMany(Member::class, 'institutable')->orderBy('name');
     }
 
     public function zone(){
