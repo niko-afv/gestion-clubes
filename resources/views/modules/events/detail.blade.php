@@ -114,7 +114,7 @@
 
                 @if(Auth::user()->profile->level <= 1)
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="ibox ">
                                 <div class="ibox-title">
                                     <!--
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="ibox ">
                                 <div class="ibox-title">
                                     <!--
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="ibox ">
                                 <div class="ibox-title">
                                     <!--
@@ -162,23 +162,6 @@
                                     <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
                                     -->
                                     <small>Personas inscritas</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="ibox ">
-                                <div class="ibox-title">
-                                    <!--
-                                    <span class="label label-success float-right"></span>
-                                    -->
-                                    <h5>Staff</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <h1 class="no-margins">{{ $event->units->count() }}</h1>
-                                    <!--
-                                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
-                                    -->
-                                    <small>Staff inscritos</small>
                                 </div>
                             </div>
                         </div>
