@@ -9,8 +9,11 @@ use App\Events\DeactivatedEventEvent;
 use App\Field;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveEventRequest;
+use App\Member;
+use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
@@ -76,6 +79,53 @@ class EventsController extends Controller
         return response()->json([
             'isActived' => $oEvent->active,
             'message' => 'El Evento '. $oEvent->name . ' ha sido '. $activeText . ' exitosamente'
+        ]);
+    }
+
+    public function showInscribe($event_id){
+        $event = Event::find($event_id);
+        $club = Auth::user()->member->institutable;
+        return view('modules.events.inscribe',[
+            'event' => $event,
+            'club' => $club
+        ]);
+    }
+
+    public function inscribe(Request $request, Event $event){
+        if($request->type == 'unit'){
+            $unit = Unit::find($request->id);
+            $event->units()->save($unit);
+            $message = 'La unidad <strong>'. $unit->name . '</strong> fue insrita al evento <strong>'. $event->name . '</strong> exitosamente';
+        }elseif ($request->type == 'member'){
+            $member = Member::find($request->id);
+            $event->members()->save($member);
+            $message = '<strong>'. $member->name . '</strong> se ha inscrito al evento <strong>'. $event->name . '</strong> exitosamente';
+        }
+
+        return response()->json([
+            'error' => false,
+            'participate' => 1,
+            'message' => $message
+        ]);
+    }
+
+    public function unsubscribe(Request $request, Event $event){
+
+        if($request->type = 'unit'){
+            $unit = Unit::find($request->id);
+            $event->units()->detach($unit->id);
+            $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
+        }elseif ($request->type = 'member'){
+            $member = Member::find($request->id);
+            $event->members()->detach($member->id);
+            $message = '<strong>'. $member->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
+        }
+
+
+        return response()->json([
+            'error' => false,
+            'participate' => 0,
+            'message' => $message
         ]);
     }
 }

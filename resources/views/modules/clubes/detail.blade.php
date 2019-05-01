@@ -134,7 +134,7 @@
                                                         <!--
                                                         <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
                                                         -->
-                                                        <td><a href="#" class="client-link">{{ $member->name }}</a></td>
+                                                        <td><a href="#" class="client-link">{{ $member->getName() }}</a></td>
                                                         <td><a href="#" class="client-link">{{ $member->dni }}</a></td>
                                                         <td><a href="#" class="client-link">{{ ($member->age() == 0)?'No Especificado':$member->age() }}</a></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
@@ -147,8 +147,8 @@
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            <a style="color: #1c84c6;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
-                                                            <a style="color: #ED5565;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
+                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
+                                                            <a style="color: #ED5565; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
                                                         </td>
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>

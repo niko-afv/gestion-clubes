@@ -16,6 +16,10 @@ class Unit extends Model
         return $this->hasMany(Member::class);
     }
 
+    public function events(){
+        return $this->morphToMany(Event::class, 'eventable');
+    }
+
     public function generateCode(){
         if(! is_null($this->code)){
             return $this;
@@ -30,5 +34,9 @@ class Unit extends Model
 
         $this->code = $code;
         return $this;
+    }
+
+    public function participate(){
+        return ($this->events()->where('event_id',9)->count())?true:false;
     }
 }
