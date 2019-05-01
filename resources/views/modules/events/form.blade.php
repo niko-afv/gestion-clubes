@@ -87,15 +87,14 @@
                             <div class="hr-line-dashed"></div>
 
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Zona</label>
+                            <div class="form-group row" id="zones_select">
+                                <label class="col-sm-2 col-form-label">Zona (s)</label>
                                 <div class="col-sm-9">
-                                    <select class="select2_demo_3 form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="zone">
-                                        <option>Selecciona una alternativa</option>
-                                        @foreach($zones as $zone)
-                                        <option value="{{ $zone->id }}" {{ (old('zone') == $zone->id)?'selected':'' }}>{{ $zone->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    @if(Auth::user()->profile->level == 1)
+                                        @include('partials.zones_select', ['zones'=> $zones])
+                                    @elseif(Auth::user()->profile->level == 0)
+                                        @include('partials.fields_select', ['fields'=> $fields])
+                                    @endif
                                     @if ($errors->has('zone'))
                                         <div class="alert alert-danger">
                                             {{ $errors->first('zone') }}
@@ -104,6 +103,8 @@
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
+
+
                             <div class="form-group row">
                                 <div class="col-sm-6 col-sm-offset-2">
                                     {{ csrf_field() }}
@@ -128,11 +129,10 @@
           forceParse: false,
           autoclose: true,
           startDate: '+1d'
-
         });
 
         $('.select2_demo_3').select2({
-          placeholder : "Selecciona un campo",
+          placeholder : "Selecciona una alternativa",
           alowClear: true
         })
       });

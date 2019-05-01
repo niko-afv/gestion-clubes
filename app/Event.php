@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['name', 'description', 'start', 'end', 'eventable_id', 'eventable_type'];
+    protected $fillable = ['name', 'description', 'start', 'end'];
 
-    public function eventable(){
-        return $this->morphTo();
+    public function zones(){
+        return $this->morphedByMany(Zone::class,'eventable');
+    }
+
+    public function fields(){
+        return $this->morphedByMany(Field::class,'eventable');
     }
 
     public function enable(){
@@ -33,6 +37,7 @@ class Event extends Model
 
 
     public function scopeByZone($query, $zone_ids){
+        return $query;
         return $query->orWhere(function ($query) use($zone_ids){
             $query
                 ->wherein('eventable_id', $zone_ids)
@@ -41,6 +46,7 @@ class Event extends Model
     }
 
     public function scopeByField($query, $field_id){
+        return $query;
         return $query->orWhere([
             ['eventable_id','=', $field_id],
             ['eventable_type', '=','\\App\\Field']

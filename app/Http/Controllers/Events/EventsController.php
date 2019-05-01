@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\Events;
 
 use App\Event;
+use App\Field;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveEventRequest;
-use App\User;
 use App\Zone;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Excel;
 
 class EventsController extends Controller
 {
     public function index(){
-        $events = Auth::user()->member->institutable->avaliableEvents();
+        if(Auth::user()->profile->level == 0){
+            $events = Auth::user()->member->institutable->AllAvaliableEvents();
+        }else{
+            $events = Auth::user()->member->institutable->avaliablesByZonesEvents();
+        }
+
         return view('modules.events.list', [
             'events' => $events
         ]);
@@ -30,21 +32,32 @@ class EventsController extends Controller
 
     public function create(){
         $zones = Zone::all();
+        $fields = Field::all();
         return view('modules.events.form', [
-            'zones' => $zones
+            'zones' => $zones,
+            'fields' => $fields
         ]);
     }
 
     public function save(SaveEventRequest $request){
 
-        Event::create([
+        $oEvent = Event::create([
             'name' => $request->name,
             'description' => $request->description,
             'start' => Carbon::create($request->start)->format('Y/m/d'),
-            'end' => Carbon::create($request->end)->format('Y/m/d'),
-            'eventable_id' => $request->zone,
-            'eventable_type' => '\App\Zone'
+            'end' => Carbon::create($request->end)->format('Y/m/d')
         ]);
+
+        if ($request->has('zones') && Auth::user()->profile->level == 1){
+            foreach ($request->zones as $zone_id){
+                    $oEvent->zones()->save(Zone::find($zone_id));
+                }
+        }elseif($request->has('fields') && Auth::user()->profile->level == 0){
+            foreach ($request->fields as $field_id){
+                $oEvent->fields()->save(Field::find($field_id));
+            }
+        }
+
         return redirect()->route('events_list');
     }
 

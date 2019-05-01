@@ -39,17 +39,23 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
+                        <dl class="row">
+                            <div class="col-lg-12">
+                                <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
+                                <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
+                            </div>
                         </dl>
                         <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Director:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</dd> </div>
+                            <div class="col-lg-12">
+                                <div class="col-sm-4 text-sm-right"><dt>Director:</dt> </div>
+                                <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</dd> </div>
+                            </div>
                         </dl>
                         <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Unidades:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ $club->units->count() }}</dd></div>
+                            <div class="col-lg-6">
+                                <div class="col-sm-4 text-sm-right"><dt>Unidades:</dt> </div>
+                                <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ $club->units->count() }}</dd></div>
+                            </div>
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Zona:</dt> </div>
@@ -108,11 +114,11 @@
                                             </div>
                                             @endif
                                             <div class="table-responsive">
-                                                <table class="table table-striped table-hover">
-                                                    <tbody>
+                                                <table class="table table-striped table-hover dataTables-example">
+                                                    <thead>
                                                     <tr>
-                                                        <td>Rut</td>
                                                         <td>Nombre</td>
+                                                        <td>Rut</td>
                                                         <td>Edad</td>
                                                         <td></td>
                                                         <td>Telefono</td>
@@ -121,13 +127,15 @@
                                                         <td>Cargos</td>
                                                         <td>Acciones</td>
                                                     </tr>
+                                                    </thead>
+                                                    <tbody>
                                                     @foreach($club->members as $member)
                                                     <tr>
                                                         <!--
                                                         <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
                                                         -->
-                                                        <td><a href="#" class="client-link">{{ $member->dni }}</a></td>
                                                         <td><a href="#" class="client-link">{{ $member->name }}</a></td>
+                                                        <td><a href="#" class="client-link">{{ $member->dni }}</a></td>
                                                         <td><a href="#" class="client-link">{{ ($member->age() == 0)?'No Especificado':$member->age() }}</a></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
                                                         <td>{{ $member->phone }}</td>
@@ -217,6 +225,13 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+
+        $('.dataTables-example').DataTable({
+        pageLength: 10,
+        responsive: true,
+        dom: '<"html5buttons"B>lTfgitp'
+        });
+
         @if(Auth::user()->profile->level >= 3)
             $('.delete_member').click(function (event) {
                 event.preventDefault();

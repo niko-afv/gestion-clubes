@@ -30,7 +30,7 @@
 
             @if(Auth::user()->profile->level < 3)
                 <li class="{{ isActiveRoute('/unidades') }}">
-                    <a href="{{ route('unidades_list') }}"><i class="fa fa-object-group fa-2x"></i> <span class="nav-label">Unidades</span></a>
+                    <a href="{{ route('unidades_list') }}"><i class="fa fa-users fa-2x"></i> <span class="nav-label">Unidades</span></a>
                 </li>
             @endif
 
@@ -40,9 +40,11 @@
                 </li>
             @endif
 
+            <!--
             <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-bandcamp fa-2x"></i> <span class="nav-label">Eventos</span> </a>
             </li>
+            -->
         </ul>
 
     </div>

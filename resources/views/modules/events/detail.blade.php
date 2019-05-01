@@ -52,8 +52,13 @@
                             <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ 0 }}</dd></div>
                         </dl>
                         <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Zona:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="#" class="text-navy">{{ $event->eventable->name }}</a> </dd></div>
+
+                            <div class="col-sm-4 text-sm-right"><dt>Zona(s):</dt> </div>
+                            <div class="col-sm-8 text-sm-left">
+                                @foreach($event->zones as $zone)
+                                    <span class="tag label label-primary">{{ strtoupper($zone->name) }}</span>
+                                @endforeach
+                            </div>
                         </dl>
 
                     </div>

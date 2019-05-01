@@ -27,8 +27,7 @@ class SaveEventRequest extends FormRequest
             'name' => 'required|min:5',
             'description' => 'required|min:10',
             'start' => 'required|date|after:today',
-            'end' => 'required|date|after:today',
-            'zone' => 'required|exists:zones,id'
+            'end' => 'required|date|after:today'
         ];
     }
 }

@@ -9,4 +9,8 @@ class Zone extends Model
     public function field(){
         return $this->belongsTo(Field::class);
     }
+
+    public function events(){
+        return $this->morphToMany(Event::class, 'eventable');
+    }
 }

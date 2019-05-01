@@ -44,7 +44,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>description</th>
-                                    <th>Campo / Zona</th>
+                                    <th>Zona</th>
                                     <th>Status</th>
                                     <th>Ver Evento</th>
                                 </tr>
@@ -54,7 +54,11 @@
                                 <tr class="">
                                     <td>{{ $event->name }}</td>
                                     <td>{{ $event->description }}</td>
-                                    <td>{{ $event->eventable->name }}</td>
+                                    <td>
+                                        @foreach($event->zones as $zone)
+                                            <span class="tag label label-primary">{{ strtoupper($zone->name) }}</span>
+                                        @endforeach
+                                    </td>
                                     <td>
                                         @if(Auth::user()->profile->level < 3)
                                         <div class="switch">
