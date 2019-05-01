@@ -98,10 +98,12 @@
                     <div class="col-lg-5 col-lg-push-2">
                         <dl class="row mb-0">
                             &nbsp;
-                            @if($event->active)
-                            <a href="{{ route('show_inscribe', ['event_id' => $event->id]) }}" class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</a>
-                            @else
-                            <button type="button" disabled class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</button>
+                            @if(Auth::user()->profile->level >1)
+                                @if($event->active)
+                                <a href="{{ route('show_inscribe', ['event_id' => $event->id]) }}" class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</a>
+                                @else
+                                <button type="button" disabled class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</button>
+                                @endif
                             @endif
                         </dl>
                     </div>
