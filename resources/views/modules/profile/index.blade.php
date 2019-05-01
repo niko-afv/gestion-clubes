@@ -111,7 +111,7 @@
 
                         <div>
                             <div class="feed-activity-list">
-                                @foreach($user->logs as $log)
+                                @foreach($user->logs()->limit(10)->get() as $log)
                                 <div class="feed-element">
                                     <!--
                                     <a href="#" class="float-left">
@@ -132,9 +132,9 @@
                                 </div>
                                 @endforeach
                             </div>
-
+                            <!--
                             <button class="btn btn-primary btn-block m"><i class="fa fa-arrow-down"></i> Show More</button>
-
+                            -->
                         </div>
 
                     </div>

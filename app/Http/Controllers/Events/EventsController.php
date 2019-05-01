@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Events;
 
 use App\Event;
+use App\Events\ActivatedEventEvent;
+use App\Events\CreatedEventEvent;
+use App\Events\DeactivatedEventEvent;
 use App\Field;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveEventRequest;
@@ -58,6 +61,8 @@ class EventsController extends Controller
             }
         }
 
+        event(new CreatedEventEvent($oEvent));
+
         return redirect()->route('events_list');
     }
 
@@ -66,6 +71,7 @@ class EventsController extends Controller
             $event->toggle();
         });
         $activeText = ($oEvent->active == 1)?'activado':'desactivado';
+        ($oEvent->active == 1)?event(new ActivatedEventEvent($oEvent)):event(new DeactivatedEventEvent($oEvent));
 
         return response()->json([
             'isActived' => $oEvent->active,

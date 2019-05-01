@@ -16,6 +16,10 @@ class Event extends Model
         return $this->morphedByMany(Field::class,'eventable');
     }
 
+    public function logs(){
+        return $this->morphMany(Log::class, 'loggable');
+    }
+
     public function enable(){
         $this->active = 1;
         $this->save();

@@ -55,4 +55,9 @@ class Club extends Model
     public function avaliableEvents(){
         return Event::byZone([$this->zone_id])->byField($this->field_id)->get();
     }
+
+    public function avaliablesByZonesEvents(){
+        $events = $this->zone->events;
+        return $events->unique('id');
+    }
 }

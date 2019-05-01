@@ -19,6 +19,66 @@ class LogTypesTableSeeder extends Seeder
                 'name' => 'Login',
                 'description' => 'Ha iniciado Sesión'
             ],
+            [
+                'id' => 2,
+                'name' => 'Add Member',
+                'description' => 'Ha añadido un nuevo miembro'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Update Member',
+                'description' => 'Ha modificado un miembro'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Delete Member',
+                'description' => 'Ha eliminado un niembro'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Import Member',
+                'description' => 'Ha importado nuevos miembros'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Create Unit',
+                'description' => 'Ha creado una nueva unidad'
+            ],
+            [
+                'id' =>7,
+                'name' => 'Update Unit',
+                'description' => 'Ha modificado una unidad'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Delete unit',
+                'description' => 'Ha eliminado una unidad'
+            ],
+            [
+                'id' => 9,
+                'name' => 'Create Event',
+                'description' => 'Ha creado un nuevo evento'
+            ],
+            [
+                'id' => 10,
+                'name' => 'Update Event',
+                'description' => 'Ha actualizado un evento'
+            ],
+            [
+                'id' => 11,
+                'name' => 'Delete Event',
+                'description' => 'Ha eliminado un evento'
+            ],
+            [
+                'id' => 12,
+                'name' => 'Activate Event',
+                'description' => 'Ha activado un evento'
+            ],
+            [
+                'id' => 13,
+                'name' => 'Deactivate Event',
+                'description' => 'Ha desactivado un evento'
+            ],
         ];
 
         foreach ($log_types as $log_type){

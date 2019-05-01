@@ -40,11 +40,9 @@
                 </li>
             @endif
 
-            <!--
             <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-bandcamp fa-2x"></i> <span class="nav-label">Eventos</span> </a>
             </li>
-            -->
         </ul>
 
     </div>
