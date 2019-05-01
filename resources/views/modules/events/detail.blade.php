@@ -43,16 +43,6 @@
                             <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
                             <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($event->active)?'label-primary':'label-danger'}}">{{ ($event->active)?'Activo':'Inactivo' }}</span></dd></div>
                         </dl>
-                        <!--
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Description:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ $event->description }}</dd> </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right"><dt>Unidades:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ 0 }}</dd></div>
-                        </dl>
-                        -->
                         <dl class="row mb-0">
 
                             <div class="col-sm-4 text-sm-right"><dt>Zona(s):</dt> </div>

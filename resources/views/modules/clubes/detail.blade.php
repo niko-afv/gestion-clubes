@@ -39,23 +39,17 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <dl class="row">
-                            <div class="col-lg-12">
-                                <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
-                                <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
-                            </div>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
+                            <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
                         </dl>
                         <dl class="row mb-0">
-                            <div class="col-lg-12">
                                 <div class="col-sm-4 text-sm-right"><dt>Director:</dt> </div>
                                 <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</dd> </div>
-                            </div>
                         </dl>
                         <dl class="row mb-0">
-                            <div class="col-lg-6">
                                 <div class="col-sm-4 text-sm-right"><dt>Unidades:</dt> </div>
                                 <div class="col-sm-8 text-sm-left"> <dd class="mb-1">  {{ $club->units->count() }}</dd></div>
-                            </div>
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Zona:</dt> </div>
@@ -63,27 +57,6 @@
                         </dl>
 
                     </div>
-                    <!--
-                    <div class="col-lg-6" id="cluster_info">
-
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>Last Updated:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1">16.08.2014 12:15:57</dd>
-                            </div>
-                        </dl>
-                        <dl class="row mb-0">
-                            <div class="col-sm-4 text-sm-right">
-                                <dt>Created:</dt>
-                            </div>
-                            <div class="col-sm-8 text-sm-left">
-                                <dd class="mb-1"> 10.07.2014 23:36:57</dd>
-                            </div>
-                        </dl>
-                    </div>
-                    -->
                 </div>
 
                 <div class="row m-t-sm">
