@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers\Clubs;
 
+use App\Events\AddedMemberEvent;
+use App\Events\CreatedUnitEvent;
+use App\Events\DeletedMemberEvent;
+use App\Events\UpdatedMemberEvent;
+use App\Events\UpdatedUnitEvent;
 use App\Http\Requests\MyClubRequest;
 use App\Imports\SGCMembersImport;
 use App\Imports\SGCToMembersImport;
@@ -48,6 +53,8 @@ class MyClubController extends Controller
             'active' => 1
         ]);
 
+        event(new AddedMemberEvent($oMember));
+
         if ($request->has('positions')){
             foreach ($request->positions as $position_id){
                 $oMember->positions()->save(Position::find($position_id));
@@ -77,6 +84,8 @@ class MyClubController extends Controller
         $member->phone = $request->phone;
         $member->dni = $request->dni;
         $member->save();
+
+        event(new UpdatedMemberEvent($member));
 
         if ($request->has('positions')){
             foreach ($request->positions as $position_id){
@@ -129,6 +138,10 @@ class MyClubController extends Controller
             'club_id' => $request->club_id
         ]);
 
+        event(new CreatedUnitEvent($oUnit));
+
+        $oUnit->generateCode()->save();
+
         if ($request->has('members')){
             foreach ($request->members as $member_id){
                 $oUnit->members()->save(Member::find($member_id));
@@ -142,6 +155,8 @@ class MyClubController extends Controller
         $oUnit->name = $request->name;
         $oUnit->description = $request->description;
         $oUnit->save();
+
+        event(new UpdatedUnitEvent($oUnit));
 
         if ($request->has('members')) {
             foreach ($request->members as $member_id) {
@@ -175,6 +190,8 @@ class MyClubController extends Controller
     public function deleteMember(MyClubRequest $request){
         $member = Member::find($request->member_id);
         $response = $member->delete();
+
+        event(new DeletedMemberEvent($member));
 
         if ($response){
             $error = false;

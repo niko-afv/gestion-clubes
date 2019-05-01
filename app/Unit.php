@@ -15,4 +15,20 @@ class Unit extends Model
     public function members(){
         return $this->hasMany(Member::class);
     }
+
+    public function generateCode(){
+        if(! is_null($this->code)){
+            return $this;
+        }
+        do{
+            $code  = '';
+            $code .= strtoupper(substr($this->club->name, '0','2'));
+            $code .= rand(10,99);
+            $code .= strtoupper(substr($this->club->zone->name,0,2));
+            var_dump($code);
+        }while (\App\Unit::where('code',$code)->count() > 0);
+
+        $this->code = $code;
+        return $this;
+    }
 }
