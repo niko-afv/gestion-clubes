@@ -43,7 +43,8 @@
                                 <thead>
                                 <tr>
                                     <th>Nombre</th>
-                                    <th>description</th>
+                                    <th>Comienza</th>
+                                    <th>Termina</th>
                                     <th>Zona</th>
                                     <th>Status</th>
                                     <th>Ver Evento</th>
@@ -53,7 +54,8 @@
                                 @foreach($events as $event)
                                 <tr class="">
                                     <td>{{ $event->name }}</td>
-                                    <td>{{ $event->description }}</td>
+                                    <td>{{ \Carbon\Carbon::create($event->start)->format('d-M-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::create($event->end)->format('d-M-Y') }}</td>
                                     <td>
                                         @foreach($event->zones as $zone)
                                             <span class="tag label label-primary">{{ strtoupper($zone->name) }}</span>
