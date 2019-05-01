@@ -111,11 +111,11 @@ class EventsController extends Controller
 
     public function unsubscribe(Request $request, Event $event){
 
-        if($request->type = 'unit'){
+        if($request->type == 'unit'){
             $unit = Unit::find($request->id);
             $event->units()->detach($unit->id);
             $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
-        }elseif ($request->type = 'member'){
+        }elseif ($request->type == 'member'){
             $member = Member::find($request->id);
             $event->members()->detach($member->id);
             $message = '<strong>'. $member->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';

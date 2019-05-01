@@ -33,8 +33,8 @@ class Member extends Model
         return $this->morphToMany(Event::class, 'eventable');
     }
 
-    public function participate(){
-        return ($this->events()->where('event_id',9)->count())?true:false;
+    public function participate($event_id){
+        return ($this->events()->where('event_id',$event_id)->count())?true:false;
     }
 
 

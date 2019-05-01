@@ -55,7 +55,7 @@
                             <td>
                                 <div class="switch">
                                     <div class="onoffswitch">
-                                        <input type="checkbox" {{ ($unit->participate())?'checked':'' }} class="onoffswitch-checkbox" id="unit-{{ $unit->id }}">
+                                        <input type="checkbox" {{ ($unit->participate($event->id))?'checked':'' }} class="onoffswitch-checkbox" id="unit-{{ $unit->id }}">
                                         <label class="onoffswitch-label" data-type="unit" data-id="{{ $unit->id }}" for="unit-{{ $unit->id }}">
                                             <span class="onoffswitch-inner"></span>
                                             <span class="onoffswitch-switch"></span>
@@ -99,7 +99,7 @@
                                 <td>
                                     <div class="switch">
                                         <div class="onoffswitch">
-                                            <input type="checkbox" {{ ($member->participate())?'checked':'' }} class="onoffswitch-checkbox" id="member-{{ $member->id }}">
+                                            <input type="checkbox" {{ ($member->participate($event->id))?'checked':'' }} class="onoffswitch-checkbox" id="member-{{ $member->id }}">
                                             <label class="onoffswitch-label" data-type="member" data-id="{{ $member->id }}" for="member-{{ $member->id }}">
                                                 <span class="onoffswitch-inner"></span>
                                                 <span class="onoffswitch-switch"></span>
@@ -116,7 +116,7 @@
                                 <td>
                                     <div class="switch">
                                         <div class="onoffswitch">
-                                            <input type="checkbox" {{ ($member->participate())?'checked':'' }} class="onoffswitch-checkbox" id="member-{{ $member->id }}">
+                                            <input type="checkbox" {{ ($member->participate($event->id))?'checked':'' }} class="onoffswitch-checkbox" id="member-{{ $member->id }}">
                                             <label class="onoffswitch-label" data-type="member" data-id="{{ $member->id }}" for="member-{{ $member->id }}">
                                                 <span class="onoffswitch-inner"></span>
                                                 <span class="onoffswitch-switch"></span>
