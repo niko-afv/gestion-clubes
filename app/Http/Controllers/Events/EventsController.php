@@ -46,7 +46,6 @@ class EventsController extends Controller
     }
 
     public function save(SaveEventRequest $request){
-
         $oEvent = Event::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -56,8 +55,8 @@ class EventsController extends Controller
 
         if ($request->has('zones') && Auth::user()->profile->level == 1){
             foreach ($request->zones as $zone_id){
-                    $oEvent->zones()->save(Zone::find($zone_id));
-                }
+                $oEvent->zones()->save(Zone::find($zone_id));
+            }
         }elseif($request->has('fields') && Auth::user()->profile->level == 0){
             foreach ($request->fields as $field_id){
                 $oEvent->fields()->save(Field::find($field_id));
@@ -105,7 +104,10 @@ class EventsController extends Controller
             $message = '<strong>'. $member->name . '</strong> se ha inscrito al evento <strong>'. $event->name . '</strong> exitosamente';
         }
 
-        $event->clubs()->save(Auth::user()->member->institutable);
+        //dd($event->clubs()->where('clubs.id',Auth::user()->member->institutable->id)->count());
+        if($event->clubs()->where('clubs.id',Auth::user()->member->institutable->id)->count() == 0){
+            $event->clubs()->save(Auth::user()->member->institutable);
+        }
 
         return response()->json([
             'error' => false,
@@ -127,7 +129,6 @@ class EventsController extends Controller
             $event->members()->detach($member->id);
             $message = '<strong>'. $member->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
         }
-
 
         return response()->json([
             'error' => false,
