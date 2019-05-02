@@ -245,7 +245,6 @@
                                             <tr>
                                                 <th>Item</th>
                                                 <th>Puntos</th>
-                                                <th>Remover</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -336,7 +335,7 @@
           $button.removeClass('btn-primary').addClass('btn-danger');
           $icon.removeClass('fa-plus').addClass('fa-minus');
           $cloned.appendTo($forCopy.parent())
-          $(".touchspin2").TouchSpin(touchspin_config);
+          //$(".touchspin2").TouchSpin(touchspin_config);
         });
 
         $(document).on('click','.btn-minus',function () {
@@ -446,7 +445,7 @@
           $cloned.appendTo($('.item_copy').parent());
         }
 
-        $(".touchspin2").TouchSpin(touchspin_config);
+        //$(".touchspin2").TouchSpin(touchspin_config);
       });
 
     </script>
