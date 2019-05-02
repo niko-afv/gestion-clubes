@@ -326,7 +326,6 @@
           alowClear: true
         })
 
-
         $('.btn-plus').click(function () {
           var $forCopy = $(this).parents('.for_copy');
           var $cloned = $forCopy.clone();
@@ -361,9 +360,8 @@
             if(response.error == false){
               buildActivityTable(response.data);
             }
+            clearActivity();
           })
-
-          //clearActivity();
         });
 
 
