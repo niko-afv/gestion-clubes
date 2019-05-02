@@ -49,7 +49,7 @@ class Club extends Model
 
     public function supportTeam(){
         return $this->members()->whereHas('positions',function($query){
-            $query->where('positions.id',9);
+            $query->whereIn('positions.id',[9,10]);
         });
     }
 
