@@ -312,6 +312,19 @@
           alowClear: true
         })
 
+        var touchspin_config = {
+          min: 5,
+          max: 1000,
+          step: 5,
+          boostat: 5,
+          maxboostedstep: 10,
+          postfix: 'pts.',
+          buttondown_class: 'btn btn-white',
+          buttonup_class: 'btn btn-white'
+        };
+
+        $(".touchspin2").TouchSpin(touchspin_config);
+
       });
 
     </script>
