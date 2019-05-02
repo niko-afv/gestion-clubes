@@ -42,11 +42,17 @@ Route::middleware('auth')->group(function (){
         Route::post('/save', 'EventsController@save')->name('events_save');
         Route::post('/{event}/toggle', 'EventsController@toggle')->name('event_toggle');
 
-
+        Route::get('/update/{event}', 'EventsController@showUpdate')->name('event_edit');
+        Route::post('/update/{event}', 'EventsController@update')->name('event_update');
 
         Route::get('/{event_id}/inscribir/', 'EventsController@showInscribe')->name('show_inscribe');
         Route::post('/{event}/inscribir/', 'EventsController@inscribe')->name('inscribe');
         Route::post('/{event}/desincribir/', 'EventsController@unsubscribe')->name('unsubscribe');
+
+        Route::post('/{event}/remove_zone', 'EventsController@removeZone')->name('remove_zone');
+        Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_zone');
+
+        Route::post('/{event}/add_activity', 'EventsController@addActivity')->name('add_activity');
     });
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){

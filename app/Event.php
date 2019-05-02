@@ -32,6 +32,10 @@ class Event extends Model
         return $this->morphMany(Log::class, 'loggable');
     }
 
+    public function activities(){
+        return $this->hasMany(Activity::class);
+    }
+
     public function enable(){
         $this->active = 1;
         $this->save();

@@ -47,7 +47,7 @@
                                     <th>Termina</th>
                                     <th>Zona</th>
                                     <th>Status</th>
-                                    <th>Ver Evento</th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -79,6 +79,9 @@
                                     </td>
                                     <td class="center">
                                         <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>
+                                        @if(Auth::user()->profile->level < 3)
+                                        <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Modificar</button>
+                                        @endifq
                                     </td>
                                 </tr>
                                 @endforeach

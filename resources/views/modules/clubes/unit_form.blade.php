@@ -111,7 +111,7 @@
                                         <tr class="">
                                             <td>{{ $member->name }}</td>
                                             <td class="center">
-                                                <a class="remove_member" data-id="{{ $member->id }}" title="Ver Evento" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                                <a class="remove_member" data-id="{{ $member->id }}" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
                                             </td>
                                         </tr>
                                     @endforeach

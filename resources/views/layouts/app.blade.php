@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{!! asset('css/vendor.css') !!}" />
     <link rel="stylesheet" href="{!! asset('css/app.css') !!}" />
 
+    @section('style')
+    @show
+
 </head>
 <body>
 

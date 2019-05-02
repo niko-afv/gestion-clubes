@@ -17,7 +17,6 @@ use App\Http\Requests\AddUnitRequest;
 use App\Member;
 use App\Position;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
