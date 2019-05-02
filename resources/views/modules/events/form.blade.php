@@ -323,8 +323,130 @@
           buttonup_class: 'btn btn-white'
         };
 
-        $(".touchspin2").TouchSpin(touchspin_config);
+        $('.btn-plus').click(function () {
+          var $forCopy = $(this).parents('.for_copy');
+          var $cloned = $forCopy.clone();
+          var $pts_input = $cloned.find('.pts_input > .bootstrap-touchspin');
+          $cloned.find('input').val("");
+          $pts_input.replaceWith('<input class="touchspin2 form-control" type="text" value="5" name="pts" style="display: block;">');
+          var $buttons = $cloned.find('.btn-group')
+          var $button = $buttons.find('button');
+          var $icon = $button.find('i');
+          $button.removeClass('btn-plus').addClass('btn-minus');
+          $button.removeClass('btn-primary').addClass('btn-danger');
+          $icon.removeClass('fa-plus').addClass('fa-minus');
+          $cloned.appendTo($forCopy.parent())
+          $(".touchspin2").TouchSpin(touchspin_config);
+        });
 
+        $(document).on('click','.btn-minus',function () {
+          $(this).parent().parent().parent().remove()
+        });
+
+
+        $('#add-activity').click(function () {
+          var event_id = $('input[name="event_id"]').val();
+
+          var data = {
+            activity_name : $('input[name="activity_name"]').val(),
+            activity_category : $('select[name="activity_category"] option:selected').val(),
+            items : getItems(),
+            _token : $("input[name='_token']").val()
+          };
+
+          $.post('/eventos/'+event_id+'/add_activity', data, function (response) {
+            if(response.error == false){
+              buildActivityTable(response.data);
+            }
+            clearActivity();
+          })
+        });
+
+
+        @if(isset($event))
+            $('.remove_zone').click(function () {
+          var zone_id = $(this).data('id');
+          var token = $("input[name='_token']").val();
+          $element = $(this);
+
+          $.post('{{ route('remove_zone', $event->id) }}', {zone: zone_id, _token: token }, function (response) {
+
+            if (response.error){
+              toastr.warning(response.message, 'Cuidado');
+            }else {
+              toastr.success(response.message, 'Excelente');
+              $element.parent().parent().fadeOut(1000);
+            }
+          })
+        })
+
+            $('.remove_activity').click(function () {
+          var activity_id = $(this).data('id');
+          var event_id = $('input[name="event_id"]').val();
+          var token = $("input[name='_token']").val();
+          $element = $(this);
+
+          $.post('/eventos/'+event_id+'/remove_activity', {activity: activity_id, _token: token }, function (response) {
+
+            if (response.error){
+              toastr.warning(response.message, 'Cuidado');
+            }else {
+              toastr.success(response.message, 'Excelente');
+              $element.parent().parent().fadeOut(1000);
+            }
+          })
+        })
+        @endif
+
+
+        function getItems() {
+          var items = [];
+          $('.item').each(function (index) {
+            items[index] = {
+              name: $(this).val(),
+              points: $(this).parent().parent().find('.pts_input input').val()
+            }
+          })
+          return items;
+        }
+        function clearActivity() {
+          $('input[name="activity_name"]').val("");
+          $('.for_copy input').val("");
+          $('.pts_input input').val(5);
+
+          clearClones();
+        }
+        function clearClones() {
+          var count = $('.for_copy').length;
+
+          for (var i =1; i < count; i++){
+            $('.for_copy').last().remove();
+          }
+        }
+
+        function buildActivityTable(data){
+          var $cloned = $('.activity_copy').first().clone();
+          $cloned.find('td[data-name="activity_name"]').html(data.name)
+          $cloned.removeClass('d-none');
+          $cloned.appendTo($('.activity_copy').parent())
+
+          var items = $.parseJSON(data.evaluation_items);
+          console.log(items)
+          items.forEach(function (item) {
+            buildItemTable(item)
+          });
+        }
+
+        function buildItemTable(item) {
+          //console.log(item);
+          var $cloned = $('.item_copy').first().clone();
+          $cloned.find('td[data-name="item_name"]').html(item.name);
+          $cloned.find('td[data-name="item_points"]').html(item.points);
+          $cloned.removeClass('d-none');
+          $cloned.appendTo($('.item_copy').parent());
+        }
+
+        $(".touchspin2").TouchSpin(touchspin_config);
       });
 
     </script>
