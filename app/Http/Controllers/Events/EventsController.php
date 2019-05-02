@@ -95,12 +95,17 @@ class EventsController extends Controller
         if($request->type == 'unit'){
             $unit = Unit::find($request->id);
             $event->units()->save($unit);
+            foreach ($unit->members as $member){
+                $event->members()->save($member);
+            }
             $message = 'La unidad <strong>'. $unit->name . '</strong> fue insrita al evento <strong>'. $event->name . '</strong> exitosamente';
         }elseif ($request->type == 'member'){
             $member = Member::find($request->id);
             $event->members()->save($member);
             $message = '<strong>'. $member->name . '</strong> se ha inscrito al evento <strong>'. $event->name . '</strong> exitosamente';
         }
+
+        $event->clubs()->save(Auth::user()->member->institutable);
 
         return response()->json([
             'error' => false,
@@ -110,10 +115,12 @@ class EventsController extends Controller
     }
 
     public function unsubscribe(Request $request, Event $event){
-
         if($request->type == 'unit'){
             $unit = Unit::find($request->id);
             $event->units()->detach($unit->id);
+            foreach ($unit->members as $member){
+                $event->members()->detach($member->id);
+            }
             $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
         }elseif ($request->type == 'member'){
             $member = Member::find($request->id);

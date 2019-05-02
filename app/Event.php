@@ -17,7 +17,7 @@ class Event extends Model
     }
 
     public function clubs(){
-        return $this->morphedByMany(Field::class,'eventable')->where('eventable_type','App\Club');
+        return $this->morphedByMany(Field::class,'eventable');
     }
 
     public function units(){
