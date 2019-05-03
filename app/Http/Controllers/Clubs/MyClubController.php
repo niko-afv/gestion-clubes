@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Matrix\Exception;
+use Morrislaptop\Firestore\Firestore;
 
 class MyClubController extends Controller
 {
@@ -247,5 +248,28 @@ class MyClubController extends Controller
             'message' => 'Los datos se han importado correctamente!'
         ]);
 
+    }
+
+    public function unitSync(Firestore $firestore, Unit $unit){
+        $fsUnits = $firestore->collection('units');
+        $newFsUnits = $fsUnits->document(Str::random(20));
+        $snapshot = $newFsUnits->set([
+            'databaseID' => $unit->id,
+            'name' => $unit->name,
+            'active' => true,
+            'address' => '',
+            'description' => $unit->description,
+            'image' => $unit->image,
+            'clubName' => $unit->club->name,
+            'zoneName' => $unit->club->zone->name
+
+        ])->snapshot();
+
+        $data = $snapshot->data();
+        return response()->json([
+            'error' => false,
+            'data' => $data,
+            'message' => 'La <strong> unidad ' . $data['name']. '</strong> se ha sicnronizado con éxito.'
+        ]);
     }
 }

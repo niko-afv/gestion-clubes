@@ -158,6 +158,9 @@
                                                                         @if(Auth::user()->profile->level >= 3)
                                                                             <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline pull-right" title="Modificar"><i class="fa fa-edit fa-2x"></i></a>
                                                                         @endif
+                                                                        @if(Auth::user()->profile->level < 3)
+                                                                            <a data-url="{{ route('sync_unit', $unit->id) }}" class="btn btn-outline pull-right unit_sync" title="Sincroizar"><i class="fa fa-repeat fa-2x"></i></a>
+                                                                        @endif
                                                                     </p>
 
                                                                     <h5>{{ $unit->name }}</h5>
@@ -204,6 +207,19 @@
         responsive: true,
         dom: '<"html5buttons"B>lTfgitp'
         });
+
+      $('.unit_sync').click(function () {
+            var url = $(this).data('url');
+            var token = $("input[name='_token']").val();
+
+            $.post(url, { _token: token }, function (response) {
+              if (response.error == true){
+                toastr.warning(response.message, 'Cuidado');
+              }else {
+                toastr.success(response.message, 'Excelente');
+              }
+            });
+          });
 
         @if(Auth::user()->profile->level >= 3)
             $('.delete_member').click(function (event) {

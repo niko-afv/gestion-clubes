@@ -81,6 +81,8 @@ Route::middleware('auth')->group(function (){
         Route::post('/unidad/guardar/', 'MyClubController@saveUnit')->name('save_unit');
         Route::post('/unidad/guardar/{oUnit}', 'MyClubController@updateUnit')->name('update_unit');
         Route::post('/unidad/{oUnit}/remover_miembro', 'MyClubController@removeMember')->name('remove_member');
+
+        Route::post('/{unit}/sync', 'MyClubController@unitSync')->name('sync_unit');
     });
 });
 
