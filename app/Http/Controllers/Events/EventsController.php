@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Morrislaptop\Firestore\Firestore;
 
 class EventsController extends Controller
 {
@@ -232,5 +233,28 @@ class EventsController extends Controller
         }while (Activity::where('code',$code)->count() > 0);
 
         return $code;
+    }
+
+    public function sync(Firestore $firestore, Event $event){
+        $fsEvents = $firestore->collection('events');
+        $newFsEvent = $fsEvents->document(Str::random(20));
+        $snapshot = $newFsEvent->set([
+            'databaseID' => $event->id,
+            'name' => $event->name,
+            'active' => $event->active,
+            'address' => '',
+            'description' => $event->description,
+            'startDate' => $event->start,
+            'EndDate' => $event->date,
+            'image' => $event->image
+
+        ])->snapshot();
+
+        $data = $snapshot->data();
+        return response()->json([
+            'error' => false,
+            'data' => $data,
+            'message' => 'El <strong> evento ' . $data['name']. '</strong> se ha sicnronizado con éxito.'
+        ]);
     }
 }

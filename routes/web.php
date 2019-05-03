@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_zone');
 
         Route::post('/{event}/add_activity', 'EventsController@addActivity')->name('add_activity');
+        Route::post('/{event}/sync', 'EventsController@sync')->name('event_sync');
     });
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){

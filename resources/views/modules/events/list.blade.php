@@ -81,6 +81,7 @@
                                         <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
                                         @if(Auth::user()->profile->level < 3)
                                         <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Modificar Evento" class="btn btn-primary" type="button"><i class="fa fa-edit"></i>&nbsp;</button>
+                                            <button data-url="{{ route('event_sync',['event'=>$event->id]) }}" title="Sincronizar Evento" class="btn btn-primary event_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -116,6 +117,19 @@
       "showMethod": "fadeIn",
       "hideMethod": "fadeOut"
     };
+
+    $('.event_sync').click(function () {
+      var url = $(this).data('url');
+      var token = $("input[name='_token']").val();
+
+      $.post(url, { _token: token }, function (response) {
+        if (response.error == true){
+          toastr.warning(response.message, 'Cuidado');
+        }else {
+          toastr.success(response.message, 'Excelente');
+        }
+      });
+    });
 
     $('.onoffswitch-label').click(function () {
       var event = $(this).data('event');
