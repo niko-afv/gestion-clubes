@@ -260,6 +260,7 @@ class EventsController extends Controller
                 'description' => $activity->description,
                 'code' => $activity->code,
                 'eventName' => $event->name,
+                'categoryName' => $activity->category->name,
                 'order' => 1
             ];
             $dbitems = json_decode($activity->evaluation_items);
