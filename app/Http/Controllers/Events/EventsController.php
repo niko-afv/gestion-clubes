@@ -263,6 +263,7 @@ class EventsController extends Controller
                 'categoryName' => $activity->category->name,
                 'order' => 1
             ];
+            $items = [];
             $dbitems = json_decode($activity->evaluation_items);
             foreach ($dbitems as $item){
                 $items[$item->name] = $item->points;
