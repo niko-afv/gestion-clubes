@@ -48,7 +48,7 @@ class ClubsListController extends Controller
     }
 
     public function sync(Firestore $firestore, Club $club){
-        $fsZone = $firestore->collection('zones')->document($club->zone->firestore_reference);
+        //$fsZone = $firestore->collection('zones')->document($club->zone->firestore_reference);
         $fsClubs = $firestore->collection('clubs');
         $newFsClub = $fsClubs->document(Str::random(20));
         $snapshot = $newFsClub->set([
@@ -57,6 +57,24 @@ class ClubsListController extends Controller
             'active' => $club->active,
             'zoneName' => $club->zone->name
         ])->snapshot();
+
+
+        foreach ($club->units as $unit){
+            $fsUnits = $firestore->collection('units');
+            $newFsUnit = $fsUnits->document(Str::random(20));
+            $data = [
+                'databaseID' => $unit->id,
+                'name' => $unit->name,
+                'code' => $unit->code,
+                'clubName' => $unit->club->name,
+                'zoneName' => $unit->club->zone->name,
+                'active' => true,
+                'image' => '',
+                'count_members' => $unit->members->count()
+            ];
+
+            $newFsUnit->set($data);
+        }
 
         $data = $snapshot->data();
         return response()->json([
