@@ -14,7 +14,7 @@
                     <a href="{{ route('events_list') }}">Eventos</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Nuevo evento</strong>
+                    <strong>{{ (isset($event)?$event->name:'Nuevo Evento') }}</strong>
                 </li>
             </ol>
         </div>
