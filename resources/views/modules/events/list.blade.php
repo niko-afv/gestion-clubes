@@ -78,9 +78,9 @@
 
                                     </td>
                                     <td class="center">
-                                        <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>
+                                        <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
                                         @if(Auth::user()->profile->level < 3)
-                                        <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Modificar</button>
+                                        <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Modificar Evento" class="btn btn-primary" type="button"><i class="fa fa-edit"></i>&nbsp;</button>
                                         @endif
                                     </td>
                                 </tr>

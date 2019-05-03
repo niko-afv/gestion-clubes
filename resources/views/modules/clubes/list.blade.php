@@ -43,7 +43,7 @@
                                     <th>Director</th>
                                     <th>Zona</th>
                                     <th>Status</th>
-                                    <th>Ver Club</th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,7 +54,10 @@
                                     <td>{{ $club->zone->name }}</td>
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
-                                        <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; Detalles</button>
+                                        <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; </button>
+                                        @if(Auth::user()->profile->level < 3)
+                                        <button data-url="{{ route('club_sync',['club'=>$club->id]) }}" title="Sincronizar Club" class="btn btn-primary club_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -66,6 +69,7 @@
                 </div>
             </div>
         </div>
+        {{ csrf_field() }}
     </div>
 @endsection
 
@@ -73,6 +77,20 @@
 @section('scripts')
 <script>
   $(document).ready(function(){
+
+    $('.club_sync').click(function () {
+      var url = $(this).data('url');
+      var token = $("input[name='_token']").val();
+
+      $.post(url, { _token: token }, function (response) {
+        if (response.error == true){
+          toastr.warning(response.message, 'Cuidado');
+        }else {
+          toastr.success(response.message, 'Excelente');
+        }
+        });
+    });
+
     $('.dataTables-example').DataTable({
       pageLength: 10,
       responsive: true,

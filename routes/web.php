@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/import', 'ClubsListController@import')->name('clubes_import');
         Route::get('/detail/{club}', 'ClubsListController@detail')->name('club_detail');
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
+        Route::post('/{club}/sync', 'ClubsListController@sync')->name('club_sync');
     });
 
 
