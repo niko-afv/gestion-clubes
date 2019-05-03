@@ -250,6 +250,26 @@ class EventsController extends Controller
 
         ])->snapshot();
 
+
+        foreach ($event->activities as $activity){
+            $fsActivities = $firestore->collection('activities');
+            $newFsActivity = $fsActivities->document(Str::random(20));
+            $data = [
+                'databaseID' => $activity->id,
+                'name' => $activity->name,
+                'description' => $activity->description,
+                'code' => $activity->code,
+                'eventName' => $event->name,
+                'order' => 1
+            ];
+            $dbitems = json_decode($activity->evaluation_items);
+            foreach ($dbitems as $item){
+                $items[$item->name] = $item->points;
+            }
+            $data['items'] = $items;
+            $newFsActivity->set($data);
+        }
+
         $data = $snapshot->data();
         return response()->json([
             'error' => false,
