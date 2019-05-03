@@ -231,6 +231,7 @@
                         <table class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                             <tr>
+                                <th>Categoria</th>
                                 <th>Nombre</th>
                                 <th>Items</th>
                                 <th>Remover</th>
@@ -238,6 +239,7 @@
                             </thead>
                             <tbody>
                                 <tr class="d-none activity_copy">
+                                    <td data-name="activity_category"></td>
                                     <td data-name="activity_name"></td>
                                     <td class="center">
                                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -262,6 +264,7 @@
                                 </tr>
                                 @foreach($event->activities as $activity)
                                 <tr class="">
+                                    <td data-name="activity_category">{{ $activity->category->name }}</td>
                                     <td data-name="activity_name">{{ $activity->name }}</td>
                                     <td class="center">
                                         <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -426,6 +429,7 @@
         function buildActivityTable(data){
           var $cloned = $('.activity_copy').first().clone();
           $cloned.find('td[data-name="activity_name"]').html(data.name)
+          $cloned.find('td[data-name="activity_categori"]').html(data.category_id)
           $cloned.removeClass('d-none');
           $cloned.appendTo($('.activity_copy').parent())
 
