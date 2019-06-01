@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Events;
 
 use App\Activity;
 use App\ActivityCategory;
+use App\Club;
 use App\Event;
 use App\Events\ActivatedEventEvent;
 use App\Events\CreatedEventEvent;
@@ -277,6 +278,19 @@ class EventsController extends Controller
             'error' => false,
             'data' => $data,
             'message' => 'El <strong> evento ' . $data['name']. '</strong> se ha sicnronizado con éxito.'
+        ]);
+    }
+
+    public function clubs(Event $event){
+        return view('modules.events.clubs_list',[
+            'event' => $event
+        ]);
+    }
+
+    public function clubDetail(Event $event, Club $club){
+        return view('modules.events.club_detail',[
+            'event' => $event,
+            'club' => $club
         ]);
     }
 }

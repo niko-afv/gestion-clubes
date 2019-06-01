@@ -20,12 +20,29 @@ class Event extends Model
         return $this->morphedByMany(Club::class,'eventable');
     }
 
-    public function units(){
-        return $this->morphedByMany(Unit::class,'eventable');
+    public function units($club_id = null){
+        $query = $this->morphedByMany(Unit::class,'eventable');
+
+        if (! is_null($club_id)){
+            $query->where('units.club_id', $club_id);
+        }
+        return $query;
     }
 
-    public function members(){
-        return $this->morphedByMany(Member::class,'eventable');
+    public function members($club_id = null, $position_ids = null){
+        $query = $this->morphedByMany(Member::class,'eventable');
+
+        if (! is_null($club_id)){
+            $query->where('members.institutable_id', $club_id);
+        }
+
+        if (! is_null($position_ids)){
+            $query->whereHas('positions',function($query) use ($position_ids){
+                $query->whereIn('positions.id',$position_ids);
+            });
+        }
+
+        return $query;
     }
 
     public function logs(){

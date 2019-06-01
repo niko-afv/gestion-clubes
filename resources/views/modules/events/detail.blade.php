@@ -117,7 +117,7 @@
                                     <!--
                                     <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
                                     -->
-                                    <small>Clubes inscritos</small>
+                                    <small><a href="{{ route('event_clubs',[$event->id]) }}">Clubes inscritos</a></small>
                                 </div>
                             </div>
                         </div>

@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/list', 'EventsController@index')->name('events_list');
         Route::get('/detail/{event}', 'EventsController@detail')->name('event_detail');
 
+        Route::get('/detail/{event}/clubs', 'EventsController@clubs')->name('event_clubs');
+        Route::get('/detail/{event}/clubs/{club}', 'EventsController@clubDetail')->name('event_club_detail');
+
         Route::get('/create', 'EventsController@create')->name('events_create');
         Route::post('/save', 'EventsController@save')->name('events_save');
         Route::post('/{event}/toggle', 'EventsController@toggle')->name('event_toggle');

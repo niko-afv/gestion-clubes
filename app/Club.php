@@ -8,7 +8,6 @@ class Club extends Model
 {
     protected $fillable = ['name','logo', 'photo', 'field_id', 'zone_id', 'active'];
 
-
     public function hasDirector(){
         return $this->director()->count();
 
@@ -40,7 +39,6 @@ class Club extends Model
         return $this->hasMany(Unit::class);
     }
 
-
     public function directive(){
         return $this->members()->whereHas('positions',function($query){
             $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
@@ -56,7 +54,6 @@ class Club extends Model
     public function hasToken(){
         return !is_null($this->activation_token);
     }
-
 
     public function avaliableEvents(){
         return Event::byZone([$this->zone_id])->byField($this->field_id)->get();
