@@ -107,7 +107,7 @@
                                     <h5>Apoyo</h5>
                                 </div>
                                 <div class="ibox-content">
-                                    <h1 class="no-margins">{{ $event->members($club->id,[9])->count() }}</h1>
+                                    <h1 class="no-margins">{{ $event->members($club->id,[9,10])->count() }}</h1>
                                     <!--
                                     <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
                                     -->

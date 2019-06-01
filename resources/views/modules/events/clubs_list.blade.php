@@ -129,7 +129,7 @@
                                                 <td>{{ $event->units($club->id)->count() }}</td>
                                                 <td>{{ $event->members($club->id)->count() }}</td>
                                                 <td>{{ $event->members($club->id, [1,2,3,4,5,6])->count() }}</td>
-                                                <td>{{ $event->members($club->id,[9])->count() }}</td>
+                                                <td>{{ $event->members($club->id,[9,10])->count() }}</td>
                                                 <td>{{ $club->zone->name }}</td>
                                                 <td>
                                                     <button onclick="window.location.replace('{{ route('event_club_detail',['event'=>$event->id, 'club'=>$club->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button">
