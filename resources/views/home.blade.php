@@ -84,9 +84,10 @@
                     </div>
                     <div class="ibox-content">
                         <h1 class="no-margins">{{ \App\Club::all()->count() }}</h1>
-                        <!--
-                        <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
-                        -->
+
+                        <div class="stat-percent font-bold text-danger">&nbsp;&nbsp;{{ $deactived_clubs }} <i class="fa fa-window-close"></i></div>
+                        <div class="stat-percent font-bold text-success">{{ $actived_clubs }} <i class="fa fa-check-square"></i></div>
+
                         <small>Clubes registrados</small>
                     </div>
                 </div>

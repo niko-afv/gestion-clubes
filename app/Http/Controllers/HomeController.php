@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Club;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data = [
+            'actived_clubs' => Club::where('active', 1)->count(),
+            'deactived_clubs' => Club::where('active', 0)->count(),
+        ];
+        return view('home', $data);
     }
 }
