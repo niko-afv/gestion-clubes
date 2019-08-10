@@ -42,7 +42,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        $clubes = Club::activated()->get();
+        $clubes = Club::activated()->ordered()->get();
 
         return view('auth.login', [
             'clubes' => $clubes

@@ -17,6 +17,10 @@ class Club extends Model
         return $query->where('active',1);
     }
 
+    public function scopeOrdered($query){
+        return $query->orderBy('name','ASC');
+    }
+
     public function scopeDisabled($query){
         return $query->where('active',0);
     }
