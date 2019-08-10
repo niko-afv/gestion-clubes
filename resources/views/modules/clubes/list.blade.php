@@ -55,8 +55,9 @@
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
                                         <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; </button>
-                                        @if(Auth::user()->profile->level < 3)
-                                        <button data-url="{{ route('club_sync',['club'=>$club->id]) }}" title="Sincronizar Club" class="btn btn-primary club_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
+                                        @if(Auth::user()->profile->id == 6)
+                                            <!-- TODO   add isAdmin() verificator -->
+                                            <button data-url="{{ route('club_sync',['club'=>$club->id]) }}" title="Sincronizar Club" class="btn btn-primary club_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
                                         @endif
                                     </td>
                                 </tr>
