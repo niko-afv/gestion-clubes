@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Nicolás Fredes',
             'email' => 'niko.afv@gmail.com',
             'password'=> Hash::make('benjamin13'),
-            'profile_id' => 1,
+            'profile_id' => 6,
             'member_id' => 1
         ]);
 

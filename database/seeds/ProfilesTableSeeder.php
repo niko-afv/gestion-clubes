@@ -39,7 +39,12 @@ class ProfilesTableSeeder extends Seeder
                 'id' => 5,
                 'name' => 'Secretario de Club',
                 'level' => 3
-            ]
+            ],
+            [
+                'id' => 6,
+                'name' => 'Administrador',
+                'level' => 0
+            ],
         ];
 
         foreach ($profiles as $position){
