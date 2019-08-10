@@ -81,7 +81,7 @@
                                         <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
                                         @if(Auth::user()->profile->level < 3)
                                         <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Modificar Evento" class="btn btn-primary" type="button"><i class="fa fa-edit"></i>&nbsp;</button>
-                                        @elseif(Auth::user()->profile->if == 6)
+                                        @elseif(Auth::user()->profile->id == 6)
                                             <!-- TODO   add isAdmin() verificator -->
                                             <button data-url="{{ route('event_sync',['event'=>$event->id]) }}" title="Sincronizar Evento" class="btn btn-primary event_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
                                         @endif
