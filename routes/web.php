@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function (){
         Route::get('/update/{event}', 'EventsController@showUpdate')->name('event_edit');
         Route::post('/update/{event}', 'EventsController@update')->name('event_update');
 
+        Route::post('/logo/upload', 'EventsController@uploadLogo')->name('upload_event_logo');
+
         Route::get('/{event_id}/inscribir/', 'EventsController@showInscribe')->name('show_inscribe');
         Route::post('/{event}/inscribir/', 'EventsController@inscribe')->name('inscribe');
         Route::post('/{event}/desincribir/', 'EventsController@unsubscribe')->name('unsubscribe');

@@ -19,6 +19,7 @@ use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Morrislaptop\Firestore\Firestore;
 
@@ -291,6 +292,25 @@ class EventsController extends Controller
         return view('modules.events.club_detail',[
             'event' => $event,
             'club' => $club
+        ]);
+    }
+
+    public function uploadLogo(Request $request){
+        $file = $request->file('file');
+        $base_derectory = 'public/';
+        $local_derectory = 'images';
+        $file_name = Str::slug($file->getClientOriginalName()) . '.'. $file->getClientOriginalExtension();
+        $local_path_to_file = $local_derectory . '/' . $file_name;
+        $path = $file->storeAs($base_derectory . $local_derectory, $file_name);
+        $file_path = storage_path('app/'.$path);
+
+        $oEvent = Event::find($request->event_id);
+        $oEvent->image = $local_path_to_file;
+        $oEvent->save();
+
+        return response()->json([
+            'error' => false,
+            'file_path' => Storage::url($local_path_to_file)
         ]);
     }
 }

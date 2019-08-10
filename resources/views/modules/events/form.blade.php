@@ -37,83 +37,97 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        @if(isset($event))
+
+                        <div class="form-group  row" id="image_form">
+                            <div class="col-sm-12">
+                                <form action="{{ route('upload_event_logo') }}" class="dropzone" id="my-awesome-dropzone">
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    @if(isset($event))
                         <form method="post" action="{{ route('event_update', $event->id) }}">
                         @else
                         <form method="post" action="{{ route('events_save') }}">
                         @endif
-
-
-
                             <div class="form-group  row">
-                                <label class="col-sm-2 col-form-label">Nombre</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="name" value="{{ isset($event)?$event->name:old('name') }}">
-                                    @if ($errors->has('name'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('name') }}
+                                <div class="col-sm-7">
+                                    <div class="row">
+                                        <label class="col-sm-2 col-form-label">Nombre</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="name" value="{{ isset($event)?$event->name:old('name') }}">
+                                            @if ($errors->has('name'))
+                                                <div class="alert alert-danger">
+                                                    {{ $errors->first('name') }}
+                                                </div>
+                                            @endif
+                                            <div class="hr-line-dashed"></div>
                                         </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Descripción</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" placeholder="Ingrese una breve descripción del evento" name="description">{{ isset($event)?$event->description:old('description') }}</textarea>
-                                    @if ($errors->has('description'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('description') }}
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row" id="data_5">
-                                <label class="col-sm-2 col-form-label">Duración</label>
-                                <div class="col-sm-10">
-                                    <div class="input-daterange input-group" id="datepicker">
-                                        <span class="input-group-addon">&nbsp;desde &nbsp;&nbsp;</span>
-                                        <input type="text" class="form-control-sm form-control" name="start" value="{{ isset($event)?\Carbon\Carbon::create($event->start)->format('m/d/Y'):old('start') }}" autocomplete="off">
-                                        <span class="input-group-addon">&nbsp;hasta &nbsp;&nbsp;</span>
-                                        <input type="text" class="form-control-sm form-control" name="end" value="{{ isset($event)?\Carbon\Carbon::create($event->end)->format('m/d/Y'):old('end') }}" autocomplete="off">
                                     </div>
-                                    @if ($errors->has('end'))
-                                        <div class="alert alert-danger">
-                                            end
-                                            {{ $errors->first('end') }}
+                                    <div class="row">
+                                        <label class="col-sm-2 col-form-label">Descripción</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" placeholder="Ingrese una breve descripción del evento" name="description">{{ isset($event)?$event->description:old('description') }}</textarea>
+                                            @if ($errors->has('description'))
+                                                <div class="alert alert-danger">
+                                                    {{ $errors->first('description') }}
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
-                                    @if ($errors->has('start'))
-                                        <div class="alert alert-danger">
-                                            start
-                                            {{ $errors->first('start') }}
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group row" id="data_5">
+                                        <label class="col-sm-2 col-form-label">Duración</label>
+                                        <div class="col-sm-10">
+                                            <div class="input-daterange input-group" id="datepicker">
+                                                <span class="input-group-addon">&nbsp;desde &nbsp;&nbsp;</span>
+                                                <input type="text" class="form-control-sm form-control" name="start" value="{{ isset($event)?\Carbon\Carbon::create($event->start)->format('m/d/Y'):old('start') }}" autocomplete="off">
+                                                <span class="input-group-addon">&nbsp;hasta &nbsp;&nbsp;</span>
+                                                <input type="text" class="form-control-sm form-control" name="end" value="{{ isset($event)?\Carbon\Carbon::create($event->end)->format('m/d/Y'):old('end') }}" autocomplete="off">
+                                            </div>
+                                            @if ($errors->has('end'))
+                                                <div class="alert alert-danger">
+                                                    end
+                                                    {{ $errors->first('end') }}
+                                                </div>
+                                            @endif
+                                            @if ($errors->has('start'))
+                                                <div class="alert alert-danger">
+                                                    start
+                                                    {{ $errors->first('start') }}
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endif
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group row" id="zones_select">
+                                        <label class="col-sm-2 col-form-label">Zona (s)</label>
+                                        <div class="col-sm-10">
+                                            @if(Auth::user()->profile->level == 1)
+                                                @include('partials.zones_select', ['zones'=> $zones])
+                                            @elseif(Auth::user()->profile->level == 0)
+                                                @include('partials.fields_select', ['fields'=> $fields])
+                                            @endif
+                                            @if ($errors->has('zone'))
+                                                <div class="alert alert-danger">
+                                                    {{ $errors->first('zone') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-5">
+                                    <img src="{{ (isset($event) && !is_null($event->image))?\Illuminate\Support\Facades\Storage::url($event->image):'' }}" id="event_logo" width="50%">
+                                </div>
+                                <div class="col-sm-7">
+
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-
-
-                            <div class="form-group row" id="zones_select">
-                                <label class="col-sm-2 col-form-label">Zona (s)</label>
-                                <div class="col-sm-9">
-                                    @if(Auth::user()->profile->level == 1)
-                                        @include('partials.zones_select', ['zones'=> $zones])
-                                    @elseif(Auth::user()->profile->level == 0)
-                                        @include('partials.fields_select', ['fields'=> $fields])
-                                    @endif
-                                    @if ($errors->has('zone'))
-                                        <div class="alert alert-danger">
-                                            {{ $errors->first('zone') }}
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-
-
                             <div class="form-group row">
                                 <div class="col-sm-6 col-sm-offset-2">
                                     {{ csrf_field() }}
@@ -124,8 +138,6 @@
                                 </div>
                             </div>
                         </form>
-
-
                         @if(isset($event))
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Zonas asociadas</label>
@@ -297,11 +309,32 @@
             </div>
         @endif
     </div>
+    <input name="event_id" value="{{ (isset($event)?$event->id:'') }}">
 @endsection
 
 
 @section('scripts')
     <script>
+      Dropzone.options.myAwesomeDropzone = {
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        dictDefaultMessage: "<strong>Arrastra la imagen del logo </strong></br> o búscala haciendo click",
+        sending: function (file,xhr, data) {
+          var token = $("input[name='_token']").val();
+          var event_id = $("input[name='event_id']").val();
+          data.append("_token", token);
+          data.append("event_id", event_id);
+        },
+        success: function (file, response) {
+          if (response.error == false){
+            $('#image_form').fadeOut(500, function(){
+              $('#event_logo').attr('src',response.file_path);
+            });
+          }
+        }
+      };
+
+
       $(document).ready(function(){
         $('#data_5 .input-daterange').datepicker({
           keyboardNavigation: false,
