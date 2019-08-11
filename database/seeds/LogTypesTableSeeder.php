@@ -79,6 +79,16 @@ class LogTypesTableSeeder extends Seeder
                 'name' => 'Deactivate Event',
                 'description' => 'Ha desactivado un evento'
             ],
+            [
+                'id' => 14,
+                'name' => 'Activate User',
+                'description' => 'Ha activado un usuario'
+            ],
+            [
+                'id' => 15,
+                'name' => 'Deactivate User',
+                'description' => 'Ha desactivado un usuario'
+            ],
         ];
 
         foreach ($log_types as $log_type){

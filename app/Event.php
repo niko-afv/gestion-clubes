@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Traits\ToggableModel;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    use ToggableModel;
+
     protected $fillable = ['name', 'description', 'start', 'end'];
 
     public function zones(){
@@ -52,26 +55,6 @@ class Event extends Model
     public function activities(){
         return $this->hasMany(Activity::class);
     }
-
-    public function enable(){
-        $this->active = 1;
-        $this->save();
-    }
-
-    public function disable(){
-        $this->active = 0;
-        $this->save();
-    }
-
-    public function toggle(){
-        if ($this->active == 1){
-            $this->disable();
-        }else{
-            $this->enable();
-        }
-        return $this->active;
-    }
-
 
     public function scopeByZone($query, $zone_ids){
         return $query;

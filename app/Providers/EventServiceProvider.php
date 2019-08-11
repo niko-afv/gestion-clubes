@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Events\ActivatedEventEvent;
+use App\Events\ActivatedUserEvent;
 use App\Events\AddedMemberEvent;
 use App\Events\CreatedEventEvent;
 use App\Events\CreatedUnitEvent;
 use App\Events\DeactivatedEventEvent;
+use App\Events\DeactivatedUserEvent;
 use App\Events\DeletedEventEvent;
 use App\Events\DeletedMemberEvent;
 use App\Events\DeletedUnitEvent;
@@ -69,6 +71,12 @@ class EventServiceProvider extends ServiceProvider
             LogEventsListener::class,
         ],
         DeactivatedEventEvent::class => [
+            LogEventsListener::class,
+        ],
+        ActivatedUserEvent::class => [
+            LogEventsListener::class,
+        ],
+        DeactivatedUserEvent::class => [
             LogEventsListener::class,
         ],
     ];

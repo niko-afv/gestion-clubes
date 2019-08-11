@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function (){
     });
     Route::prefix('usuarios')->namespace('Users')->group(function (){
         Route::get('/', 'UsersController@index')->name('users_list');
+        Route::post('/{user}/toggle', 'UsersController@toggle')->name('user_toggle');
     });
 });
 

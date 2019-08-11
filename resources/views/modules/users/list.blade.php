@@ -60,7 +60,20 @@
                                             <span class="tag label label-primary">{{ strtoupper($position->name) }}</span>
                                         @endforeach
                                     </td>
-                                    <td><span class="label {{($usuario->active)?'label-primary':'label-danger'}}">{{ ($usuario->active)?'Activo':'Inactivo' }}</span></td>
+                                    <td>
+                                        <div class="switch">
+                                            <div class="onoffswitch">
+                                                <input type="checkbox" {{ ($usuario->active)?'checked':'' }} class="onoffswitch-checkbox" id="usuario-{{ $usuario->id }}">
+                                                <label class="onoffswitch-label" data-user="{{ $usuario->id }}" for="usuario-{{ $usuario->id }}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                        <span class="label {{($usuario->active)?'label-primary':'label-danger'}}">{{ ($usuario->active)?'Activo':'Inactivo' }}</span>
+                                    </td>
                                     <td></td>
                                 </tr>
                                 @endforeach
@@ -73,6 +86,7 @@
             </div>
         </div>
     </div>
+    {{ csrf_field() }}
 @endsection
 
 
@@ -83,6 +97,20 @@
       pageLength: 10,
       responsive: true,
       dom: '<"html5buttons"B>lTfgitp'
+    });
+
+
+    $('.onoffswitch-label').click(function () {
+      var user = $(this).data('user');
+      var token = $("input[name='_token']").val();
+
+      $.post('/usuarios/'+user+'/toggle', {user: user, _token: token }, function (response) {
+        if (response.isActived == 0){
+          toastr.warning(response.message, 'Cuidado');
+        }else {
+          toastr.success(response.message, 'Excelente');
+        }
+      })
     });
 
   });
