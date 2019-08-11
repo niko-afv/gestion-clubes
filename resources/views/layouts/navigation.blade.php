@@ -45,7 +45,7 @@
             </li>
 
             @if(Auth::user()->profile->id >= 6)
-                <li class="{{ isActiveRoute('/users') }}">
+                <li class="{{ isActiveRoute('/usuarios') }}">
                     <a href="{{ route('users_list') }}"><i class="fa fa-users fa-2x"></i> <span class="nav-label">Usuarios</span></a>
                 </li>
             @endif
