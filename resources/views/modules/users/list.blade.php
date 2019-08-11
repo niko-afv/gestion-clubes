@@ -97,7 +97,7 @@
     });
 
 
-    $('.onoffswitch-label').click(function () {
+    $(document).on('click','.onoffswitch-label',function () {
       var user = $(this).data('user');
       var token = $("input[name='_token']").val();
 
