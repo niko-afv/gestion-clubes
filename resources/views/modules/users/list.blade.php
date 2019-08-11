@@ -45,6 +45,8 @@
                                     <th>Perfil</th>
                                     <th>Cargo(s)</th>
                                     <th>Status</th>
+                                    <th>Creado</th>
+                                    <th>Ultimo Acceso</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
@@ -71,6 +73,8 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td>{{ $usuario->created_at->diffForHumans() }}</td>
+                                    <td>{{ $usuario->lastLogin() }}</td>
                                     <td></td>
                                 </tr>
                                 @endforeach

@@ -51,6 +51,18 @@ class User extends Authenticatable
         return $this->hasMany(Log::class)->orderBy('created_at','DESC');
     }
 
+    public function lastLogin(){
+        if ($this->logs->count() == 0){
+            return 'Sin Registro';
+        }
+        return $this->logs()
+            ->where('log_type_id','1')
+            ->orderBy('created_at', 'desc')
+            ->first()
+            ->created_at
+            ->diffForHumans();
+    }
+
 
 
 
