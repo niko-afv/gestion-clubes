@@ -70,9 +70,6 @@
                                                 </label>
                                             </div>
                                         </div>
-
-
-                                        <span class="label {{($usuario->active)?'label-primary':'label-danger'}}">{{ ($usuario->active)?'Activo':'Inactivo' }}</span>
                                     </td>
                                     <td></td>
                                 </tr>
