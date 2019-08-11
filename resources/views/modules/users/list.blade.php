@@ -41,9 +41,10 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Email</th>
-                                    <th>Status</th>
+                                    <th>Club</th>
                                     <th>Perfil</th>
                                     <th>Cargo(s)</th>
+                                    <th>Status</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
@@ -52,13 +53,14 @@
                                 <tr class="">
                                     <td>{{ $usuario->name }}</td>
                                     <td>{{ $usuario->email }}</td>
-                                    <td><span class="label {{($usuario->active)?'label-primary':'label-danger'}}">{{ ($usuario->active)?'Activo':'Inactivo' }}</span></td>
+                                    <td>{{ ($usuario->member->institutable instanceof \App\Club)?$usuario->member->institutable->name:'' }}</td>
                                     <td>{{ $usuario->profile->name }}</td>
                                     <td>
                                         @foreach($usuario->member->positions as $position)
                                             <span class="tag label label-primary">{{ strtoupper($position->name) }}</span>
                                         @endforeach
                                     </td>
+                                    <td><span class="label {{($usuario->active)?'label-primary':'label-danger'}}">{{ ($usuario->active)?'Activo':'Inactivo' }}</span></td>
                                     <td></td>
                                 </tr>
                                 @endforeach
