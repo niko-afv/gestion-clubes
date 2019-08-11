@@ -27,13 +27,9 @@ Route::middleware('auth')->group(function (){
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
         Route::post('/{club}/sync', 'ClubsListController@sync')->name('club_sync');
     });
-
-
     Route::prefix('unidades')->namespace('Clubs')->group(function (){
         Route::get('/list', 'ClubsListController@unidades')->name('unidades_list');
     });
-
-
     Route::prefix('eventos')->namespace('Events')->group(function (){
 
         Route::get('/list', 'EventsController@index')->name('events_list');
@@ -61,11 +57,9 @@ Route::middleware('auth')->group(function (){
         Route::post('/{event}/add_activity', 'EventsController@addActivity')->name('add_activity');
         Route::post('/{event}/sync', 'EventsController@sync')->name('event_sync');
     });
-
     Route::prefix('perfil')->namespace('Profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
     });
-
     Route::prefix('mi_club')->namespace('Clubs')->group(function (){
         Route::get('/', 'MyClubController@index')->name('my_club');
 
@@ -88,6 +82,9 @@ Route::middleware('auth')->group(function (){
         Route::post('/unidad/{oUnit}/remover_miembro', 'MyClubController@removeMember')->name('remove_member');
 
         Route::post('/{unit}/sync', 'MyClubController@unitSync')->name('sync_unit');
+    });
+    Route::prefix('usuarios')->namespace('Users')->group(function (){
+        Route::get('/', 'UsersController@index')->name('users_list');
     });
 });
 

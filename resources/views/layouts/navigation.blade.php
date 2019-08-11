@@ -43,6 +43,12 @@
             <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-bandcamp fa-2x"></i> <span class="nav-label">Eventos</span> </a>
             </li>
+
+            @if(Auth::user()->profile->id >= 6)
+                <li class="{{ isActiveRoute('/users') }}">
+                    <a href="{{ route('users_list') }}"><i class="fa fa-users fa-2x"></i> <span class="nav-label">Usuarios</span></a>
+                </li>
+            @endif
         </ul>
 
     </div>
