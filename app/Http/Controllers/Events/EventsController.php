@@ -12,6 +12,8 @@ use App\Events\DeactivatedEventEvent;
 use App\Events\UpdatedEventEvent;
 use App\Field;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminEventsRequest;
+use App\Http\Requests\AdminUsersRequest;
 use App\Http\Requests\SaveEventRequest;
 use App\Member;
 use App\Unit;
@@ -44,7 +46,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function create(){
+    public function create(AdminEventsRequest $request){
         $zones = Zone::all();
         $fields = Field::all();
         return view('modules.events.form', [
@@ -53,7 +55,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function showUpdate(Event $event){
+    public function showUpdate(AdminEventsRequest $request, Event $event){
         $zones = Zone::all();
         $fields = Field::all();
         $categories = ActivityCategory::all();
@@ -111,7 +113,7 @@ class EventsController extends Controller
         return redirect()->route('events_list');
     }
 
-    public function toggle($event){
+    public function toggle(AdminEventsRequest $request ,$event){
         $oEvent = tap(Event::find($event), function($event){
             $event->toggle();
         });
@@ -180,7 +182,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function removeZone(Request $request, Event $event){
+    public function removeZone(AdminEventsRequest $request, Event $event){
         $response = $event->zones()->detach([$request->zone]);
 
         if ($response){
@@ -195,7 +197,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function removeActivity(Request $request, Event $event){
+    public function removeActivity(AdminEventsRequest $request, Event $event){
         $activity = Activity::find($request->activity);
         $response = $activity->delete();
 
@@ -212,7 +214,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function addActivity(Request $request, Event $event){
+    public function addActivity(AdminEventsRequest $request, Event $event){
         $activity = $event->activities()->create([
             'name' => $request->activity_name,
             'category_id' => $request->activity_category,
@@ -238,7 +240,7 @@ class EventsController extends Controller
         return $code;
     }
 
-    public function sync(Firestore $firestore, Event $event){
+    public function sync(AdminUsersRequest $request,Firestore $firestore, Event $event){
         $fsEvents = $firestore->collection('events');
 
         if( is_null($event->firestore_reference)){
@@ -296,20 +298,20 @@ class EventsController extends Controller
         ]);
     }
 
-    public function clubs(Event $event){
+    public function clubs(AdminEventsRequest $request,Event $event){
         return view('modules.events.clubs_list',[
             'event' => $event
         ]);
     }
 
-    public function clubDetail(Event $event, Club $club){
+    public function clubDetail(AdminEventsRequest $request, Event $event, Club $club){
         return view('modules.events.club_detail',[
             'event' => $event,
             'club' => $club
         ]);
     }
 
-    public function uploadLogo(Request $request){
+    public function uploadLogo(AdminEventsRequest $request){
         $file = $request->file('file');
         $base_derectory = 'public/';
         $local_derectory = 'images';
