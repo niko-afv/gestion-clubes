@@ -17,6 +17,7 @@ use App\Member;
 use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
+use Google\Cloud\Firestore\FieldPath;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -239,7 +240,12 @@ class EventsController extends Controller
 
     public function sync(Firestore $firestore, Event $event){
         $fsEvents = $firestore->collection('events');
-        $newFsEvent = $fsEvents->document(Str::random(20));
+
+        if( is_null($event->firestore_reference)){
+            $event->firestore_reference = Str::random(20);
+        }
+
+        $newFsEvent = $fsEvents->document($event->firestore_reference);
         $snapshot = $newFsEvent->set([
             'databaseID' => $event->id,
             'name' => $event->name,
@@ -247,15 +253,21 @@ class EventsController extends Controller
             'address' => '',
             'description' => $event->description,
             'startDate' => $event->start,
-            'EndDate' => $event->date,
-            'image' => $event->image
+            'endDate' => $event->end,
+            'image' => url(Storage::url($event->image))
 
         ])->snapshot();
+        $event->save();
 
 
         foreach ($event->activities as $activity){
             $fsActivities = $firestore->collection('activities');
-            $newFsActivity = $fsActivities->document(Str::random(20));
+
+            if( is_null($activity->firestore_reference)){
+                $activity->firestore_reference = Str::random(20);
+            }
+
+            $newFsActivity = $fsActivities->document($activity->firestore_reference);
             $data = [
                 'databaseID' => $activity->id,
                 'name' => $activity->name,
@@ -263,7 +275,8 @@ class EventsController extends Controller
                 'code' => $activity->code,
                 'eventName' => $event->name,
                 'categoryName' => $activity->category->name,
-                'order' => 1
+                'order' => 1,
+                'event' => '/events/'.$event->firestore_reference
             ];
             $items = [];
             $dbitems = json_decode($activity->evaluation_items);
@@ -272,6 +285,7 @@ class EventsController extends Controller
             }
             $data['items'] = $items;
             $newFsActivity->set($data);
+            $activity->save();
         }
 
         $data = $snapshot->data();
