@@ -56,6 +56,10 @@ class Event extends Model
         return $this->hasMany(Activity::class);
     }
 
+    public function registrations(){
+        return $this->hasMany(Registration::class);
+    }
+
     public function scopeByZone($query, $zone_ids){
         return $query;
         return $query->orWhere(function ($query) use($zone_ids){

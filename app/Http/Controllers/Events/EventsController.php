@@ -16,6 +16,8 @@ use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
 use App\Http\Requests\SaveEventRequest;
 use App\Member;
+use App\Position;
+use App\Registration;
 use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
@@ -59,11 +61,13 @@ class EventsController extends Controller
         $zones = Zone::all();
         $fields = Field::all();
         $categories = ActivityCategory::all();
+        $positions = Position::all();
         return view('modules.events.form', [
             'event' => $event,
             'zones' => $zones,
             'fields' => $fields,
-            'categories' => $categories
+            'categories' => $categories,
+            'positions' => $positions
         ]);
     }
 
@@ -72,7 +76,8 @@ class EventsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'start' => Carbon::create($request->start)->format('Y/m/d'),
-            'end' => Carbon::create($request->end)->format('Y/m/d')
+            'end' => Carbon::create($request->end)->format('Y/m/d'),
+            'price' => $request->price
         ]);
         if ($request->has('zones') && Auth::user()->profile->level < 3){
             foreach ($request->zones as $zone_id){
@@ -94,6 +99,7 @@ class EventsController extends Controller
         $event->description = $request->description;
         $event->start = Carbon::create($request->start)->format('Y/m/d');
         $event->end = Carbon::create($request->end)->format('Y/m/d');
+        $event->price = $request->price;
         $event->save();
 
 
@@ -224,6 +230,43 @@ class EventsController extends Controller
         return response()->json([
             'error' => false,
             'data' => $activity
+        ]);
+    }
+
+    public function addRegistration(AdminEventsRequest $request, Event $event){
+        if($request->registration_type == 1 && $event->registrations()->where('type',1)->count() > 0){
+            return response()->json([
+                'error' => true,
+                'message' => 'Cada evento solo puede tener una suscripción general.'
+            ]);
+        }
+        $registration = $event->registrations()->create([
+            'type' => $request->registration_type,
+            'price' => $request->price,
+            'position_id' => ($request->has('position_id'))?$request->position_id:null,
+            'places_limit' => $request->general_limit,
+            'places_by_club_limit' => $request->by_club_limit
+        ]);
+
+        return response()->json([
+            'error' => false,
+            'data' => $registration,
+            'message' => 'El valor se ha creado con éxito'
+        ]);
+    }
+
+    public function removeRegistration(AdminEventsRequest $request, Event $event){
+        $registration = Registration::find($request->registration_id);
+        $response = $registration->delete();
+
+        if ($response){
+            $error = false;
+            $message ='El valor de inscripción ha sido eliminado con éxito.';
+        }
+
+        return response()->json([
+            'error'=> $error,
+            'message' => $message
         ]);
     }
 

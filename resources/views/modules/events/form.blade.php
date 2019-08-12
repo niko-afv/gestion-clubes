@@ -172,6 +172,143 @@
 
 
         @if(isset($event))
+            <!--Registration Form-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Valores / Precios</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form role="form" class="">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="row">
+                                            <div class="form-group col-sm-11">
+                                                <select class="select2_demo_3 form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="event_price_type">
+                                                    <option value="1">General</option>
+                                                    <option value="2">Preferencial</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-sm-11" style="display: none;">
+                                                <select class="select2_demo_3 form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="event_price_position">
+                                                    <option value="0">Selecciona una Cargo</option>
+                                                    @foreach($positions as $position)
+                                                        <option value="{{ $position->id }}">{{ $position->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-7">
+                                        <div class="row">
+                                            <div class="form-group col-sm-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">&nbsp;$ &nbsp;&nbsp;</span>
+                                                    <input name="price" placeholder="Valor" class="form-control item">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <input name="general_limit" placeholder="Limite General" class="form-control item">
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <input name="by_club_limit" placeholder="Limite por Club" class="form-control item">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="form-group col-sm-12">
+                                                <button id="add-price" class="btn btn-primary btn-block" type="button"> Agregar Valor</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Registration Table-->
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                            <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Valor</th>
+                                <th>Información Adicional</th>
+                                <th>Remover</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="d-none registration_copy">
+                                <td data-name="registration_type"></td>
+                                <td data-name="registration_price"></td>
+                                <td class="center">
+                                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                        <tbody>
+                                            <tr>
+                                                <td data-name="item_title"></td>
+                                                <td data-name="item_content"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td class="center">
+                                    <a class="remove_activity" data-id="" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                </td>
+                            </tr>
+                            @foreach($event->registrations as $registration)
+                                <tr class="">
+                                    <td data-name="registration_type">{{ ($registration->type == 1)?'General':'Preferencial' }}</td>
+                                    <td data-name="registration_price">{{ $registration->price }}</td>
+                                    <td class="center">
+                                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                                            <tbody>
+                                            @if($registration->type == 2)
+                                                <tr>
+                                                    <td data-name="item_points">Cargo Asociado</td>
+                                                    <td data-name="item_name">{{ $registration->position->name }}</td>
+                                                </tr>
+                                            @endif
+                                            @if(! is_null($registration->places_limit))
+                                                <tr>
+                                                    <td data-name="item_points">Limite de Cupos General</td>
+                                                    <td data-name="item_name">{{ $registration->places_limit }}</td>
+                                                </tr>
+                                            @endif
+                                            @if(! is_null($registration->places_by_club_limit))
+                                                <tr>
+                                                    <td data-name="item_points">Limite de Cupos por Club</td>
+                                                    <td data-name="item_name">{{ $registration->places_by_club_limit }}</td>
+                                                </tr>
+                                            @endif
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td class="center">
+                                        <a class="remove_registration" data-id="{{ $registration->id }}" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--Activity Form-->
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ibox ">
@@ -235,7 +372,7 @@
                     </div>
                 </div>
             </div>
-
+            <!--Activity Table-->
             <div class="form-group row">
                 <div class="col-sm-12">
                     <div class="table-responsive">
@@ -335,6 +472,23 @@
 
 
       $(document).ready(function(){
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "progressBar": true,
+          "preventDuplicates": false,
+          "positionClass": "toast-top-right",
+          "onclick": null,
+          "showDuration": "400",
+          "hideDuration": "1000",
+          "timeOut": "7000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+
         $('#data_5 .input-daterange').datepicker({
           keyboardNavigation: false,
           forceParse: false,
@@ -397,6 +551,40 @@
         });
 
 
+        $('select[name="event_price_type"]').change(function () {
+          var type = $('select[name="event_price_type"] option:selected').val();
+          if(type == 2){
+            $('select[name="event_price_position"]').parent().fadeIn('5000');
+          }else{
+            $('select[name="event_price_position"]').parent().fadeOut('5000');
+          }
+        })
+
+        $('#add-price').click(function () {
+          var event_id = $('input[name="event_id"]').val();
+          var position_id = $('select[name="event_price_position"] option:selected').val();
+
+          var data = {
+            price : $("input[name='price']").val(),
+            registration_type : $('select[name="event_price_type"] option:selected').val(),
+            general_limit : $("input[name='general_limit']").val(),
+            by_club_limit : $("input[name='by_club_limit']").val(),
+            _token : $("input[name='_token']").val()
+          };
+          if(position_id != 0){
+            data.position_id = position_id;
+          }
+
+          $.post('/eventos/'+event_id+'/add_registration', data, function (response) {
+            if(response.error == false){
+              BuildRegistrationTable(response.data);
+            }else{
+              toastr.error(response.message, 'Error');
+            }
+            clearActivity();
+          })
+        });
+
         @if(isset($event))
             $('.remove_zone').click(function () {
           var zone_id = $(this).data('id');
@@ -430,6 +618,23 @@
             }
           })
         })
+
+            $('.remove_registration').click(function () {
+              var registration = $(this).data('id');
+              var event_id = $('input[name="event_id"]').val();
+              var token = $("input[name='_token']").val();
+              $element = $(this);
+
+              $.post('/eventos/'+event_id+'/remove_registration', {registration_id: registration, _token: token }, function (response) {
+
+                if (response.error){
+                  toastr.warning(response.message, 'Cuidado');
+                }else {
+                  toastr.success(response.message, 'Excelente');
+                  $element.parent().parent().fadeOut(1000);
+                }
+              })
+            })
         @endif
 
 
@@ -479,6 +684,22 @@
           $cloned.find('td[data-name="item_points"]').html(item.points);
           $cloned.removeClass('d-none');
           $cloned.appendTo($('.item_copy').parent());
+        }
+
+
+        function BuildRegistrationTable(data){
+          var $cloned = $('.registration_copy').first().clone();
+          $cloned.find('td[data-name="registration_type"]').html((data.type == 1)?'General':'Preferencial')
+          $cloned.find('td[data-name="registration_price"]').html(data.price)
+          $cloned.removeClass('d-none');
+          $cloned.appendTo($('.registration_copy').parent())
+          /*
+          var items = $.parseJSON(data.evaluation_items);
+          console.log(items)
+          items.forEach(function (item) {
+            buildItemTable(item)
+          });
+          */
         }
 
         //$(".touchspin2").TouchSpin(touchspin_config);

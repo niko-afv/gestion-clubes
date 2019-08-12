@@ -52,9 +52,11 @@ Route::middleware('auth')->group(function (){
         Route::post('/{event}/desincribir/', 'EventsController@unsubscribe')->name('unsubscribe');
 
         Route::post('/{event}/remove_zone', 'EventsController@removeZone')->name('remove_zone');
-        Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_zone');
+        Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_activity');
+        Route::post('/{event}/remove_registration', 'EventsController@removeRegistration')->name('remove_registration');
 
         Route::post('/{event}/add_activity', 'EventsController@addActivity')->name('add_activity');
+        Route::post('/{event}/add_registration', 'EventsController@addRegistration')->name('add_registration');
         Route::post('/{event}/sync', 'EventsController@sync')->name('event_sync');
     });
     Route::prefix('perfil')->namespace('Profile')->group(function (){
