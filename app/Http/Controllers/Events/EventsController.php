@@ -74,8 +74,7 @@ class EventsController extends Controller
             'start' => Carbon::create($request->start)->format('Y/m/d'),
             'end' => Carbon::create($request->end)->format('Y/m/d')
         ]);
-
-        if ($request->has('zones') && Auth::user()->profile->level == 1){
+        if ($request->has('zones') && Auth::user()->profile->level < 3){
             foreach ($request->zones as $zone_id){
                 $oEvent->zones()->save(Zone::find($zone_id));
             }
@@ -98,7 +97,7 @@ class EventsController extends Controller
         $event->save();
 
 
-        if ($request->has('zones') && Auth::user()->profile->level == 1){
+        if ($request->has('zones') && Auth::user()->profile->level < 3){
             foreach ($request->zones as $zone_id){
                 $event->zones()->save(Zone::find($zone_id));
             }

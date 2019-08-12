@@ -38,17 +38,16 @@
                     </div>
                     <div class="ibox-content">
 
-                        <div class="form-group  row" id="image_form">
-                            <div class="col-sm-12">
-                                <form action="{{ route('upload_event_logo') }}" class="dropzone" id="my-awesome-dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
                     @if(isset($event))
+                        <div class="form-group  row" id="image_form">
+                                <div class="col-sm-12">
+                                    <form action="{{ route('upload_event_logo') }}" class="dropzone" id="my-awesome-dropzone">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         <form method="post" action="{{ route('event_update', $event->id) }}">
                         @else
                         <form method="post" action="{{ route('events_save') }}">
@@ -106,7 +105,7 @@
                                     <div class="form-group row" id="zones_select">
                                         <label class="col-sm-2 col-form-label">Zona (s)</label>
                                         <div class="col-sm-10">
-                                            @if(Auth::user()->profile->level == 1)
+                                            @if(Auth::user()->profile->level < 3)
                                                 @include('partials.zones_select', ['zones'=> $zones])
                                             @elseif(Auth::user()->profile->level == 0)
                                                 @include('partials.fields_select', ['fields'=> $fields])

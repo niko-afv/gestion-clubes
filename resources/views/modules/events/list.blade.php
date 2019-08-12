@@ -28,12 +28,11 @@
                     <div class="ibox-title">
                         <h5>Eventos registrados</h5>
                         @if(Auth::user()->profile->level < 3)
-                        <div class="ibox-tools">
-                            <a class="" href="{{ route('events_create') }}">
-                                <i class="fa fa-plus"></i>
-                                Agregar un evento nuevo
-                            </a>
-                        </div>
+                            <div class="">
+                                <p style="text-align: right">
+                                    <a href="{{ route('events_create') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Evento</a>
+                                </p>
+                            </div>
                         @endif
                     </div>
                     <div class="ibox-content">
