@@ -123,7 +123,7 @@ class MyClubController extends Controller
     }
 
     public function showUpdateUnit(MyClubRequest $request, Unit $unit){
-        $members = Auth::user()->member->institutable->members()->loose()->get();
+        $members = Auth::user()->member->institutable->members()->loose()->unitable()->get();
         return view('modules.clubes.unit_form', [
             'members' => $members,
             'unit' => $unit

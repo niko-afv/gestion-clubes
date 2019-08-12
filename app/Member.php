@@ -29,6 +29,14 @@ class Member extends Model
         return $query->whereNull('unit_id');
     }
 
+    // Can be added to unit, don't have important position
+    public function scopeUnitable($query){
+        return $query->whereHas('positions',function($query){
+            $query->whereIn('positions.id',[7,8]);
+        })->orDoesntHave('positions');
+    }
+
+
     public function age(){
         return Carbon::parse($this->birth_date)->age;
     }
