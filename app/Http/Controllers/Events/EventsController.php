@@ -141,7 +141,7 @@ class EventsController extends Controller
             foreach ($unit->members as $member){
                 $event->members()->save($member);
             }
-            $message = 'La unidad <strong>'. $unit->name . '</strong> fue insrita al evento <strong>'. $event->name . '</strong> exitosamente';
+            $message = 'La unidad <strong>'. $unit->name . '</strong> fue inscrita al evento <strong>'. $event->name . '</strong> exitosamente';
         }elseif ($request->type == 'member'){
             $member = Member::find($request->id);
             $event->members()->save($member);
@@ -167,11 +167,11 @@ class EventsController extends Controller
             foreach ($unit->members as $member){
                 $event->members()->detach($member->id);
             }
-            $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
+            $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está inscrita al evento <strong>'. $event->name . '</strong>';
         }elseif ($request->type == 'member'){
             $member = Member::find($request->id);
             $event->members()->detach($member->id);
-            $message = '<strong>'. $member->name . '</strong> ya no está insrita al evento <strong>'. $event->name . '</strong>';
+            $message = '<strong>'. $member->name . '</strong> ya no está inscrita al evento <strong>'. $event->name . '</strong>';
         }
 
         return response()->json([

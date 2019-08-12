@@ -20,6 +20,10 @@ class Unit extends Model
         return $this->morphToMany(Event::class, 'eventable');
     }
 
+    public function activeEvents(){
+        return $this->events()->where('active',1);
+    }
+
     public function generateCode(){
         if(! is_null($this->code)){
             return $this;
@@ -38,5 +42,9 @@ class Unit extends Model
 
     public function participate($event_id){
         return ($this->events()->where('event_id',$event_id)->count())?true:false;
+    }
+
+    public function isLocked(){
+        return ($this->activeEvents()->count() > 0)?true:false;
     }
 }

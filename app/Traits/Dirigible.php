@@ -18,7 +18,7 @@ Trait Dirigible
 
     public function directive(){
         return $this->members()->whereHas('positions',function($query){
-            $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
+            $query->whereIn('positions.id',[1,2,3,4,5,6]);
         });
     }
 }
