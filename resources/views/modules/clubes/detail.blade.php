@@ -102,7 +102,9 @@
                                                         <td></td>
                                                         <td>E-mail</td>
                                                         <td>Cargos</td>
+                                                        @if(Auth::user()->profile->level >=3)
                                                         <td>Acciones</td>
+                                                        @endif
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -123,10 +125,14 @@
                                                                 <span class="tag label label-primary">{{ strtoupper($position->name) }}</span>
                                                             @endforeach
                                                         </td>
+                                                        @if(Auth::user()->profile->level >=3)
                                                         <td>
                                                             <a style="color: #1c84c6; display: inline-block; width: 20%;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
+                                                            <!--
                                                             <a style="color: #ED5565; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
+                                                            -->
                                                         </td>
+                                                        @endif
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>
                                                         -->
