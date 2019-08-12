@@ -2,11 +2,16 @@
 
 namespace App;
 
+use App\Traits\Composable;
+use App\Traits\Dirigible;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model
 {
+    use Composable;
+    use Dirigible;
+
     public function regional(){
         return $this->morphMany(Unit::class, 'groupable')->where('type_id','3');
     }
@@ -39,5 +44,9 @@ class Field extends Model
         $events[] = $this->avaliablesByFieldEvents();
 
         return $events->collapse()->unique('id');
+    }
+
+    public function parent(){
+        return $this->hasOne(Field::class, 'id','parent_field_id');
     }
 }

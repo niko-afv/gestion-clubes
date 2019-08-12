@@ -2,16 +2,16 @@
 
 namespace App;
 
+use App\Traits\Composable;
+use App\Traits\Dirigible;
 use Illuminate\Database\Eloquent\Model;
 
 class Club extends Model
 {
+    use Composable;
+    use Dirigible;
+
     protected $fillable = ['name','logo', 'photo', 'field_id', 'zone_id', 'active'];
-
-    public function hasDirector(){
-        return $this->director()->count();
-
-    }
 
     public function scopeActivated($query){
         return $query->where('active',1);
@@ -25,28 +25,12 @@ class Club extends Model
         return $query->where('active',0);
     }
 
-    public function director(){
-        return $this->morphOne(Member::class, 'institutable')->whereHas('positions', function($query){
-            $query->where('positions.id',1);
-        });;
-    }
-
-    public function members(){
-        return $this->morphMany(Member::class, 'institutable')->orderBy('name');
-    }
-
     public function zone(){
         return $this->belongsTo(Zone::class);
     }
 
     public function units(){
         return $this->hasMany(Unit::class);
-    }
-
-    public function directive(){
-        return $this->members()->whereHas('positions',function($query){
-            $query->whereIn('positions.id',[1,2,3,4,5,6,8]);
-        });
     }
 
     public function supportTeam(){

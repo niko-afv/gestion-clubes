@@ -13,4 +13,8 @@ class Zone extends Model
     public function events(){
         return $this->morphToMany(Event::class, 'eventable');
     }
+
+    public function clubs(){
+        return $this->hasMany(Club::class);
+    }
 }

@@ -83,8 +83,20 @@ Route::middleware('auth')->group(function (){
 
         Route::post('/{unit}/sync', 'MyClubController@unitSync')->name('sync_unit');
     });
+    Route::prefix('mi_campo')->namespace('Fields')->group(function (){
+        Route::get('/', 'MyFieldController@index')->name('my_field');
+
+
+        Route::get('/miembros/nuevo', 'MyClubController@showAddMember')->name('add_member');
+        Route::get('/miembros/{member}', 'MyClubController@showUpdateMember')->name('edit_member');
+        Route::post('/miembros/guardar', 'MyClubController@saveMember')->name('save_member');
+        Route::post('/miembros/guardar/{member}', 'MyClubController@updateMember')->name('update_member');
+        Route::post('/unidad/{member}/remover_cargo', 'MyClubController@removePosition')->name('remove_position');
+        Route::post('/miembros/eliminar', 'MyClubController@deleteMember')->name('delete_member');
+    });
     Route::prefix('usuarios')->namespace('Users')->group(function (){
         Route::get('/', 'UsersController@index')->name('users_list');
+        Route::get('/create', 'UsersController@create')->name('users_create');
         Route::post('/{user}/toggle', 'UsersController@toggle')->name('user_toggle');
     });
 });
