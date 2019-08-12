@@ -1,17 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de Clubes')
+@section('title', 'Ver Usuario')
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Mi Perfil</h2>
+            <h2>Ver Usuario</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}">Principal</a>
                 </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('users_list') }}">Usuarios</a>
+                </li>
                 <li class="breadcrumb-item active">
-                    <strong>Mi Perfil</strong>
+                    <strong>{{ $user->name }}</strong>
                 </li>
             </ol>
         </div>
@@ -24,9 +27,9 @@
         <div class="row animated fadeInRight">
             <div class="col-md-4">
                 <div class="ibox ">
-                    <!--
                     <div class="ibox-title">
                         <h5>Detalles del perfil</h5>
+                        <!--
                         <div class="ibox-tools">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 <i class="fa fa-wrench"></i>
@@ -36,8 +39,8 @@
                                 </li>
                             </ul>
                         </div>
+                        -->
                     </div>
-                    -->
                     <div>
                         <div class="ibox-content no-padding border-left-right">
                             <img alt="image" class="img-fluid" src="{{ url('images/avatar.jpeg') }}">
@@ -74,13 +77,13 @@
                         </div>
                         <div class="ibox-content profile-content">
                             <h4><i class="fa fa-user"></i> <strong>{{ $user->name }}</strong></h4>
-                            <h5><i class="fa fa-envelope"></i> {{ Auth::user()->email }}</h5>
-                            <h5><i class="fa fa-puzzle-piece"></i> {{ Auth::user()->profile->name }}</h5>
-                            <h5><i class="fa fa-home"></i> {{ Auth::user()->member->institutable->name }}</h5>
+                            <h5><i class="fa fa-envelope"></i> {{ $user->email }}</h5>
+                            <h5><i class="fa fa-puzzle-piece"></i> {{ $user->profile->name }}</h5>
+                            <h5><i class="fa fa-home"></i> {{ $user->member->institutable->name }}</h5>
                             <!--<p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>-->
                             @if($user->resume)
                             <h5>
-                                Acerca de mi
+                                Descripción
                             </h5>
                             <p>
                                 {{ $user->resume }}
@@ -93,7 +96,7 @@
             <div class="col-md-8">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Mi Actividad</h5>
+                        <h5>Actividad del usuario</h5>
                         <!--
                         <div class="ibox-tools">
                             <a class="collapse-link">
@@ -124,8 +127,8 @@
                                     -->
                                     <div class="media-body ">
                                         <small class="float-right text-navy">{{ $log->created_at->diffForHumans() }}</small>
-                                        <strong>{{ $log->user->name }}</strong> {{ $log->log_type->description }}. <br>
-                                        <small class="text-muted">{{ $log->created_at->format('d/ M/ Y H:i') }}</small>
+                                        <strong>{{ $log->user->name }}</strong> {{ $log->log_type->description }}. {{ ($log->loggable)?$log->loggable->name:'' }}<br>
+                                        <small class="text-muted">{{ $log->created_at->format('d / M / Y H:i') }}</small>
                                         <!--
                                         <div class="actions">
                                             <a href=""  class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>

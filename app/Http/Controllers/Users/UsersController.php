@@ -36,4 +36,10 @@ class UsersController extends Controller
             'fields' => $fields
         ]);
     }
+
+    public function detail(AdminUsersRequest $request, User $user){
+        return view('modules.users.detail', [
+            'user' => $user
+        ]);
+    }
 }
