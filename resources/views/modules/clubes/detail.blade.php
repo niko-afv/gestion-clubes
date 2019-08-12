@@ -168,7 +168,7 @@
                                                                         @if(Auth::user()->profile->level >= 3)
                                                                             <a href="{{ route('edit_unit', $unit->id) }}" class="btn btn-outline pull-right" title="Modificar"><i class="fa fa-edit fa-2x"></i></a>
                                                                         @endif
-                                                                        @if(Auth::user()->profile->level < 3)
+                                                                        @if(Auth::user()->profile->level == 6)
                                                                             <a data-url="{{ route('sync_unit', $unit->id) }}" class="btn btn-outline pull-right unit_sync" title="Sincroizar"><i class="fa fa-repeat fa-2x"></i></a>
                                                                         @endif
                                                                     </p>

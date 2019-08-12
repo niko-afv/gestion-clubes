@@ -41,6 +41,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Director</th>
+                                    <th>Nº Unidades</th>
                                     <th>Zona</th>
                                     <th>Status</th>
                                     <th>Acciones</th>
@@ -51,6 +52,7 @@
                                 <tr class="">
                                     <td>{{ $club->name }}</td>
                                     <td>{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</td>
+                                    <td>{{ $club->units->count() }}</td>
                                     <td>{{ $club->zone->name }}</td>
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
