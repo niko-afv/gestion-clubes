@@ -150,7 +150,7 @@
 
                                                 </p>
                                                 <p style="text-align: right">
-                                                    <a href="{{ route('add_unit') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Unidad</a>
+                                                    <a href="{{ route('add_unit') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nueva Unidad</a>
                                                 </p>
                                             </div>
                                         @endif

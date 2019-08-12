@@ -5,7 +5,7 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Crear una unidad</h2>
+            <h2>{{ (isset($unit))?'Actualizar Unidad':'Crear una unidad' }}</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{{ route('home') }}">Principal</a>
