@@ -17,6 +17,10 @@ class Member extends Model
         return $this->morphTo();
     }
 
+    public function user(){
+        return $this->hasOne(User::class);
+    }
+
     public function unit(){
         return $this->belongsTo(Unit::class);
     }

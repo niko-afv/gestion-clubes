@@ -87,12 +87,13 @@ Route::middleware('auth')->group(function (){
         Route::get('/', 'MyFieldController@index')->name('my_field');
 
 
-        Route::get('/miembros/nuevo', 'MyClubController@showAddMember')->name('add_member');
-        Route::get('/miembros/{member}', 'MyClubController@showUpdateMember')->name('edit_member');
-        Route::post('/miembros/guardar', 'MyClubController@saveMember')->name('save_member');
-        Route::post('/miembros/guardar/{member}', 'MyClubController@updateMember')->name('update_member');
-        Route::post('/unidad/{member}/remover_cargo', 'MyClubController@removePosition')->name('remove_position');
-        Route::post('/miembros/eliminar', 'MyClubController@deleteMember')->name('delete_member');
+        Route::get('/miembros/nuevo', 'MyFieldController@showAddMember')->name('add_field_member');
+        Route::get('/miembros/{member}', 'MyFieldController@showUpdateMember')->name('edit_field_member');
+        Route::get('/miembros/{member}/usuario', 'MyFieldController@showUserForm')->name('user_field_member');
+        Route::post('/miembros/{member}/usuario/guardar', 'MyFieldController@saveUser')->name('save_field_user');
+        Route::post('/miembros/guardar', 'MyFieldController@saveMember')->name('save_field_member');
+        Route::post('/miembros/guardar/{member}', 'MyFieldController@updateMember')->name('update_field_member');
+        Route::post('/unidad/{member}/remover_cargo', 'MyFieldController@removePosition')->name('remove_field_position');
     });
     Route::prefix('usuarios')->namespace('Users')->group(function (){
         Route::get('/', 'UsersController@index')->name('users_list');

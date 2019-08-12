@@ -28,9 +28,7 @@
                     <div class="ibox-title">
                         <h5>Lista de todos los usuarios registrados para el campo</h5>
                         <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <a href="{{ route('users_create') }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Usuario</a>
                         </div>
                     </div>
                     <div class="ibox-content">

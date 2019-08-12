@@ -16,7 +16,6 @@ class UsersController extends Controller
             'usuarios' => User::all()
         ]);
     }
-
     public function toggle(AdminUsersRequest $request ,$user){
         $oUser = tap(User::find($user), function($user){
             $user->toggle();
@@ -27,6 +26,14 @@ class UsersController extends Controller
         return response()->json([
             'isActived' => $oUser->active,
             'message' => 'El Usuario '. $oUser->name . ' ha sido '. $activeText . ' exitosamente'
+        ]);
+    }
+    public function create(AdminUsersRequest $request){
+        $zones = Zone::all();
+        $fields = Field::all();
+        return view('modules.events.form', [
+            'zones' => $zones,
+            'fields' => $fields
         ]);
     }
 }

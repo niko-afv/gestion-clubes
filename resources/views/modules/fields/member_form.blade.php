@@ -39,9 +39,9 @@
                     <div class="ibox-content">
 
                         @if(isset($member))
-                            <form method="post" action="{{ route('update_member', $member) }}">
+                            <form method="post" action="{{ route('update_field_member', $member) }}">
                         @else
-                            <form method="post" action="{{ route('save_member') }}">
+                            <form method="post" action="{{ route('save_field_member') }}">
                         @endif
 
                             <div class="form-group  row">

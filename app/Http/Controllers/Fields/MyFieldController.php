@@ -3,22 +3,29 @@
 namespace App\Http\Controllers\Fields;
 
 use App\Events\AddedMemberEvent;
+use App\Events\AddedUserEvent;
 use App\Events\CreatedUnitEvent;
 use App\Events\DeletedMemberEvent;
 use App\Events\UpdatedMemberEvent;
 use App\Events\UpdatedUnitEvent;
+use App\Http\Requests\AddFieldMemberRequest;
 use App\Http\Requests\AdminEventsRequest;
+use App\Http\Requests\AsRegionalRequest;
 use App\Http\Requests\MyClubRequest;
+use App\Http\Requests\SaveUserRequest;
 use App\Imports\SGCMembersImport;
 use App\Imports\SGCToMembersImport;
+use App\Profile;
 use App\Unit;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddMemberRequest;
 use App\Http\Requests\AddUnitRequest;
 use App\Member;
 use App\Position;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Matrix\Exception;
@@ -27,21 +34,21 @@ use Morrislaptop\Firestore\Firestore;
 class MyFieldController extends Controller
 {
 
-    public function index(AdminEventsRequest $request){
+    public function index(AsRegionalRequest $request){
         $field = Auth::user()->member->institutable;
         return view('modules.fields.detail',[
             'field' => $field
         ]);
     }
 
-    public function showAddMember(AdminEventsRequest $request){
+    public function showAddMember(AsRegionalRequest $request){
         $position = Position::all();
-        return view('modules.clubes.member_form', [
+        return view('modules.fields.member_form', [
             'positions' => $position
         ]);
     }
 
-    public function saveMember(AddMemberRequest $request){
+    public function saveMember(AddFieldMemberRequest $request){
 
         $oMember = Member::create([
             'name' => $request->name,
@@ -50,7 +57,7 @@ class MyFieldController extends Controller
             'phone' => $request->phone,
             'dni' => $request->dni,
             'institutable_id' => $request->club_id,
-            'institutable_type' => 'App\\Club',
+            'institutable_type' => 'App\\Field',
             'active' => 1
         ]);
 
@@ -62,23 +69,49 @@ class MyFieldController extends Controller
             }
         }
 
-        return redirect(route('my_club'));
+        return redirect(route('my_field'));
     }
 
-    public function showUpdateMember(AdminEventsRequest $request, Member $member){
+    public function showUserForm(AsRegionalRequest $request, Member $member){
+        $profiles = Profile::all();
+        return view('modules.fields.user_form', [
+            'profiles' => $profiles,
+            'member' => $member
+        ]);
+    }
+
+    public function saveUser(SaveUserRequest $request, Member $member){
+        $data = [
+            'email' => $member->email,
+            'name' => $member->name,
+            'password' => Hash::make($request->password),
+            'active' => 1
+        ];
+        if (isset($member->user)){
+            $oUser = User::find($member->user()->update($data));
+        }else{
+            $oUser = $member->user()->create($data);
+        }
+
+        event(new AddedUserEvent($oUser));
+
+        return redirect(route('my_field'));
+    }
+
+    public function showUpdateMember(AsRegionalRequest $request, Member $member){
         $newarray = [];
         foreach ($member->positions as $position){
             $newarray[] = $position->id;
         }
 
         $position = Position::all()->except($newarray)->all();
-        return view('modules.clubes.member_form', [
+        return view('modules.fields.member_form', [
             'positions' => $position,
             'member' => $member
         ]);
     }
 
-    public function updateMember(AddMemberRequest $request, Member $member){
+    public function updateMember(AddFieldMemberRequest $request, Member $member){
         $member->name = $request->name;
         $member->birth_date = Carbon::create($request->birthdate)->format('Y/m/d');
         $member->email = $request->email;
@@ -94,7 +127,7 @@ class MyFieldController extends Controller
             }
         }
 
-        return redirect(route('my_club'));
+        return redirect(route('my_field'));
     }
 
     public function removePosition(MyClubRequest $request, Member $member){

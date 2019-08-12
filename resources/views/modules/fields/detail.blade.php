@@ -39,13 +39,19 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
+                        <!--
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Estado:</dt> </div>
                             <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label {{($field->active)?'label-primary':'label-danger'}}">{{ ($field->active)?'ACTIVO':'INACTIVO' }}</span></dd></div>
                         </dl>
+                        -->
                         <dl class="row mb-0">
                                 <div class="col-sm-4 text-sm-right"><dt>Director:</dt> </div>
                                 <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ ($field->hasDirector())?$field->director->name:'Director no asociado' }}</dd> </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right"><dt>Nº Zonas:</dt> </div>
+                            <div class="col-sm-8 text-sm-left"><dd class="mb-1">{{ $field->zones->count()  }}</dd> </div>
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Campo Superior:</dt> </div>
@@ -67,18 +73,13 @@
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
                                         <div class="full-height-scroll">
-                                            @if(Auth::user()->profile->level >=3)
+                                            @if(Auth::user()->profile->level <3)
                                             <div class="">
                                                 <p>
 
                                                 </p>
                                                 <p style="text-align: right">
-                                                    <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
-                                                    &nbsp;
-
-                                                    <a href="{{ route('import_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-table"></i>&nbsp;Importar</a>
-
-
+                                                    <a href="{{ route('add_field_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
                                                 </p>
                                             </div>
                                             @endif
@@ -116,8 +117,15 @@
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
+                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" href="{{ route('edit_field_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
+                                                            @if(isset($member->user))
+                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('user_field_member',[$member->id]) }}" class="btn btn-outline btn-link" title="Cambiar password"><i class="fa fa-key"></i></a>
+                                                            @else
+                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('user_field_member',[$member->id]) }}" class="btn btn-outline btn-link" title="Asignar usuario"><i class="fa fa-user-plus"></i></a>
+                                                            @endif
+                                                            <!--
                                                             <a style="color: #ED5565; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
+                                                            -->
                                                         </td>
                                                         <!--
                                                         <td class="client-status"><span class="label label-primary">Active</span></td>
