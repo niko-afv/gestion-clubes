@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Clubs;
 
 use App\Club;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminEventsRequest;
+use App\Http\Requests\AdminUsersRequest;
 use App\Imports\ClubsImport;
 use App\Imports\MembersImport;
 use App\Unit;
@@ -18,7 +20,7 @@ use Morrislaptop\Firestore\Query;
 
 class ClubsListController extends Controller
 {
-    public function index(){
+    public function index(AdminEventsRequest $request){
         $clubes = Club::all();
         return view('modules.clubes.list', [
             'clubes' => $clubes
@@ -47,7 +49,7 @@ class ClubsListController extends Controller
         ]);
     }
 
-    public function sync(Firestore $firestore, Club $club){
+    public function sync(AdminUsersRequest $request, Firestore $firestore, Club $club){
         //$fsZone = $firestore->collection('zones')->document($club->zone->firestore_reference);
         $fsClubs = $firestore->collection('clubs');
         $newFsClub = $fsClubs->document(Str::random(20));

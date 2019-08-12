@@ -11,7 +11,11 @@
                     <a href="{{ route('home') }}">Principal</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('clubes_list') }}">Clubes</a>
+                    @if(Auth::user()->profile->level < 3)
+                        <a href="{{ route('clubes_list') }}">Clubes</a>
+                    @else
+                        <a href="">Mi Club</a>
+                    @endif
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>{{ $club->name }}</strong>

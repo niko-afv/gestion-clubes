@@ -11,7 +11,7 @@
                     <a href="{{ route('home') }}">Principal</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('clubes_list') }}">Clubes</a>
+                    <a href="">Mi Campo</a>
                 </li>
                 <li class="breadcrumb-item active">
                     <strong>{{ $field->name }}</strong>
