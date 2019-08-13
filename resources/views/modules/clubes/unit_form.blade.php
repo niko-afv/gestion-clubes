@@ -48,7 +48,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($unit)?$unit->name:old('name') }}" {{ ($unit->isLocked())?'disabled':'' }}>
+                                        <span class="input-group-addon"><i class="fa fa-users"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($unit)?$unit->name:old('name') }}" {{ (isset($unit) && $unit->isLocked())?'disabled':'' }}>
                                     </div>
                                     @if ($errors->has('name'))
                                         <div class="alert alert-danger">
@@ -61,7 +61,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Descripción</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description" {{ ($unit->isLocked())?'disabled':'' }}>{{ isset($unit)?$unit->description:old('description') }}</textarea>
+                                    <textarea class="form-control" placeholder="Se aconseja indicar el rango de edad de sus miembros, el significado del nombre, etc." name="description" {{ (isset($unit) && $unit->isLocked())?'disabled':'' }}>{{ isset($unit)?$unit->description:old('description') }}</textarea>
                                     @if ($errors->has('description'))
                                         <div class="alert alert-danger">
                                             {{ $errors->first('description') }}
@@ -73,7 +73,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Añadir Integrantes</label>
                                 <div class="col-sm-9">
-                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple tabindex="-1" aria-hidden="true" name="members[]" {{ ($unit->isLocked())?'disabled':'' }}>
+                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple tabindex="-1" aria-hidden="true" name="members[]" {{ (isset($unit) && $unit->isLocked())?'disabled':'' }}>
                                         @foreach($members as $member)
                                             <option value="{{ $member->id }}">{{ $member->name }}</option>
                                         @endforeach
@@ -87,13 +87,7 @@
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
-                                @if(isset($unit) && !$unit->isLocked())
-                                <div class="col-sm-6 col-sm-offset-2">
-                                    {{ csrf_field() }}
-                                    <input hidden name="club_id" value="{{ Auth::user()->member->institutable->id }}">
-                                    <button class="btn btn-primary btn-lg pull-right" type="submit">Guardar</button>
-                                </div>
-                                @else
+                                @if(isset($unit) && $unit->isLocked())
                                     <div class="col-sm-12 col-sm-offset-2">
                                         <div class="alert alert-warning">
                                             <big class="text-center">
@@ -106,6 +100,12 @@
 
                                             <a class="alert-link" href="{{ route('events_list') }}">Ir a ventos</a>
                                         </div>
+                                    </div>
+                                @else
+                                    <div class="col-sm-6 col-sm-offset-2">
+                                        {{ csrf_field() }}
+                                        <input hidden name="club_id" value="{{ Auth::user()->member->institutable->id }}">
+                                        <button class="btn btn-primary btn-lg pull-right" type="submit">Guardar</button>
                                     </div>
                                 @endif
                             </div>
