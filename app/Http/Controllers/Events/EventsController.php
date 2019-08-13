@@ -76,8 +76,7 @@ class EventsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'start' => Carbon::create($request->start)->format('Y/m/d'),
-            'end' => Carbon::create($request->end)->format('Y/m/d'),
-            'price' => $request->price
+            'end' => Carbon::create($request->end)->format('Y/m/d')
         ]);
         if ($request->has('zones') && Auth::user()->profile->level < 3){
             foreach ($request->zones as $zone_id){
@@ -99,7 +98,6 @@ class EventsController extends Controller
         $event->description = $request->description;
         $event->start = Carbon::create($request->start)->format('Y/m/d');
         $event->end = Carbon::create($request->end)->format('Y/m/d');
-        $event->price = $request->price;
         $event->save();
 
 
