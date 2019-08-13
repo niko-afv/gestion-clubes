@@ -31,6 +31,7 @@
                     <div class="ibox-title">
                         <h5>Ingrese los datos del nuevo evento</h5>
                         <div class="ibox-tools">
+                            <small>(*) Campos Obligatorio</small>
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
@@ -55,7 +56,7 @@
                             <div class="form-group  row">
                                 <div class="col-sm-7">
                                     <div class="row">
-                                        <label class="col-sm-2 col-form-label">Nombre</label>
+                                        <label class="col-sm-2 col-form-label">Nombre <small>(*)</small></label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" name="name" value="{{ isset($event)?$event->name:old('name') }}">
                                             @if ($errors->has('name'))
@@ -79,7 +80,7 @@
                                     </div>
                                     <div class="hr-line-dashed"></div>
                                     <div class="form-group row" id="data_5">
-                                        <label class="col-sm-2 col-form-label">Duración</label>
+                                        <label class="col-sm-2 col-form-label">Duración <small>(*)</small></label>
                                         <div class="col-sm-10">
                                             <div class="input-daterange input-group" id="datepicker">
                                                 <span class="input-group-addon">&nbsp;desde &nbsp;&nbsp;</span>
@@ -103,7 +104,7 @@
                                     </div>
                                     <div class="hr-line-dashed"></div>
                                     <div class="form-group row" id="zones_select">
-                                        <label class="col-sm-2 col-form-label">Zona (s)</label>
+                                        <label class="col-sm-2 col-form-label">Zona (s)  <small>(*)</small></label>
                                         <div class="col-sm-10">
                                             @if(Auth::user()->profile->level < 3)
                                                 @include('partials.zones_select', ['zones'=> $zones])
@@ -177,8 +178,9 @@
                 <div class="col-lg-12">
                     <div class="ibox ">
                         <div class="ibox-title">
-                            <h5>Valores / Precios</h5>
+                            <h5>Inscripciones (Valores y Cupos)</h5>
                             <div class="ibox-tools">
+                                <small>(*) Campos Obligatorio</small>
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
@@ -190,6 +192,7 @@
                                     <div class="col-sm-5">
                                         <div class="row">
                                             <div class="form-group col-sm-11">
+                                                <small>(*)</small>
                                                 <select class="select2_demo_3 form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="event_price_type">
                                                     <option value="1">General</option>
                                                     <option value="2">Preferencial</option>
@@ -209,16 +212,17 @@
                                     <div class="col-sm-7">
                                         <div class="row">
                                             <div class="form-group col-sm-12">
+                                                <small>(*)</small>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">&nbsp;$ &nbsp;&nbsp;</span>
                                                     <input name="price" placeholder="Valor" class="form-control item">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <input name="general_limit" placeholder="Limite General" class="form-control item">
+                                                <input name="general_limit" placeholder="Limite de Cupos General" class="form-control item">
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <input name="by_club_limit" placeholder="Limite por Club" class="form-control item">
+                                                <input name="by_club_limit" placeholder="Limite de Cupos por Club" class="form-control item">
                                             </div>
                                         </div>
                                     </div>
@@ -270,7 +274,7 @@
                             @foreach($event->registrations as $registration)
                                 <tr class="">
                                     <td data-name="registration_type">{{ ($registration->type == 1)?'General':'Preferencial' }}</td>
-                                    <td data-name="registration_price">{{ $registration->price }}</td>
+                                    <td data-name="registration_price">${{ number_format($registration->price,0,'.',',') }}</td>
                                     <td class="center">
                                         <table class="table table-striped table-bordered table-hover dataTables-example" >
                                             <tbody>
@@ -315,6 +319,7 @@
                         <div class="ibox-title">
                             <h5>Actividades del evento</h5>
                             <div class="ibox-tools">
+                                <small>(*) Campos Obligatorio</small>
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
@@ -326,6 +331,7 @@
                                     <div class="col-sm-5">
                                         <div class="row">
                                             <div class="form-group col-sm-5">
+                                                <small>(*)</small>
                                                 <select class="select2_demo_3 form-control select2-hidden-accessible" tabindex="-1" aria-hidden="true" name="activity_category">
                                                     <option>Selecciona una alternativa</option>
                                                     @foreach($categories as $category)
@@ -339,6 +345,7 @@
                                             </div>
                                             -->
                                             <div class="form-group col-sm-7">
+                                                <small>(*)</small>
                                                 <input type="text" name="activity_name" placeholder="Nombre de Actividad" class="form-control">
                                             </div>
 
@@ -352,11 +359,12 @@
                                     <div class="col-sm-7">
                                         <div class="row for_copy">
                                             <div class="form-group col-sm-5">
+                                                <small>(*)</small>
                                                 <input name="items" placeholder="Item a Evaluar" class="form-control item">
                                             </div>
                                             <div class="form-group col-sm-5 pts_input">
+                                                <small>(*)</small>
                                                 <input class="touchspin2 form-control points" type="text" value="5" style="display: block;">
-
                                             </div>
                                             <div class="form-group col-sm-2">
                                                 <div class="btn-group">
@@ -710,6 +718,14 @@
 
 @section('style')
     <style>
+        small{
+            font-size: 7px;
+            color: #dc3545;
+        }
+        .btn-plus{
+            margin-top: 20px;
+        }
         .select2-selection{height: 35px !important;}
+        .select2-container{width: 100% !important;}
     </style>
 @endsection
