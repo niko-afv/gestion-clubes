@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', (isset($member))?'Modificar Miembro':'Crear Miembro')
+@section('title', 'Modificar/Crear Miembro')
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
