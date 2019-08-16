@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AdminEventsRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class AdminEventsRequest extends FormRequest
      */
     public function authorize()
     {
-        return ( isFieldLeader( Auth::user() ) ) ? true : false;
+        return ( Gate::allows( 'crud-events') ) ? true : false;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AsRegionalRequest extends FormRequest
 {
@@ -14,7 +15,13 @@ class AsRegionalRequest extends FormRequest
      */
     public function authorize()
     {
-        return ( isFieldLeader( Auth::user() ) ) ? true : false;
+        return ( Gate::any([
+            'list-units',
+            'list-events',
+            'crud-events',
+            'list-clubs',
+            'see-my-field'
+        ]) ) ? true : false;
     }
 
     /**
