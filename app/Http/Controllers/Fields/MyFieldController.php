@@ -56,7 +56,7 @@ class MyFieldController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'dni' => $request->dni,
-            'institutable_id' => $request->club_id,
+            'institutable_id' => Auth::user()->member->institutable->id,
             'institutable_type' => 'App\\Field',
             'active' => 1
         ]);
