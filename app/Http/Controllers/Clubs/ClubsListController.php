@@ -6,6 +6,7 @@ use App\Club;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
+use App\Http\Requests\AsRegionalRequest;
 use App\Imports\ClubsImport;
 use App\Imports\MembersImport;
 use App\Unit;
@@ -20,7 +21,7 @@ use Morrislaptop\Firestore\Query;
 
 class ClubsListController extends Controller
 {
-    public function index(AdminEventsRequest $request){
+    public function index(AsRegionalRequest $request){
         $clubes = Club::all();
         return view('modules.clubes.list', [
             'clubes' => $clubes

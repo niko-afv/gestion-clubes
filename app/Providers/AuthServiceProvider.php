@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('list-units', function ($user){
-            return ( isAdmin( $user ) || isFieldLeader($user) );
+            return ( isAdmin( $user ) || isFieldLeader($user) || isZoneLeader($user) );
         });
 
         Gate::define('crud-units', function ($user){
@@ -43,11 +43,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('crud-events', function ($user){
-            return ( isAdmin( $user ) || isFieldLeader($user) );
+            return ( isAdmin( $user ) || isFieldLeader($user) || isZoneLeader($user) );
         });
 
         Gate::define('list-clubs', function ($user){
-            return ( isAdmin( $user ) || isFieldLeader($user) );
+            return ( isAdmin( $user ) || isFieldLeader($user) || isZoneLeader($user) );
         });
 
         Gate::define('see-my-club', function ($user){
@@ -55,7 +55,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('see-my-field', function ($user){
-            return ( isAdmin( $user ) || isFieldLeader($user) ) ;
+            return ( isAdmin( $user ) || isFieldLeader($user) || isZoneLeader($user) );
         });
     }
 }

@@ -53,7 +53,7 @@
                                     <td>{{ $club->name }}</td>
                                     <td>{{ ($club->hasDirector())?$club->director->name:'Director no asociado' }}</td>
                                     <td>{{ $club->units->count() }}</td>
-                                    <td>{{ $club->zone->name }}</td>
+                                    <td>{{ ($club->hasZone())?$club->zone->name:'Zona no asociada' }}</td>
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
                                         <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; </button>
@@ -67,7 +67,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $usuario->created_at->diffForHumans() }}</td>
+                                    <td>{{ ($usuario->created_at)?$usuario->created_at->diffForHumans():'Sin Registro' }}</td>
                                     <td>{{ $usuario->lastLogin() }}</td>
                                     <td>
                                         <button onclick="window.location.replace('{{ route('users_detail',['user'=>$usuario->id]) }}');" title="Ver Usuario" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
