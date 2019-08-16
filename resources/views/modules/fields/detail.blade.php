@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de Clubes')
+@section('title', 'Mi Campo')
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
