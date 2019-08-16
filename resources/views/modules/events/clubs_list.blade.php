@@ -105,9 +105,7 @@
 
 
 
-                        @if(Auth::user()->profile->level <= 1)
-
-
+                        @can('crud-events')
                             <div class="row">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover dataTables-example" >
@@ -142,8 +140,7 @@
                                     </table>
                                 </div>
                             </div>
-                        @endif
-
+                        @endcan
                     </div>
                 </div>
             </div>
