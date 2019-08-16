@@ -15,7 +15,7 @@ class MyClubRequest extends FormRequest
      */
     public function authorize(Request $request)
     {
-        if ( Auth::user()->profile->level>=3){
+        if ( isClubLeader(Auth::user() ) ){
             if(($request->has('club_id'))){
                if(Auth::user()->member->institutable->id == $request->club_id){
                    return true;

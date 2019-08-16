@@ -14,9 +14,7 @@ class AsRegionalRequest extends FormRequest
      */
     public function authorize()
     {
-        if ( Auth::user()->profile->level < 3){
-            return true;
-        }
+        return ( isFieldLeader( Auth::user() ) ) ? true : false;
     }
 
     /**

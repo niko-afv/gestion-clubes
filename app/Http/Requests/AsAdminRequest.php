@@ -14,8 +14,6 @@ class AsAdminRequest extends FormRequest
      */
     public function authorize()
     {
-        if ( Auth::user()->profile->id == 6){
-            return true;
-        }
+        return ( isAdmin( Auth::user() ) ) ? true : false;
     }
 }
