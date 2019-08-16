@@ -66,7 +66,7 @@ class EventsController extends Controller
     }
 
     public function showUpdate(AdminEventsRequest $request, Event $event){
-        $zones = Zone::all();
+        $zones = Zone::all()->diff($event->zones);
         $fields = Field::all();
         $categories = ActivityCategory::all();
         $positions = Position::all();
