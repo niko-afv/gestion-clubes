@@ -46,7 +46,7 @@ class SGCToMembersImport implements ToModel, WithHeadingRow
                 'dni' => $row['rut'],
                 'email' => mb_strtolower($row['email']),
                 'phone' => $row['telefono'],
-                'birth_date' => Carbon::createFromFormat('d/m/Y',$row['fecha_nacimiento']),
+                'birth_date' => ($row['fecha_nacimiento'])?Carbon::createFromFormat('d/m/Y',$row['fecha_nacimiento']):null,
                 'institutable_id' => Auth::user()->member->institutable->id,
                 'sgc_code' => $row['codigo_sgc'],
                 'institutable_type' => 'App\\Club'
