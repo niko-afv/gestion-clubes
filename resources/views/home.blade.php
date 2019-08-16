@@ -48,7 +48,7 @@
                     <h5>Eventos</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{{ 0 }}</h1>
+                    <h1 class="no-margins">{{ Auth::user()->member->institutable->events->count() }}</h1>
                     <!--
                     <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
                     -->

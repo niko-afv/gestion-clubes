@@ -17,7 +17,8 @@
         "laravel/tinker": "^1.0",
         "laraveles/spanish": "^1.2",
         "maatwebsite/excel": "^3.1",
-        "mwpeng/firestore-php-laravel": "^0.1.12"
+        "mwpeng/firestore-php-laravel": "^0.1.12",
+        "myclabs/php-enum": "^1.7"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -47,7 +48,8 @@
         ],
         "files": [
             "app/Helpers/Navigation.php",
-            "app/Http/Helpers/Navigation.php"
+            "app/Http/Helpers/Navigation.php",
+            "app/Helpers/Permission.php"
         ]
     },
     "autoload-dev": {

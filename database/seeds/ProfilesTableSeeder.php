@@ -18,17 +18,17 @@ class ProfilesTableSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => 'Director Regional',
-                'level' => 0
+                'level' => 1
             ],
             [
                 'id' => 2,
                 'name' => 'Secretario Regional',
-                'level' => 0
+                'level' => 1
             ],
             [
                 'id' => 3,
                 'name' => 'Regional de Zona',
-                'level' => 1
+                'level' => 2
             ],
             [
                 'id' => 4,
@@ -43,7 +43,7 @@ class ProfilesTableSeeder extends Seeder
             [
                 'id' => 6,
                 'name' => 'Administrador',
-                'level' => 0
+                'level' => -1
             ],
         ];
 

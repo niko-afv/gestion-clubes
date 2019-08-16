@@ -23,39 +23,42 @@
                 <a href="{{ route('home') }}"><i class="fa fa-dashboard fa-2x"></i> <span class="nav-label">Principal</span></a>
             </li>
 
-            @if(Auth::user()->profile->level >= 3)
+            @can('see-my-club')
                 <li class="{{ isActiveRoute('/mi_club') }}">
                     <a href="{{ route('my_club') }}"><i class="fa fa-home fa-2x"></i> <span class="nav-label">Mi Club</span></a>
                 </li>
-            @endif
+            @endcan
 
-            @if(Auth::user()->profile->level < 3)
+            @can('see-my-field')
                 <li class="{{ isActiveRoute('/mi_campo') }}">
                     <a href="{{ route('my_field') }}"><i class="fa fa-home fa-2x"></i> <span class="nav-label">Mi Campo</span></a>
                 </li>
-            @endif
+            @endcan
 
-            @if(Auth::user()->profile->level < 3)
+            @can('list-clubs')
             <li class="{{ isActiveRoute('/clubes') }}">
                 <a href="{{ route('clubes_list') }}"><i class="fa fa-object-group fa-2x"></i> <span class="nav-label">Clubes</span></a>
             </li>
-            @endif
+            @endcan
 
-            @if(Auth::user()->profile->level < 3)
+            @can('list-units')
                 <li class="{{ isActiveRoute('/unidades') }}">
                     <a href="{{ route('unidades_list') }}"><i class="fa fa-users fa-2x"></i> <span class="nav-label">Unidades</span></a>
                 </li>
-            @endif
+            @endcan
 
+
+            @can('list-events')
             <li class="{{ isActiveRoute('/eventos') }}">
                 <a href="{{ route('events_list') }}"><i class="fa fa-bandcamp fa-2x"></i> <span class="nav-label">Eventos</span> </a>
             </li>
+            @endcan
 
-            @if(Auth::user()->profile->id >= 6)
+            @can('list-users')
                 <li class="{{ isActiveRoute('/usuarios') }}">
                     <a href="{{ route('users_list') }}"><i class="fa fa-users fa-2x"></i> <span class="nav-label">Usuarios</span></a>
                 </li>
-            @endif
+            @endcan
         </ul>
 
     </div>

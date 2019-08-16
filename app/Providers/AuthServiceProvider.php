@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use function foo\func;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,6 +26,28 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('list-users', function ($user){
+            return isAdmin( $user );
+        });
+
+        Gate::define('list-units', function ($user){
+            return ( isAdmin( $user ) || isFieldLeader($user) );
+        });
+
+        Gate::define('list-events', function ($user){
+            return true;
+        });
+
+        Gate::define('list-clubs', function ($user){
+            return ( isAdmin( $user ) || isFieldLeader($user) );
+        });
+
+        Gate::define('see-my-club', function ($user){
+            return isClubLeader( $user );
+        });
+
+        Gate::define('see-my-field', function ($user){
+            return ( isAdmin( $user ) || isFieldLeader($user) ) ;
+        });
     }
 }
