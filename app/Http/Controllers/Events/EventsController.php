@@ -14,6 +14,8 @@ use App\Field;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
+use App\Http\Requests\AsClubRequest;
+use App\Http\Requests\EventSuscribeRequest;
 use App\Http\Requests\SaveEventRequest;
 use App\Member;
 use App\Position;
@@ -22,19 +24,25 @@ use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
 use Google\Cloud\Firestore\FieldPath;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Matrix\Exception;
 use Morrislaptop\Firestore\Firestore;
 
 class EventsController extends Controller
 {
     public function index(){
-        if(Auth::user()->profile->level == 0){
-            $events = Auth::user()->member->institutable->AllAvaliableEvents();
-        }else{
+        if( isAdmin(Auth::user() ) ) {
+            $events = Event::all();
+        }elseif( isFieldLeader( Auth::user() ) ){
+            $events = Auth::user()->member->institutable->allAvaliableEvents();
+        }elseif( isClubLeader( Auth::user() ) ){
             $events = Auth::user()->member->institutable->avaliablesByZonesEvents();
+        }else{
+            abort(403, 'Unauthorized action.');
         }
 
         return view('modules.events.list', [
@@ -116,8 +124,18 @@ class EventsController extends Controller
         return redirect()->route('events_list');
     }
 
-    public function toggle(AdminEventsRequest $request ,$event){
-        $oEvent = tap(Event::find($event), function($event){
+    public function toggle(AdminEventsRequest $request , Event $event){
+
+        if ( !$event->active && !$event->isRegistrable()){
+            return response()->json([
+                'error' => true,
+                'isActived' => $event->active,
+                'message' => 'Para activar este evento, debe asignarle Valores de inscripción'
+            ]);
+        }
+
+
+        $oEvent = tap($event, function($event){
             $event->toggle();
         });
         $activeText = ($oEvent->active == 1)?'activado':'desactivado';
@@ -129,28 +147,74 @@ class EventsController extends Controller
         ]);
     }
 
-    public function showInscribe($event_id){
-        $event = Event::find($event_id);
+    public function showInscribe(AsClubRequest $request, Event $event){
+        if (!$event->active){
+            return redirect(route('events_list'))->with('error', 'El Evento no está activo aún');
+        }
+        $participants = collect([]);
         $club = Auth::user()->member->institutable;
+        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id);
+        $snapshot = null;
+        if($participant->count() && $participant->first()->snapshot){
+            $participants = $this->getRegistrations($event);
+        }
+
         return view('modules.events.inscribe',[
             'event' => $event,
-            'club' => $club
+            'club' => $club,
+            'snapshot' => $snapshot,
+            'participants' => $participants
         ]);
     }
 
     public function inscribe(Request $request, Event $event){
+        $unit_ids = [];
+        $member_ids = [];
+
+        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+        if($participant){
+            $units = $this->getUnits($participant->snapshot);
+            $members = $this->getMembers($participant->snapshot);
+            if ( count($units) > 0 )
+                $unit_ids = $units;
+            if ( count($members) > 0 )
+                $member_ids = $members;
+        }else{
+            // create participant object
+            $event->clubs()->save(Auth::user()->member->institutable);
+            $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+        }
+
+
         if($request->type == 'unit'){
+            $unit_ids[] = $request->id;
             $unit = Unit::find($request->id);
             $event->units()->save($unit);
             foreach ($unit->members as $member){
                 $event->members()->save($member);
             }
             $message = 'La unidad <strong>'. $unit->name . '</strong> fue inscrita al evento <strong>'. $event->name . '</strong> exitosamente';
+
         }elseif ($request->type == 'member'){
+            $member_ids[] = $request->id;
             $member = Member::find($request->id);
             $event->members()->save($member);
             $message = '<strong>'. $member->name . '</strong> se ha inscrito al evento <strong>'. $event->name . '</strong> exitosamente';
         }
+        $club = Auth::user()->member->institutable()->with([
+            'units' => function ($query) use ($unit_ids){
+                $query->whereIn('id', $unit_ids);
+            },
+            'members' => function ($query) use ($member_ids){
+                $query->whereIn('id', $member_ids);
+            },
+            'members.positions',
+            'units.members',
+            'units.members.positions',
+        ])->first();
+
+        $participant->snapshot = $club->toJson();
+        $participant->save();
 
         //dd($event->clubs()->where('clubs.id',Auth::user()->member->institutable->id)->count());
         if($event->clubs()->where('clubs.id',Auth::user()->member->institutable->id)->count() == 0){
@@ -160,29 +224,57 @@ class EventsController extends Controller
         return response()->json([
             'error' => false,
             'participate' => 1,
-            'message' => $message
+            'message' => $message,
+            'participants' => $this->getRegistrations($event)
         ]);
     }
 
     public function unsubscribe(Request $request, Event $event){
+
+        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+        $unit_ids = $this->getUnits($participant->snapshot);
+        $member_ids = $this->getMembers($participant->snapshot);
+
         if($request->type == 'unit'){
+            $unit_ids = array_diff($unit_ids, array($request->id));
             $unit = Unit::find($request->id);
             $event->units()->detach($unit->id);
             foreach ($unit->members as $member){
                 $event->members()->detach($member->id);
             }
-            $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está inscrita al evento <strong>'. $event->name . '</strong>';
+            $message = 'La unidad <strong>'. $unit->name . '</strong> ya no está inscrito(a) al evento <strong>'. $event->name . '</strong>';
         }elseif ($request->type == 'member'){
+            $member_ids = array_diff($member_ids, array($request->id));
             $member = Member::find($request->id);
             $event->members()->detach($member->id);
             $message = '<strong>'. $member->name . '</strong> ya no está inscrita al evento <strong>'. $event->name . '</strong>';
         }
 
+        $club = Auth::user()->member->institutable()->with([
+            'units' => function ($query) use ($unit_ids){
+                $query->whereIn('id', $unit_ids);
+            },
+            'members' => function ($query) use ($member_ids){
+                $query->whereIn('id', $member_ids);
+            },
+            'members.positions',
+            'units.members',
+            'units.members.positions',
+        ])->first();
+        $participant->snapshot = $club->toJson();
+        $participant->save();
+
         return response()->json([
             'error' => false,
             'participate' => 0,
-            'message' => $message
+            'message' => $message,
+            'participants' => $this->getRegistrations($event)
         ]);
+    }
+
+    public function finishInscribe(Request $request, Event $event){
+        $confirmation = $request->confirmation;
+
     }
 
     public function removeZone(AdminEventsRequest $request, Event $event){
@@ -367,6 +459,108 @@ class EventsController extends Controller
         return response()->json([
             'error' => false,
             'file_path' => Storage::url($local_path_to_file)
+        ]);
+    }
+
+
+
+
+
+
+    private function getUnits($snapshot){
+        $units_list = [];
+        $units = $this->__getUnits($snapshot);
+        if ($units){
+            foreach ($units as $unit){
+                $units_list[] = $unit->id;
+            }
+        }
+        return $units_list;
+    }
+    private function getMembers($snapshot){
+        $members_list = [];
+        $members = $this->__getMembers($snapshot);
+        if ($members){
+            foreach ($members as $member){
+                $members_list[] = $member->id;
+            }
+        }
+        return $members_list;
+    }
+    private function __getMembers($snapshot){
+        $snapshot = \GuzzleHttp\json_decode($snapshot);
+        if ($snapshot->members) {
+            return $snapshot->members;
+        }
+        return [];
+    }
+    private function __getUnits($snapshot){
+        $snapshot = \GuzzleHttp\json_decode($snapshot);
+        if ($snapshot->units){
+            return $snapshot->units;
+        }
+        return false;
+    }
+    private function getMembersFromUnits($units){
+        $members = [];
+        if ($units){
+            foreach ($units as $unit){
+                $unit_members = $unit->members;
+                foreach ($unit_members as $member){
+                    $members[] = $member;
+                }
+            }
+        }
+        return $members;
+    }
+    private function getAllMembers($snapshot){
+        $members = $this->__getMembers($snapshot);
+        $unit_members = $this->getMembersFromUnits($this->__getUnits($snapshot));
+        return array_merge($members, $unit_members);
+    }
+    private function getRegistrations($event){
+        $participant =$event->participants()->where('eventable_id', Auth::user()->member->institutable->id);
+        $snapshot = $participant->first()->snapshot;
+        $members = collect($this->getAllMembers($snapshot));
+
+        $grouped = $members->mapToGroups(function ($item, $key) use ($event){
+            $preference_registrations = $event->registrations()->preference();
+            $positions = $item->positions;
+            foreach ($positions as $position){
+                $registration_position = $preference_registrations->where('position_id', $position->id)->first();
+                if($registration_position){
+                    return [$position->id => $item->name];
+                }
+            }
+            return [0 => $item->name];
+        });
+
+        $grouped_with_price = collect();
+        foreach ($event->registrations as $registration){
+            foreach ($grouped as $key => $participants) {
+                if ($registration->type == 2) {
+                    if ($registration->position->id == $key) {
+                        $grouped_with_price[$key] = collect([
+                            'price' => $registration->price,
+                            'count' => $participants->count(),
+                            'subtotal' => ($registration->price * $participants->count()),
+                            'description' => Position::find($key)->name
+                        ]);
+                    }
+                } else {
+                    $grouped_with_price[$key] = collect([
+                        'price' => $registration->price,
+                        'count' => $participants->count(),
+                        'subtotal' => ($registration->price * $participants->count()),
+                        'description' => 'General'
+                    ]);
+                }
+            }
+        }
+
+        return collect([
+            'total' => $grouped_with_price->sum('subtotal'),
+            'items' => $grouped_with_price
         ]);
     }
 }

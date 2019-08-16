@@ -17,7 +17,7 @@ class Unit extends Model
     }
 
     public function events(){
-        return $this->morphToMany(Event::class, 'eventable');
+        return $this->morphToMany(Event::class, 'eventable','participants');
     }
 
     public function activeEvents(){

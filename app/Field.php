@@ -21,11 +21,11 @@ class Field extends Model
     }
 
     public function events(){
-        return $this->morphToMany(Event::class, 'eventable');
+        return $this->morphToMany(Event::class, 'eventable','participants');
     }
 
     public function avaliablesByZonesEvents(){
-        $zones = $this->zones()->with('events')->get();
+        $zones = $this->zones()->with('events')->get();;
         $events = new Collection();
         foreach ($zones as $zone){
             $events[] = $zone->events;
@@ -38,7 +38,7 @@ class Field extends Model
         return $this->events;
     }
 
-    public function AllAvaliableEvents(){
+    public function allAvaliableEvents(){
         $events = new Collection();
         $events[] = $this->avaliablesByZonesEvents();
         $events[] = $this->avaliablesByFieldEvents();

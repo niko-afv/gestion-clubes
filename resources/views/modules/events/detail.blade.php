@@ -90,17 +90,14 @@
                             &nbsp;
                             @if(Auth::user()->profile->level >1)
                                 @if($event->active)
-                                <a href="{{ route('show_inscribe', ['event_id' => $event->id]) }}" class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</a>
+                                    <a href="{{ route('show_inscribe', ['event_id' => $event->id]) }}" class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</a>
                                 @else
-                                <button type="button" disabled class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</button>
+                                    <button type="button" disabled class="btn btn-block btn-primary" style="color: #fff;"><i class="fa fa-hand-o-up"></i>PARTICIPAR</button>
                                 @endif
                             @endif
                         </dl>
                     </div>
                 </div>
-
-
-
 
                 @if(Auth::user()->profile->level <= 1)
                     <div class="row">

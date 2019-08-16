@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
+        <div class="col-lg-8">
             <h2>{{ $event->name }}</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
@@ -21,16 +21,81 @@
                 </li>
             </ol>
         </div>
-        <div class="col-lg-2">
-
+        <div class="col-lg-4">
+            &nbsp;
+            &nbsp;
+            <a href="{{ route('finish_registration',$event->id) }}" class="btn btn-block btn-lg btn-dark finish" style="color: #fff;">COMPLETAR INSCRIPCIÓN</a>
         </div>
     </div>
 
     <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Detalle de Pago </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive m-t">
+                        <table class="table invoice-table">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if($participants->has('items'))
+                                <tr class="for_copy d-none">
+                                    <td>
+                                        <div class="registration-description"><strong></strong></div>
+                                        <small class="registration-text"></small>
+                                    </td>
+                                    <td class="registration-count"></td>
+                                    <td class="registration-price"></td>
+                                    <td class="registration-subtotal"></td>
+                                </tr>
+                                @foreach($participants->get('items') as $key => $registration)
+                                <tr class="item-{{ $key }}">
+                                    <td>
+                                        <div class="registration-description"><strong>Inscripción {{ $registration['description'] }}</strong></div>
+                                        <small class="registration-text">Valor {{ ($key == 0)?'General':'Preferencial' }}</small>
+                                    </td>
+                                    <td class="registration-count">{{ $registration['count'] }}</td>
+                                    <td class="registration-price">$ {{ number_format($registration['price'],0,'.',',') }}</td>
+                                    <td class="registration-subtotal">$ {{ number_format( ($registration['subtotal']),0,'.',',') }}</td>
+                                </tr>
+                                @endforeach
+                            @endif
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="table invoice-total">
+                        <tbody>
+                        <tr>
+                            <td><strong>Sub Total :</strong></td>
+                            <td class="registration-total">${{ number_format($participants->get('total'),0,'.',',') }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TOTAL :</strong></td>
+                            <td class="registration-total">${{ number_format($participants->get('total'),0,'.',',') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-6">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Mis Unidades </h5>
+                    <h5>Inscribir Unidades </h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -71,11 +136,10 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-6">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Directiva / Apoyo </h5>
+                    <h5>Inscribir Directiva / Apoyo </h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -159,11 +223,68 @@
             if (response.participate == 0){
               toastr.warning(response.message, 'Cuidado');
               $element.parent().children('input').removeAttr('checked');
+              updatePaymentDetail(response.participants);
             }else {
               $element.parent().children('input').attr('checked','checked');
               toastr.success(response.message, 'Excelente');
+              updatePaymentDetail(response.participants);
             }
           })
+        });
+
+        function updatePaymentDetail(participants) {
+          clearPaymentDetail();
+          addRows(participants);
+          updateTotal(participants.total);
+        }
+
+        function addRows(participants) {
+          for (item in participants.items){
+            var group = participants.items[item];
+            $tr = $('.item-'+item);
+            if($tr.length > 0){
+              addRow($tr, group)
+            }else{
+              var $table = $('.invoice-table');
+              var $cloned = $table.find('tr.for_copy').clone();
+              addRow($cloned, group)
+              var _class = $cloned.attr('class');
+              $cloned.removeClass(_class);
+              $cloned.addClass('item-'+item);
+              $cloned.appendTo($table);
+            }
+          }
+        }
+
+        function clearPaymentDetail() {
+          $("tr[class^='item-']").remove();
+        }
+        function addRow($element, item) {
+          $element.find('.registration-description').html('<strong>Inscripción '+ item.description + '</strong>');
+          $element.find('.registration-count').html(item.count);
+          var description = (item.description == 'General')? 'General': 'Preferencial';
+          $element.find('.registration-text').html("Valor " + description);
+          $element.find('.registration-price').html('$ '+item.price);
+          $element.find('.registration-subtotal').html('$ '+item.subtotal);
+        }
+        function updateTotal(total) {
+          $('.registration-total').html(total);
+        }
+
+
+        $('.finish').click(function (e) {
+          e.preventDefault();
+          swal({
+            title: "¿Estas seguro?",
+            text: "Estas a punto de completar y cerrar la inscripción de tu Club para este evento!. Esto generará la orden de pago.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, quiero completar!",
+            closeOnConfirm: false
+          }, function () {
+            swal("Felicidades!", "Tu club ya está nscrito en este evento.", "success");
+          });
         });
       });
     </script>

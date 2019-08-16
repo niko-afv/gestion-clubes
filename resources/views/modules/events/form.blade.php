@@ -360,7 +360,7 @@
                                         <div class="row for_copy">
                                             <div class="form-group col-sm-5">
                                                 <small>(*)</small>
-                                                <input name="items" placeholder="Item a Evaluar" class="form-control item">
+                                                <input name="items" placeholder="Item a Evaluar" class="form-control activity-item">
                                             </div>
                                             <div class="form-group col-sm-5 pts_input">
                                                 <small>(*)</small>
@@ -648,7 +648,7 @@
 
         function getItems() {
           var items = [];
-          $('.item').each(function (index) {
+          $('.activity-item').each(function (index) {
             items[index] = {
               name: $(this).val(),
               points: $(this).parent().parent().find('.pts_input input').val()

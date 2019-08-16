@@ -42,7 +42,11 @@ class Member extends Model
     }
 
     public function events(){
-        return $this->morphToMany(Event::class, 'eventable');
+        return $this->morphToMany(Event::class, 'eventable', 'participants');
+    }
+
+    public function activeEvents(){
+        return $this->events()->where('active',1);
     }
 
     public function participate($event_id){
@@ -57,5 +61,9 @@ class Member extends Model
         }elseif (count($name) >=3){
             return $name[0] . ' ' . $name[2];
         }
+    }
+
+    public function isLocked(){
+        return ($this->activeEvents()->count() > 0)?true:false;
     }
 }

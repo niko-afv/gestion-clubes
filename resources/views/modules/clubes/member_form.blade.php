@@ -49,7 +49,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-user"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($member)?$member->name:old('name') }}">
+                                        <span class="input-group-addon"><i class="fa fa-user"></i></span> <input type="text" class="form-control" name="name" value="{{ isset($member)?$member->name:old('name') }}" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                     </div>
                                     @if ($errors->has('name'))
                                         <div class="alert alert-danger">
@@ -64,7 +64,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-id-card"></i></span> <input type="text" class="form-control" name="dni" value="{{ isset($member)?$member->dni:old('dni') }}">
+                                        <span class="input-group-addon"><i class="fa fa-id-card"></i></span> <input type="text" class="form-control" name="dni" value="{{ isset($member)?$member->dni:old('dni') }}" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                     </div>
                                     @if ($errors->has('dni'))
                                         <div class="alert alert-danger">
@@ -79,7 +79,7 @@
                                 <div class="col-sm-10">
                                     <div class="form-group" id="data_3">
                                         <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" name="birthdate" value="{{ isset($member)?$member->birth_date:old('birthdate') }}">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" name="birthdate" value="{{ isset($member)?$member->birth_date:old('birthdate') }}" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                         </div>
                                     </div>
                                     @if ($errors->has('birthdate'))
@@ -95,7 +95,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span><input type="text" class="form-control" name="phone" value="{{ isset($member)?$member->phone:old('phone') }}">
+                                        <span class="input-group-addon"><i class="fa fa-phone"></i></span><input type="text" class="form-control" name="phone" value="{{ isset($member)?$member->phone:old('phone') }}" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                     </div>
                                     @if ($errors->has('phone'))
                                         <div class="alert alert-danger">
@@ -110,7 +110,7 @@
 
                                 <div class="col-sm-10">
                                     <div class="input-group phone">
-                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span><input type="text" class="form-control" name="email" value="{{ isset($member)?$member->email:old('email') }}">
+                                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span><input type="text" class="form-control" name="email" value="{{ isset($member)?$member->email:old('email') }}" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                     </div>
                                     @if ($errors->has('email'))
                                         <div class="alert alert-danger">
@@ -123,7 +123,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Nuevos Cargos</label>
                                 <div class="col-sm-9">
-                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true" name="positions[]">
+                                    <select class="select2_demo_3 form-control select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true" name="positions[]" {{ (isset($member) && $member->isLocked())?'disabled':'' }}>
                                         <option>Selecciona una alternativa</option>
                                         @foreach($positions as $position)
                                             <option value="{{ $position->id }}" {{ (old('position') == $position->id)?'selected':'' }}>{{ $position->name }}</option>
@@ -138,11 +138,28 @@
                             </div>
 
                             <div class="form-group row">
+                                @if(isset($member) && $member->isLocked())
+                                    <div class="col-sm-12 col-sm-offset-2">
+                                        <div class="alert alert-warning">
+                                            <big class="text-center">
+                                                <strong>Esta miembro Está Participando de un evento activo.</strong>
+                                            </big>
+
+                                            <p>
+                                                Antes de modificarlo, debe desinscribirlo del evento.
+                                            </p>
+
+                                            <a class="alert-link" href="{{ route('events_list') }}">Ir a ventos</a>
+                                        </div>
+                                    </div>
+                                @else
                                 <div class="col-sm-6 col-sm-offset-2">
                                     {{ csrf_field() }}
                                     <input hidden name="club_id" value="{{ Auth::user()->member->institutable->id }}">
                                     <button class="btn btn-primary btn-lg pull-right" type="submit">Guardar</button>
                                 </div>
+                                @endif
+
                             </div>
 
                             @if(isset($member) && $member->positions()->count())

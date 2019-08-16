@@ -64,7 +64,7 @@
                                         @can('crud-events')
                                         <div class="switch">
                                             <div class="onoffswitch">
-                                                <input type="checkbox" {{ ($event->active)?'checked':'' }} class="onoffswitch-checkbox" id="event-{{ $event->id }}">
+                                                <input type="checkbox" {{ ($event->isRegistrable()?'':'disabled') }} {{ ($event->active)?'checked':'' }} class="onoffswitch-checkbox" id="event-{{ $event->id }}">
                                                 <label class="onoffswitch-label" data-event="{{ $event->id }}" for="event-{{ $event->id }}">
                                                     <span class="onoffswitch-inner"></span>
                                                     <span class="onoffswitch-switch"></span>
@@ -139,7 +139,11 @@
       var token = $("input[name='_token']").val();
 
       $.post('/eventos/'+event+'/toggle', {event: event, _token: token }, function (response) {
-        if (response.isActived == 0){
+        if (response.error == true) {
+          toastr.error(response.message, 'Ha ocurrido un error');
+          console.log("removido");
+          $(this).prop('disabled',true);
+        }else if (response.isActived == 0){
           toastr.warning(response.message, 'Cuidado');
         }else {
           toastr.success(response.message, 'Excelente');

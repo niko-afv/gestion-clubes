@@ -29,6 +29,7 @@ mix.styles([
   'resources/vendor/select2/select2.min.css',
   'resources/vendor/toastr/toastr.min.css',
   'resources/vendor/dropzone/dropzone.css',
+  'resources/vendor/sweetalert/sweetalert.css',
   'resources/vendor/dropzone/basic.css',
   'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.css',
 ], 'public/css/vendor.css', './');
@@ -45,6 +46,7 @@ mix.scripts([
     'resources/vendor/toastr/toastr.min.js',
     'resources/vendor/pace/pace.min.js',
     'resources/vendor/dropzone/dropzone.js',
+  'resources/vendor/sweetalert/sweetalert.min.js',
     'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.js',
     'resources/js/inspinia.js'
   ], 'public/js/app.js', './');

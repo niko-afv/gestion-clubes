@@ -20,9 +20,7 @@ class EventsTableSeeder extends Seeder
                 'name' => 'Campamento Zonal Oriente',
                 'description' => 'Campamento anual realizado por la Zona Oriente',
                 'start' => '2019-05-03',
-                'end' => '2019-05-05',
-                'eventable_id' => 4,
-                'eventable_type' => '\\App\\Zone'
+                'end' => '2019-05-05'
             ],
         ];
 
@@ -32,9 +30,7 @@ class EventsTableSeeder extends Seeder
                 'name' => $event['name'],
                 'description' => $event['description'],
                 'start' => $event['start'],
-                'end' => $event['end'],
-                'eventable_id' => $event['eventable_id'],
-                'eventable_type' => $event['eventable_type']
+                'end' => $event['end']
             ]);
         }
     }

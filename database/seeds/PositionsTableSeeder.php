@@ -11,11 +11,11 @@ class PositionsTableSeeder extends Seeder
      */
     public function run()
     {
-        //DB::table('positions')->truncate();
+        DB::table('positions')->truncate();
 
 
         $positions = [
-            /*
+
             [
                 'id' => 1,
                 'name' => 'Director',
@@ -61,7 +61,7 @@ class PositionsTableSeeder extends Seeder
                 'name' => 'Equipo de Apoyo',
                 'level' => 1
             ],
-            */
+
             [
                 'id' => 10,
                 'name' => 'Staff',

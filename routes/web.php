@@ -47,9 +47,10 @@ Route::middleware('auth')->group(function (){
 
         Route::post('/logo/upload', 'EventsController@uploadLogo')->name('upload_event_logo');
 
-        Route::get('/{event_id}/inscribir/', 'EventsController@showInscribe')->name('show_inscribe');
+        Route::get('/{event}/inscribir/', 'EventsController@showInscribe')->name('show_inscribe');
         Route::post('/{event}/inscribir/', 'EventsController@inscribe')->name('inscribe');
         Route::post('/{event}/desincribir/', 'EventsController@unsubscribe')->name('unsubscribe');
+        Route::post('/{event}/inscribir/completar', 'EventsController@finishInscribe')->name('finish_registration');
 
         Route::post('/{event}/remove_zone', 'EventsController@removeZone')->name('remove_zone');
         Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_activity');

@@ -12,19 +12,19 @@ class Event extends Model
     protected $fillable = ['name', 'description', 'start', 'end'];
 
     public function zones(){
-        return $this->morphedByMany(Zone::class,'eventable');
+        return $this->morphedByMany(Zone::class,'eventable', 'participants');
     }
 
     public function fields(){
-        return $this->morphedByMany(Field::class,'eventable');
+        return $this->morphedByMany(Field::class,'eventable', 'participants');
     }
 
     public function clubs(){
-        return $this->morphedByMany(Club::class,'eventable');
+        return $this->morphedByMany(Club::class,'eventable', 'participants');
     }
 
     public function units($club_id = null){
-        $query = $this->morphedByMany(Unit::class,'eventable');
+        $query = $this->morphedByMany(Unit::class,'eventable', 'participants');
 
         if (! is_null($club_id)){
             $query->where('units.club_id', $club_id);
@@ -32,8 +32,12 @@ class Event extends Model
         return $query;
     }
 
+    public function participants(){
+        return $this->hasMany(Participant::class);
+    }
+
     public function members($club_id = null, $position_ids = null){
-        $query = $this->morphedByMany(Member::class,'eventable');
+        $query = $this->morphedByMany(Member::class,'eventable', 'participants');
 
         if (! is_null($club_id)){
             $query->where('members.institutable_id', $club_id);
@@ -75,5 +79,12 @@ class Event extends Model
             ['eventable_id','=', $field_id],
             ['eventable_type', '=','\\App\\Field']
         ]);
+    }
+
+    public function isRegistrable(){
+        if($this->registrations->count() > 0){
+            return true;
+        }
+        return false;
     }
 }

@@ -16,4 +16,11 @@ class Registration extends Model
     public function position(){
         return $this->belongsTo(Position::class);
     }
+
+    public function scopePreference($query){
+        return $query->where('registrations.type', 2);
+    }
+    public function scopeGeneral($query){
+        return $query->where('type', 1);
+    }
 }
