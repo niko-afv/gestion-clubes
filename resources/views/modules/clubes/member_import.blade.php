@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Evento')
+@section('title', 'Importar Miembros')
 
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
