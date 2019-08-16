@@ -45,7 +45,7 @@
                 </div>
 
 
-                @if(Auth::user()->profile->level <= 1)
+                @can('crud-events')
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="ibox ">
@@ -147,7 +147,7 @@
                             </table>
                         </div>
                     </div>
-                @endif
+                @endcan
 
             </div>
         </div>
