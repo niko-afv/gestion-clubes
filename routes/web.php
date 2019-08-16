@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/{event}/inscribir/', 'EventsController@showInscribe')->name('show_inscribe');
         Route::post('/{event}/inscribir/', 'EventsController@inscribe')->name('inscribe');
         Route::post('/{event}/desincribir/', 'EventsController@unsubscribe')->name('unsubscribe');
-        Route::post('/{event}/inscribir/completar', 'EventsController@finishInscribe')->name('finish_registration');
+        Route::post('/{event}/completar', 'EventsController@finishInscribe')->name('finish_registration');
 
         Route::post('/{event}/remove_zone', 'EventsController@removeZone')->name('remove_zone');
         Route::post('/{event}/remove_activity', 'EventsController@removeActivity')->name('remove_activity');
@@ -60,6 +60,12 @@ Route::middleware('auth')->group(function (){
         Route::post('/{event}/add_registration', 'EventsController@addRegistration')->name('add_registration');
         Route::post('/{event}/sync', 'EventsController@sync')->name('event_sync');
     });
+    Route::prefix('eventos/{event}/participaciones')->namespace('Events')->group(function (){
+
+        Route::get('/{club}', 'ParticipationsController@index')->name('participation_event_list');
+
+    });
+
     Route::prefix('perfil')->namespace('Profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
     });

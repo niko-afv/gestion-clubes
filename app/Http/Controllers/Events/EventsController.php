@@ -18,6 +18,7 @@ use App\Http\Requests\AsClubRequest;
 use App\Http\Requests\EventSuscribeRequest;
 use App\Http\Requests\SaveEventRequest;
 use App\Member;
+use App\Participation;
 use App\Position;
 use App\Registration;
 use App\Unit;
@@ -272,9 +273,17 @@ class EventsController extends Controller
         ]);
     }
 
-    public function finishInscribe(Request $request, Event $event){
-        $confirmation = $request->confirmation;
+    public function finishInscribe(Request $request){
+        if ($request->confirmation == true){
+            $club = Club::find($request->club);
+            $club->participations()->create([
+                'event_id' => $request->event
+            ]);
 
+            return response()->json([
+                'error' => false
+            ]);
+        }
     }
 
     public function removeZone(AdminEventsRequest $request, Event $event){

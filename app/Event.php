@@ -36,6 +36,10 @@ class Event extends Model
         return $this->hasMany(Participant::class);
     }
 
+    public function participations(){
+        return $this->hasMany(Participation::class);
+    }
+
     public function members($club_id = null, $position_ids = null){
         $query = $this->morphedByMany(Member::class,'eventable', 'participants');
 

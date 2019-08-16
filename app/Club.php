@@ -41,12 +41,19 @@ class Club extends Model implements Jsonable
     }
 
     public function participants(){
-        return $this->morphToMany(Participant::class,'eventable','participants');
+        return $this->morphToMany(Event::class,'eventable','participants')->withPivot('snapshot');
     }
 
     public function events(){
         return $this->morphToMany(Event::class, 'eventable','participants');
+    }
 
+    public function participations(){
+        return $this->hasMany(Participation::class);
+    }
+
+    public function participate($event_id){
+        return ($this->participations()->where('event_id',$event_id)->count())?true:false;
     }
 
     public function hasZone(){

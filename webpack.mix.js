@@ -45,6 +45,7 @@ mix.scripts([
     'resources/vendor/select2/select2.full.min.js',
     'resources/vendor/toastr/toastr.min.js',
     'resources/vendor/pace/pace.min.js',
+    'resources/vendor/chartJs/Chart.min.js',
     'resources/vendor/dropzone/dropzone.js',
   'resources/vendor/sweetalert/sweetalert.min.js',
     'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.js',

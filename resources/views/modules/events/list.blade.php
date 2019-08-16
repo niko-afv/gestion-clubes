@@ -78,7 +78,12 @@
 
                                     </td>
                                     <td class="center">
-                                        <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
+                                        @if( Gate::allows('see-my-club') && Auth::user()->member->institutable->participate($event->id) )
+                                            <button onclick="window.location.replace('{{ route('participation_event_list',[$event->id, Auth::user()->member->institutable->id]) }}');" title="Revisar inscripción" class="btn btn-primary" type="button"><i class="fa fa-list"></i>&nbsp;</button>
+                                        @else
+                                            <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
+                                        @endif
+
                                         @can('crud-events')
                                         <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Modificar Evento" class="btn btn-primary" type="button"><i class="fa fa-edit"></i>&nbsp;</button>
                                         @endcan

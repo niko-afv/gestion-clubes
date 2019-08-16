@@ -198,6 +198,7 @@
     </div>
     {{ csrf_field() }}
     <input hidden name="event" value="{{ $event->id }}">
+    <input hidden name="club" value="{{ $club->id }}">
 @endsection
 
 
@@ -281,9 +282,32 @@
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
             confirmButtonText: "Si, quiero completar!",
-            closeOnConfirm: false
-          }, function () {
-            swal("Felicidades!", "Tu club ya está nscrito en este evento.", "success");
+            closeOnConfirm: false,
+            closeOnEsc: false,
+          }, function (confirmation) {
+            if (confirmation){
+                var event = $('input[name="event"]').val();
+                var club = $('input[name="club"]').val();
+                var url = '/eventos/' + event + '/completar';
+                var token = $("input[name='_token']").val();
+                $.post(url, {
+                  confirmation: confirmation,
+                  _token: token,
+                  event: event,
+                  club: club
+                }, function (response) {
+                    if(response.error == false){
+                        swal("Felicidades!", "Tu club ya está nscrito en este evento.", "success");
+                        setTimeout(function(){
+                            window.location.replace("{{ route('participation_event_list',[$event, $club]) }}");
+                        }, 2500)
+                 }else{
+                    alert("hubo un problema");
+                    }
+                 })
+
+            }
+
           });
         });
       });
