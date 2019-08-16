@@ -37,7 +37,7 @@ class EventsController extends Controller
     public function index(){
         if( isAdmin(Auth::user() ) ) {
             $events = Event::all();
-        }elseif( isFieldLeader( Auth::user() ) ){
+        }elseif( isFieldLeader( Auth::user() ) || isZoneLeader(Auth::user() ) ){
             $events = Auth::user()->member->institutable->allAvaliableEvents();
         }elseif( isClubLeader( Auth::user() ) ){
             $events = Auth::user()->member->institutable->avaliablesByZonesEvents();
