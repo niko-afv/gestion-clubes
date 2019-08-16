@@ -27,13 +27,13 @@
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>Eventos registrados</h5>
-                        @if(Auth::user()->profile->level < 3)
+                        @can('crud-events')
                             <div class="">
                                 <p style="text-align: right">
                                     <a href="{{ route('events_create') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Evento</a>
                                 </p>
                             </div>
-                        @endif
+                        @endcan
                     </div>
                     <div class="ibox-content">
 
@@ -61,7 +61,7 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        @if(Auth::user()->profile->level < 3)
+                                        @can('crud-events')
                                         <div class="switch">
                                             <div class="onoffswitch">
                                                 <input type="checkbox" {{ ($event->active)?'checked':'' }} class="onoffswitch-checkbox" id="event-{{ $event->id }}">
@@ -71,17 +71,18 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        @else
+                                        @endcan
+                                        @cannot('crud-events')
                                             <dd class="mb-1"><span class="label {{($event->active)?'label-primary':'label-danger'}}">{{ ($event->active)?'Activo':'Inactivo' }}</span></dd>
-                                        @endif
+                                        @endcannot
 
                                     </td>
                                     <td class="center">
                                         <button onclick="window.location.replace('{{ route('event_detail',['event'=>$event->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp;</button>
-                                        @if(Auth::user()->profile->level < 3)
+                                        @can('crud-events')
                                         <button onclick="window.location.replace('{{ route('event_edit',['event'=>$event->id]) }}');" title="Modificar Evento" class="btn btn-primary" type="button"><i class="fa fa-edit"></i>&nbsp;</button>
-                                        @endif
-                                        @if(Auth::user()->profile->id == 6)
+                                        @endcan
+                                        @if(isAdmin(Auth::user()))
                                             <!-- TODO   add isAdmin() verificator -->
                                             <button data-url="{{ route('event_sync',['event'=>$event->id]) }}" title="Sincronizar Evento" class="btn btn-primary event_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
                                         @endif
