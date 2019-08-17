@@ -17,4 +17,8 @@ class Participation extends Model implements Jsonable
     public function event(){
         return $this->belongsTo(Event::class);
     }
+
+    public function invoice(){
+        return $this->hasOne(Invoice::class);
+    }
 }

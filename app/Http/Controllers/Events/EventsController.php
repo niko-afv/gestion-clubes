@@ -17,6 +17,7 @@ use App\Http\Requests\AdminUsersRequest;
 use App\Http\Requests\AsClubRequest;
 use App\Http\Requests\EventSuscribeRequest;
 use App\Http\Requests\SaveEventRequest;
+use App\Invoice;
 use App\Member;
 use App\Participation;
 use App\Position;
@@ -276,9 +277,21 @@ class EventsController extends Controller
     public function finishInscribe(Request $request){
         if ($request->confirmation == true){
             $club = Club::find($request->club);
-            $club->participations()->create([
+            $participation =$club->participations()->create([
                 'event_id' => $request->event
             ]);
+            $data = $this->getRegistrations(Event::find($request->event));
+            $invoice = $participation->invoice()->create([
+                'total' => $data->get('total'),
+                'subtotal' => $data->get('total')
+            ]);
+            foreach ($data->get('items') as $item){
+                $invoice->invoiceLines()->create([
+                    'description' => $item['description'],
+                    'quantity' => $item['count'],
+                    'price' => $item['price'],
+                ]);
+            }
 
             return response()->json([
                 'error' => false

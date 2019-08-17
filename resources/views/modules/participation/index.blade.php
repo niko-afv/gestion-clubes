@@ -4,7 +4,43 @@
     <div class="wrapper wrapper-content">
 
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-4">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Estado de la inscripción</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="activity-stream">
+                            <div class="stream">
+                                <div class="stream-badge">
+                                    <i class="fa fa-list bg-primary"></i>
+                                </div>
+                                <div class="stream-panel">
+                                    Inscripción completada
+                                </div>
+                            </div>
+                            <div class="stream">
+                                <div class="stream-badge">
+                                    <i class="fa fa-money bg-danger"></i>
+                                </div>
+                                <div class="stream-panel">
+                                    Pago Realizado
+                                </div>
+                            </div>
+                            <div class="stream">
+                                <div class="stream-badge">
+                                    <i class="fa fa-check-square bg-danger"></i>
+                                </div>
+                                <div class="stream-panel">
+                                    Pago Verificado
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <span class="label label-danger float-right">Pendiente</span>
