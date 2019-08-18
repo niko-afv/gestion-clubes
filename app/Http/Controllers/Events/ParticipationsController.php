@@ -84,7 +84,7 @@ class ParticipationsController extends Controller
         return array_merge($members, $unit_members);
     }
     private function getRegistrations($event){
-        $participant =$event->participants()->where('eventable_id', Auth::user()->member->institutable->id);
+        $participant =$event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->whereNotNull('snapshot');
         $snapshot = $participant->first()->snapshot;
         $members = collect($this->getAllMembers($snapshot));
 
