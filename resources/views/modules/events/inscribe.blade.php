@@ -24,7 +24,7 @@
         <div class="col-lg-4">
             &nbsp;
             &nbsp;
-            <a href="{{ route('finish_registration',$event->id) }}" class="btn btn-block btn-lg btn-dark finish" style="color: #fff;">COMPLETAR INSCRIPCIÓN</a>
+            <a href="{{ route('finish_registration',$event->id) }}" class="btn btn-block btn-lg btn-dark finish" disabled="" style="color: #fff;">COMPLETAR INSCRIPCIÓN</a>
         </div>
     </div>
 
