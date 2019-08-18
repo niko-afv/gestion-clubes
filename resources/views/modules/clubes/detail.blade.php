@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="m-b-md">
-                            <!--<a href="#" class="btn btn-white btn-xs float-right">Edit project</a>-->
+                            <!--<a href="javascript:void(0)" class="btn btn-white btn-xs float-right">Edit project</a>-->
                             <h2>{{ $club->name }}</h2>
                         </div>
 
@@ -57,7 +57,7 @@
                         </dl>
                         <dl class="row mb-0">
                             <div class="col-sm-4 text-sm-right"><dt>Zona:</dt> </div>
-                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="#" class="text-navy">{{ $club->zone->name }}</a> </dd></div>
+                            <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="javascript:void(0)" class="text-navy">{{ $club->zone->name }}</a> </dd></div>
                         </dl>
 
                     </div>
@@ -75,21 +75,21 @@
                                 <div class="tab-content">
                                     <div id="tab-1" class="tab-pane active">
                                         <div class="full-height-scroll">
-                                            @if(Auth::user()->profile->level >=3)
                                             <div class="">
                                                 <p>
 
                                                 </p>
                                                 <p style="text-align: right">
+                                                    @can('crud-club-members')
                                                     <a href="{{ route('add_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Nuevo Miembro</a>
-                                                    &nbsp;
-
+                                                    &nbsp
                                                     <a href="{{ route('import_member') }}" class="btn btn-outline btn-primary"><i class="fa fa-table"></i>&nbsp;Importar</a>
-
-
+                                                    @endcan
+                                                    @if( Gate::allows('add-club-director') && !$club->hasDirector() )
+                                                        <a href="{{ route('add_club_director', $club->id) }}" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i>&nbsp;Añadir Director</a>
+                                                    @endcan
                                                 </p>
                                             </div>
-                                            @endif
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover dataTables-example">
                                                     <thead>
@@ -102,7 +102,7 @@
                                                         <td></td>
                                                         <td>E-mail</td>
                                                         <td>Cargos</td>
-                                                        @if(Auth::user()->profile->level >=3)
+                                                        @if(Gate::allows('crud-club-members') || Gate::allows('add-club-director'))
                                                         <td>Acciones</td>
                                                         @endif
                                                     </tr>
@@ -113,9 +113,9 @@
                                                         <!--
                                                         <td class="client-avatar"><img alt="image" src="{{ $member->avatar }}"> </td>
                                                         -->
-                                                        <td><a href="#" class="client-link">{{ $member->getName() }}</a></td>
-                                                        <td><a href="#" class="client-link">{{ $member->dni }}</a></td>
-                                                        <td><a href="#" class="client-link">{{ ($member->age() == 0)?'No Especificado':$member->age() }}</a></td>
+                                                        <td><a  class="client-link">{{ $member->getName() }}</a></td>
+                                                        <td><a  class="client-link">{{ $member->dni }}</a></td>
+                                                        <td><a  class="client-link">{{ ($member->age() == 0)?'No Especificado':$member->age() }}</a></td>
                                                         <td class="contact-type"><i class="fa fa-phone"> </i></td>
                                                         <td>{{ $member->phone }}</td>
                                                         <td class="contact-type"><i class="fa fa-envelope"> </i></td>
@@ -125,12 +125,9 @@
                                                                 <span class="tag label label-primary">{{ strtoupper($position->name) }}</span>
                                                             @endforeach
                                                         </td>
-                                                        @if(Auth::user()->profile->level >=3)
+                                                        @if(Gate::allows('crud-club-members') || Gate::allows('add-club-director') )
                                                         <td>
-                                                            <a style="color: #1c84c6; display: inline-block; width: 20%;" href="{{ route('edit_member', $member->id) }}" class="btn btn-outline btn-link" title="Modificar"><i class="fa fa-edit"></i></a>
-                                                            <!--
-                                                            <a style="color: #ED5565; display: inline-block; width: 20%;" data-id="{{ $member->id }}" href="{{ route('delete_member') }}" class="btn btn-outline btn-link delete_member" title="Eliminar"><i class="fa fa-trash-o"></i></a>
-                                                            -->
+                                                            @include('partials.action_links')
                                                         </td>
                                                         @endif
                                                         <!--
@@ -212,43 +209,27 @@
     <script>
         $(document).ready(function(){
 
-        $('.dataTables-example').DataTable({
-        pageLength: 10,
-        responsive: true,
-        dom: '<"html5buttons"B>lTfgitp'
-        });
-
-      $('.unit_sync').click(function () {
-            var url = $(this).data('url');
-            var token = $("input[name='_token']").val();
-
-            $.post(url, { _token: token }, function (response) {
-              if (response.error == true){
-                toastr.warning(response.message, 'Cuidado');
-              }else {
-                toastr.success(response.message, 'Excelente');
-              }
+            $('.dataTables-example').DataTable({
+            pageLength: 10,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp'
             });
-          });
 
-        @if(Auth::user()->profile->level >= 3)
-            $('.delete_member').click(function (event) {
-                event.preventDefault();
-                var member_id = $(this).data('id');
+            $(document).on('click','.set-director',function (e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                console.log(url);
                 var token = $("input[name='_token']").val();
-                var url = $(this).attr('href');
-                $element = $(this);
 
-                $.post(url, {member_id: member_id, _token: token }, function (response) {
-                    if (response.error){
-                      toastr.warning(response.message, 'Cuidado');
-                    }else {
-                      toastr.success(response.message, 'Excelente');
-                      $element.parent().parent().fadeOut(1000);
-                    }
-                })
-            })
-        @endif
+                $.post(url, { _token: token }, function (response) {
+                  if (response.error == true){
+                    toastr.warning(response.message, 'Cuidado');
+                  }else {
+                    toastr.success(response.message, 'Excelente');
+
+                  }
+                });
+              });
         });
 
     </script>

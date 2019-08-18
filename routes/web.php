@@ -26,6 +26,16 @@ Route::middleware('auth')->group(function (){
         Route::get('/detail/{club}', 'ClubsListController@detail')->name('club_detail');
         Route::get('/create', 'ClubsFormController@index')->name('clubes_create');
         Route::post('/{club}/sync', 'ClubsListController@sync')->name('club_sync');
+
+
+        Route::get('/clubes/nuevo', 'ClubsListController@showAddClub')->name('add_club');
+        Route::get('/clubes/{club}', 'ClubsListController@showUpdateClub')->name('edit_club');
+        Route::post('/club/guardar', 'ClubsListController@saveClub')->name('save_club');
+        Route::post('/clubes/guardar/{club}', 'ClubsListController@updateClub')->name('update_club');
+        Route::get('/clubes/{club}/director', 'ClubsListController@showAddClubDirector')->name('add_club_director');
+        Route::post('/clubes/{club}/director', 'ClubsListController@saveClubDirector')->name('save_club_director');
+        Route::post('/clubes/{club}/asdirector/{new_director}', 'ClubsListController@setAsDirector')->name('set_as_director');
+
     });
     Route::prefix('unidades')->namespace('Clubs')->group(function (){
         Route::get('/list', 'ClubsListController@unidades')->name('unidades_list');

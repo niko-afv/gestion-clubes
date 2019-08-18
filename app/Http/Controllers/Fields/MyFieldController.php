@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Fields;
 
+use App\Club;
+use App\Events\AddedClubDirectorEvent;
 use App\Events\AddedMemberEvent;
 use App\Events\AddedUserEvent;
 use App\Events\CreatedUnitEvent;
 use App\Events\DeletedMemberEvent;
+use App\Events\RemovedClubDirectorEvent;
 use App\Events\UpdatedMemberEvent;
 use App\Events\UpdatedUnitEvent;
 use App\Http\Requests\AddFieldMemberRequest;
@@ -23,6 +26,7 @@ use App\Http\Requests\AddUnitRequest;
 use App\Member;
 use App\Position;
 use App\User;
+use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +46,7 @@ class MyFieldController extends Controller
     }
 
     public function showAddMember(AsRegionalRequest $request){
+
         $position = Position::all();
         return view('modules.fields.member_form', [
             'positions' => $position
@@ -99,6 +104,11 @@ class MyFieldController extends Controller
     }
 
     public function showUpdateMember(AsRegionalRequest $request, Member $member){
+        $breadcrumb = collect([
+            route('home') => 'Principal',
+            route('my_field') => Auth::user()->member->institutable->name ,
+            'active' => 'Modificar Miembro'
+        ]);
         $newarray = [];
         foreach ($member->positions as $position){
             $newarray[] = $position->id;
@@ -107,7 +117,8 @@ class MyFieldController extends Controller
         $position = Position::all()->except($newarray)->all();
         return view('modules.fields.member_form', [
             'positions' => $position,
-            'member' => $member
+            'member' => $member,
+            'breadcrumb' => $breadcrumb
         ]);
     }
 

@@ -54,8 +54,24 @@ class AuthServiceProvider extends ServiceProvider
             return isClubLeader( $user );
         });
 
+        Gate::define('crud-club-members', function ($user){
+            return isClubLeader( $user );
+        });
+
+        Gate::define('crud-field-members', function ($user){
+            return ( isAdmin($user) || isFieldLeader( $user ) );
+        });
+
+        Gate::define('add-club-director', function ($user){
+            return ( isAdmin($user) || isFieldLeader( $user ) || isZoneLeader($user) );
+        });
+
         Gate::define('see-my-field', function ($user){
             return ( isAdmin( $user ) || isFieldLeader($user) || isZoneLeader($user) );
+        });
+
+        Gate::define('sync-data', function ($user){
+            return isAdmin( $user );
         });
     }
 }

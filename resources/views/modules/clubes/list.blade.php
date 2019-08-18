@@ -28,6 +28,9 @@
                     <div class="ibox-title">
                         <h5>Lista de todos los clubes registrados para el campo</h5>
                         <div class="ibox-tools">
+                            <a href="{{ route('add_club') }}" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i>&nbsp;Nuevo Club
+                            </a>
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
@@ -56,11 +59,7 @@
                                     <td>{{ ($club->hasZone())?$club->zone->name:'Zona no asociada' }}</td>
                                     <td><span class="label {{($club->active)?'label-primary':'label-danger'}}">{{ ($club->active)?'Activo':'Inactivo' }}</span></td>
                                     <td class="center">
-                                        <button onclick="window.location.replace('{{ route('club_detail',['club'=>$club->id]) }}');" title="Ver Club" class="btn btn-primary" type="button"><i class="fa fa-eye"></i>&nbsp; </button>
-                                        @if(Auth::user()->profile->id == 6)
-                                            <!-- TODO   add isAdmin() verificator -->
-                                            <button data-url="{{ route('club_sync',['club'=>$club->id]) }}" title="Sincronizar Club" class="btn btn-primary club_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
-                                        @endif
+                                        @include('partials.action_links')
                                     </td>
                                 </tr>
                                 @endforeach
@@ -102,4 +101,12 @@
   });
 
 </script>
+@endsection
+
+@section('style')
+    <style>
+        .btn-add{
+
+        }
+    </style>
 @endsection

@@ -5,17 +5,20 @@
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Crear un miembro</h2>
+            <h2>{{ $breadcrumb->last() }}</h2>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">Principal</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('my_club') }}">Mi Club</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <strong>Nuevo Miembro</strong>
-                </li>
+                @foreach($breadcrumb as $url => $title)
+                    @if( $url != 'active' )
+                        <li class="breadcrumb-item">
+                            <a href="{{ $url }}">{{ $title }}</a>
+                        </li>
+                    @else
+                        <li class="breadcrumb-item active">
+                            <strong>{{ $title }}</strong>
+                        </li>
+                    @endif
+                @endforeach
+
             </ol>
         </div>
         <div class="col-lg-2">
@@ -40,6 +43,9 @@
 
                         @if(isset($member))
                             <form method="post" action="{{ route('update_field_member', $member) }}">
+                        @elseif(Gate::allows('add-club-director'))
+                            <form method="post" action="{{ route('save_club_director', $club) }}">
+                                <input hidden name="club" value="{{ $club->id }}"  />
                         @else
                             <form method="post" action="{{ route('save_field_member') }}">
                         @endif

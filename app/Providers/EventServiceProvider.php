@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Events\ActivatedEventEvent;
 use App\Events\ActivatedUserEvent;
+use App\Events\AddedClubDirectorEvent;
+use App\Events\AddedClubEvent;
 use App\Events\AddedMemberEvent;
 use App\Events\AddedUserEvent;
 use App\Events\CreatedEventEvent;
@@ -15,6 +17,8 @@ use App\Events\DeletedMemberEvent;
 use App\Events\DeletedUnitEvent;
 use App\Events\ImportedMembersEvent;
 use App\Events\LoginEvent;
+use App\Events\RemovedClubDirectorEvent;
+use App\Events\UpdatedClubEvent;
 use App\Events\UpdatedEventEvent;
 use App\Events\UpdatedMemberEvent;
 use App\Events\UpdatedUnitEvent;
@@ -81,6 +85,18 @@ class EventServiceProvider extends ServiceProvider
             LogEventsListener::class,
         ],
         AddedUserEvent::class => [
+            LogEventsListener::class,
+        ],
+        AddedClubEvent::class => [
+            LogEventsListener::class,
+        ],
+        AddedClubDirectorEvent::class => [
+            LogEventsListener::class,
+        ],
+        RemovedClubDirectorEvent::class => [
+            LogEventsListener::class,
+        ],
+        UpdatedClubEvent::class => [
             LogEventsListener::class,
         ],
     ];

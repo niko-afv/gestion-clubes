@@ -94,6 +94,26 @@ class LogTypesTableSeeder extends Seeder
                 'name' => 'User Added',
                 'description' => 'Ha añadido un nuevo usuario'
             ],
+            [
+                'id' => 17,
+                'name' => 'Create Club',
+                'description' => 'Ha creado un nuevo Club'
+            ],
+            [
+                'id' => 18,
+                'name' => 'Update Club',
+                'description' => 'Ha modificado un Club'
+            ],
+            [
+                'id' => 19,
+                'name' => 'Add Club Director',
+                'description' => 'Ha añadido un director de club'
+            ],
+            [
+                'id' => 20,
+                'name' => 'Remove Club Director',
+                'description' => 'Ha removido un miembro como director de club'
+            ],
         ];
 
         foreach ($log_types as $log_type){

@@ -36,7 +36,6 @@ class Member extends Model
         })->orDoesntHave('positions');
     }
 
-
     public function age(){
         return Carbon::parse($this->birth_date)->age;
     }
@@ -53,6 +52,9 @@ class Member extends Model
         return ($this->events()->where('event_id',$event_id)->count())?true:false;
     }
 
+    public function isDirector(){
+        return ($this->positions()->where('member_positions.position_id',1)->count()>0)?true:false;
+    }
 
     public function getName(){
         $name = explode(' ', $this->name);
