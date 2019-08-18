@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clubs;
 
 use App\Club;
 use App\Events\AddedClubDirectorEvent;
+use App\Events\RemovedClubDirectorEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
