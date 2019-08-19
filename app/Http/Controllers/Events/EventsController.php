@@ -185,7 +185,7 @@ class EventsController extends Controller
         }else{
             // create participant object
             $event->clubs()->save(Auth::user()->member->institutable);
-            $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+            $participant = $event->participants()->where('eventable_id', $club_id)->where('eventable_type', 'App\Club')->first();
         }
 
 
