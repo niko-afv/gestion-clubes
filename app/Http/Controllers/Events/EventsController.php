@@ -233,7 +233,8 @@ class EventsController extends Controller
 
     public function unsubscribe(Request $request, Event $event){
 
-        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+        $club_id = Auth::user()->member->institutable->id;
+        $participant = $event->participants()->where('eventable_id', $club_id)->where('eventable_type', 'App\Club')->first();
         $unit_ids = $this->getUnits($participant->snapshot);
         $member_ids = $this->getMembers($participant->snapshot);
 
