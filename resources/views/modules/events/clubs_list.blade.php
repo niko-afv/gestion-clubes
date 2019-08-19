@@ -131,8 +131,8 @@
                                                 <td>{{ $event->members($club->id, [1,2,3,4,5,6])->count() }}</td>
                                                 <td>{{ $event->members($club->id,[9,10])->count() }}</td>
                                                 <td>{{ $club->zone->name }}</td>
-                                                <td>@include('partials.status_label',participationStatusAsLabel($club->participationStatus($event->id)))</td>
-                                                <td>@include('partials.status_label',participationStatusAsLabel($club->paymentStatus($event->id)))</td>
+                                                <td>@include('partials.status_label',['data'=>participationStatusAsLabel($club->participationStatus($event->id))])</td>
+                                                <td>@include('partials.status_label',['data'=>participationStatusAsLabel($club->paymentStatus($event->id))])</td>
                                                 <td>
                                                     <button onclick="window.location.replace('{{ route('event_club_detail',['event'=>$event->id, 'club'=>$club->id]) }}');" title="Ver Inscripción" class="btn btn-primary" type="button">
                                                         <i class="fa fa-eye"></i>&nbsp;

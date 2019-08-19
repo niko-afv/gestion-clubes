@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="row wrapper border-bottom white-bg page-heading">
+        @include('layouts.head',['breadcrub' => $breadcrumb])
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+
     <div class="wrapper wrapper-content">
 
         <div class="row">
@@ -21,7 +28,7 @@
                             </div>
                             <div class="stream">
                                 <div class="stream-badge">
-                                    <i class="fa fa-money bg-danger"></i>
+                                    <i class="fa fa-money {{ ($participation_status >= 2)?'bg-primary':'bg-danger' }}"></i>
                                 </div>
                                 <div class="stream-panel">
                                     Pago Realizado
@@ -29,7 +36,7 @@
                             </div>
                             <div class="stream">
                                 <div class="stream-badge">
-                                    <i class="fa fa-check-square bg-danger"></i>
+                                    <i class="fa fa-check-square {{ ($participation_status >= 3)?'bg-primary':'bg-danger' }}"></i>
                                 </div>
                                 <div class="stream-panel">
                                     Pago Verificado
@@ -43,13 +50,14 @@
             <div class="col-lg-4">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <span class="label label-danger float-right">Pendiente</span>
+                        @include('partials.status_label',['data'=>participationStatusAsLabel($club->paymentStatus($event->id)), 'classes' => 'float-right'])
+
                         <h5>Total a pagar</h5>
                     </div>
                     <div class="ibox-content">
                         <h1 class="no-margins">${{ number_format($total,0,'.',',') }}</h1>
                         <div class="stat-percent font-bold text-success">
-                            <button disabled="" onclick="" title="Ver Evento" class="btn btn-xs btn-primary" type="button"><i class="fa fa-dollar"></i>&nbsp;Registrar Pago</button>
+                            <button onclick="window.location.replace('{{ route('invoice_payment', $participation->invoice->id) }}');" title="Ver Evento" class="btn btn-xs btn-primary" type="button"><i class="fa fa-dollar"></i>&nbsp;{{ ($participation_status <2)?'Registrar Pago':'Ver Pagos' }}</button>
                         </div>
                         <small>{{ $members_participate }} Participantes</small>
                     </div>

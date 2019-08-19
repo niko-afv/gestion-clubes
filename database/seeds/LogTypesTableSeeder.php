@@ -114,6 +114,16 @@ class LogTypesTableSeeder extends Seeder
                 'name' => 'Remove Club Director',
                 'description' => 'Ha removido un miembro como director de club'
             ],
+            [
+                'id' => 21,
+                'name' => 'New Payment',
+                'description' => 'Ha realizado un nuevo pago'
+            ],
+            [
+                'id' => 22,
+                'name' => 'Remove Payment',
+                'description' => 'Ha eliminado un pago'
+            ],
         ];
 
         foreach ($log_types as $log_type){

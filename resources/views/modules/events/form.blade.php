@@ -595,11 +595,11 @@
 
         @if(isset($event))
             $('.remove_zone').click(function () {
-          var zone_id = $(this).data('id');
-          var token = $("input[name='_token']").val();
-          $element = $(this);
+                var zone_id = $(this).data('id');
+                var token = $("input[name='_token']").val();
+                $element = $(this);
 
-          $.post('{{ route('remove_zone', $event->id) }}', {zone: zone_id, _token: token }, function (response) {
+                $.post('{{ route('remove_zone', $event->id) }}', {zone: zone_id, _token: token }, function (response) {
 
             if (response.error){
               toastr.warning(response.message, 'Cuidado');

@@ -77,6 +77,13 @@ Route::middleware('auth')->group(function (){
 
     });
 
+    Route::prefix('pagos')->namespace('Payments')->group(function (){
+        Route::get('/{invoice}/pagar', 'PaymentsController@showPaymentForm')->name('invoice_payment');
+        Route::post('/{invoice}/pagar', 'PaymentsController@savePayment')->name('save_payment');
+        Route::post('{invoice}/pagar/comprobante', 'PaymentsController@uploadPayment')->name('upload_payment_file');
+        Route::post('/eliminar-pago', 'PaymentsController@deletePayment')->name('delete_payment');
+    });
+
     Route::prefix('perfil')->namespace('Profile')->group(function (){
         Route::get('/', 'ProfileController@index')->name('profile');
     });

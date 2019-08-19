@@ -22,3 +22,9 @@
 
         return ['type'=> $type, 'status' => $status];
     }
+
+    function checkPayment($invoice){
+        $total = $invoice->total;
+        $payed = $invoice->payments->sum('amount');
+        return ($payed >= $total)?true:false;
+    }

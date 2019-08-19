@@ -17,7 +17,9 @@ use App\Events\DeletedMemberEvent;
 use App\Events\DeletedUnitEvent;
 use App\Events\ImportedMembersEvent;
 use App\Events\LoginEvent;
+use App\Events\NewPaymentEvent;
 use App\Events\RemovedClubDirectorEvent;
+use App\Events\RemovePaymentEvent;
 use App\Events\UpdatedClubEvent;
 use App\Events\UpdatedEventEvent;
 use App\Events\UpdatedMemberEvent;
@@ -97,6 +99,12 @@ class EventServiceProvider extends ServiceProvider
             LogEventsListener::class,
         ],
         UpdatedClubEvent::class => [
+            LogEventsListener::class,
+        ],
+        NewPaymentEvent::class => [
+            LogEventsListener::class,
+        ],
+        RemovePaymentEvent::class => [
             LogEventsListener::class,
         ],
     ];

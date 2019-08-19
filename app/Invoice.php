@@ -12,7 +12,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceLine::class);
     }
 
-    public function club_participation(){
+    public function participation(){
         return $this->belongsTo(Participation::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
 }

@@ -6,7 +6,9 @@ namespace App\Http\Controllers\Events;
 use App\Club;
 use App\Event;
 use App\Http\Controllers\Controller;
+use App\Invoice;
 use App\Position;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ParticipationsController extends Controller
@@ -15,6 +17,17 @@ class ParticipationsController extends Controller
         if (!$club->hasParticipation($event->id)){
             abort(403,'No es posible mostra la página solicitada.');
         }
+
+        $breadcrumb = collect([
+            route('home') => 'Inicio',
+            route('events_list') => 'Eventos',
+            route('event_detail', $event->id) => $event->name,
+            'active' => 'Inscripción',
+
+        ]);
+
+
+
         $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->first();
         $participant = $participation->club->participants->first();
 
@@ -24,13 +37,16 @@ class ParticipationsController extends Controller
 
 
         return view('modules.participation.index',[
+            'club' => $club,
+            'event' => $event,
             'participation' => $participation,
             'members_participate' => $members_participate,
             'members_no_participate' => $members_no_participate,
-            'total' => $total
+            'total' => $total,
+            'participation_status' => $participation->status,
+            'breadcrumb' => $breadcrumb
         ]);
     }
-
 
 
 

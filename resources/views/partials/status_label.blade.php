@@ -1,1 +1,1 @@
-<span class="label label-{{ $type }}">{{ $status }}</span>
+<span class="label label-{{ $data['type'] }} {{ isset($classes)?$classes:'' }}">{{ $data['status'] }}</span>
