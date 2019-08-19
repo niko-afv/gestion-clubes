@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 class ParticipationsController extends Controller
 {
     public function index(Event $event, Club $club){
+        if (!$club->hasParticipation($event->id)){
+            abort(403,'No es posible mostra la página solicitada.');
+        }
         $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->first();
         $participant = $participation->club->participants->first();
 
