@@ -155,7 +155,8 @@ class EventsController extends Controller
         }
         $participants = collect([]);
         $club = Auth::user()->member->institutable;
-        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id);
+        $participant = $event->participants()->where('eventable_id', $club->id)->where('eventable_type','App\Club');
+        //dd($participant->count());
         $snapshot = null;
         if($participant->count() && $participant->first()->snapshot){
             $participants = $this->getRegistrations($event);
