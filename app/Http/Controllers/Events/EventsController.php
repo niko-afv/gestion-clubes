@@ -173,7 +173,8 @@ class EventsController extends Controller
         $unit_ids = [];
         $member_ids = [];
 
-        $participant = $event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->first();
+        $club_id = Auth::user()->member->institutable->id;
+        $participant = $event->participants()->where('eventable_id', $club_id)->where('eventable_type', 'App\Club')->first();
         if($participant){
             $units = $this->getUnits($participant->snapshot);
             $members = $this->getMembers($participant->snapshot);
