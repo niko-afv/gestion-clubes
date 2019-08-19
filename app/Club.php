@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Enums\ParticipationStatus;
+use App\Enums\PaymentStatus;
 use App\Traits\Composable;
 use App\Traits\Dirigible;
 use Illuminate\Contracts\Support\Jsonable;
@@ -79,6 +81,33 @@ class Club extends Model implements Jsonable
     }
 
     public function hasParticipation($event_id){
+        return ($this->participations()->where('event_id', $event_id)->count() > 0 )? true : false;
+    }
 
+    public function participationStatus($event_id){
+        if ($this->hasParticipation($event_id)){
+            return ParticipationStatus::COMPLETED_INSCRIPTION();
+        }else{
+            return ParticipationStatus::INCOMPLETED_INSCRIPTION();
+        }
+    }
+
+    public function paymentStatus($event_id){
+        if ($this->participations()->where('event_id', $event_id)->count()){
+            $status = $this->participations()->where('event_id', $event_id)->first()->status;
+            switch ($status){
+                case 1:
+                    return PaymentStatus::PENDING();
+                    break;
+                case 2:
+                    return PaymentStatus::PAYED();
+                    break;
+                case 3:
+                    return PaymentStatus::VERIFIED();
+                    break;
+            }
+        }else{
+            return PaymentStatus::PENDING();
+        }
     }
 }

@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/detail/{event}', 'EventsController@detail')->name('event_detail');
 
         Route::get('/detail/{event}/clubs', 'EventsController@clubs')->name('event_clubs');
+        Route::post('/detail/{event}/clubs/{club}', 'EventsController@deleteConfirmation')->name('delete-participation');
         Route::get('/detail/{event}/clubs/{club}', 'EventsController@clubDetail')->name('event_club_detail');
 
         Route::get('/create', 'EventsController@create')->name('events_create');

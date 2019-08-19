@@ -117,7 +117,8 @@
                                             <th>Directivos</th>
                                             <th>Apoyo</th>
                                             <th>Zona</th>
-                                            <th>Estado</th>
+                                            <th>Inscripción</th>
+                                            <th>Pago</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
@@ -130,11 +131,17 @@
                                                 <td>{{ $event->members($club->id, [1,2,3,4,5,6])->count() }}</td>
                                                 <td>{{ $event->members($club->id,[9,10])->count() }}</td>
                                                 <td>{{ $club->zone->name }}</td>
-                                                <td>{{ $club->participation }}</td>
+                                                <td>{{ $club->participationStatus($event->id) }}</td>
+                                                <td>{{ $club->paymentStatus($event->id) }}</td>
                                                 <td>
-                                                    <button onclick="window.location.replace('{{ route('event_club_detail',['event'=>$event->id, 'club'=>$club->id]) }}');" title="Ver Evento" class="btn btn-primary" type="button">
+                                                    <button onclick="window.location.replace('{{ route('event_club_detail',['event'=>$event->id, 'club'=>$club->id]) }}');" title="Ver Inscripción" class="btn btn-primary" type="button">
                                                         <i class="fa fa-eye"></i>&nbsp;
                                                     </button>
+                                                    @if($club->hasParticipation($event->id))
+                                                    <button data-url="{{ route('delete-participation', [$event->id, $club->id]) }}" title="Eliminar Confirmación" class="btn btn-danger participation-delete" type="button">
+                                                        <i class="fa fa-close"></i>&nbsp;
+                                                    </button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -148,17 +155,47 @@
             </div>
         </div>
     </div>
+    {{ csrf_field() }}
 @endsection
 
 
 @section('scripts')
     <script>
       $(document).ready(function(){
+        toastr.options = {
+          "closeButton": true,
+          "debug": false,
+          "progressBar": true,
+          "preventDuplicates": false,
+          "positionClass": "toast-top-right",
+          "onclick": null,
+          "showDuration": "400",
+          "hideDuration": "1000",
+          "timeOut": "7000",
+          "extendedTimeOut": "1000",
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut"
+        };
+
         $('.dataTables-example').DataTable({
           pageLength: 10,
           responsive: true,
           dom: '<"html5buttons"B>lTfgitp'
         });
+
+        $(document).on('click','.participation-delete', function(){
+          var url = $(this).data('url');
+          var token = $('input[name="_token"]').val();
+          $.post(url, {_token: token}, function (response) {
+            if(response.error == false){
+              toastr.success(response.message, 'Excelente');
+            }else{
+              toastr.error(response.message, 'Error');
+            }
+          })
+        })
       });
 
     </script>

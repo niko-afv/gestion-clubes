@@ -458,6 +458,21 @@ class EventsController extends Controller
         ]);
     }
 
+    public function deleteConfirmation(AdminEventsRequest $request,Event $event, Club $club){
+        $response = $club->participations()->where('event_id', $event->id)->delete();
+        if ($response != 0){
+            $error = false;
+            $message = 'Has liberado la inscrición del club '. $club->name;
+        }else{
+            $error = true;
+            $message = 'Hubo un problema para liberar la inscripción del club '. $club->name;
+        }
+        return response()->json([
+            'error' => $error,
+            'message' => $message
+        ]);
+    }
+
     public function clubDetail(AdminEventsRequest $request, Event $event, Club $club){
         return view('modules.events.club_detail',[
             'event' => $event,
