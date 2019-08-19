@@ -17,6 +17,7 @@ use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
