@@ -54,6 +54,10 @@ class Club extends Model implements Jsonable
         return $this->hasMany(Participation::class);
     }
 
+    public function participation($event_id){
+        return $this->participations()->where('event_id', $event_id)->first();
+    }
+
     public function participate($event_id){
         return ($this->participations()->where('event_id',$event_id)->count())?true:false;
     }
