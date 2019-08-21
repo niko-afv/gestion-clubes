@@ -31,7 +31,7 @@ mix.styles([
   'resources/vendor/dropzone/dropzone.css',
   'resources/vendor/sweetalert/sweetalert.css',
   'resources/vendor/dropzone/basic.css',
-  'resources/vendor/blueimp/blueimp-gallery.css',
+  'resources/vendor/blueimp/blueimp-gallery.min.css',
   'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.css',
 ], 'public/css/vendor.css', './');
 
