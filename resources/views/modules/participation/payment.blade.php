@@ -129,11 +129,9 @@
                                 </p>
                             </div>
                             <div class="col-8">
-                                @can('see-my-club')
                                 <button data-url="{{ route('save_payment', $invoice->id) }}" class="btn btn-block btn-primary payment-send" name="send" type="button" {{ ($payment_completed)?'disabled':'' }}><strong>Enviar</strong></button>
                                 <input name="payment_id" class="d-none">
                                 {{ csrf_field() }}
-                                @endcan
                             </div>
                         </div>
 
@@ -157,7 +155,9 @@
                                     <th>Monto</th>
                                     <th>Fecha</th>
                                     <th>Comprobante</th>
+                                    @can('see-my-club')
                                     <th>Remover</th>
+                                    @endcan
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -176,10 +176,12 @@
                                         <td data-name="payment_amout">$ {{ number_format($payment->amount,0,'.',',') }}</td>
                                         <td data-name="payment_date">{{ $payment->created_at->diffForHumans() }}</td>
                                         <td class="center">
-                                            <a class="see_voucher" data-id="{{ $payment->id }}" class="btn"><i class="fa fa-eye"></i>&nbsp;</a>
+                                            <a class="see_voucher" data-id="{{ $payment->id }}" href="{{ Storage::url($payment->voucher) }}" target="_blank" class="btn"><i class="fa fa-eye"></i>&nbsp;</a>
                                         </td>
                                         <td class="center">
+                                            @can('see-my-club')
                                             <a class="remove_payment" data-url="{{ route('delete_payment') }}" data-id="{{ $payment->id }}" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
@@ -194,6 +196,18 @@
         @if (session('error_message'))
             <span id="error_message">{{ session('error_message') }}</span>
         @endif
+    </div>
+
+
+    <!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
     </div>
 
 @endsection
@@ -256,6 +270,16 @@
       };
 
       $(document).ready(function(){
+
+        $('.see_voucher').click(function(event) {
+            event = event || window.event
+            var target = event.target || event.srcElement,
+            link = target.src ? target.parentNode : target,
+            options = { index: link, event: event },
+            links = $(this);
+            console.log(options);
+            blueimp.Gallery(links, options)
+        });
 
 
         $('.remove_payment').click(function () {

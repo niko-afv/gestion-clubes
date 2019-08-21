@@ -31,6 +31,7 @@ mix.styles([
   'resources/vendor/dropzone/dropzone.css',
   'resources/vendor/sweetalert/sweetalert.css',
   'resources/vendor/dropzone/basic.css',
+  'resources/vendor/blueimp/blueimp-gallery.css',
   'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.css',
 ], 'public/css/vendor.css', './');
 
@@ -47,7 +48,8 @@ mix.scripts([
     'resources/vendor/pace/pace.min.js',
     'resources/vendor/chartJs/Chart.min.js',
     'resources/vendor/dropzone/dropzone.js',
-  'resources/vendor/sweetalert/sweetalert.min.js',
+    'resources/vendor/blueimp/jquery.blueimp-gallery.min.js',
+    'resources/vendor/sweetalert/sweetalert.min.js',
     'resources/vendor/touchspin/jquery.bootstrap-touchspin.min.js',
     'resources/js/inspinia.js'
   ], 'public/js/app.js', './');
