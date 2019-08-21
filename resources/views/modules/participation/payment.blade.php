@@ -129,9 +129,11 @@
                                 </p>
                             </div>
                             <div class="col-8">
+                                @can('see-my-club')
                                 <button data-url="{{ route('save_payment', $invoice->id) }}" class="btn btn-block btn-primary payment-send" name="send" type="button" {{ ($payment_completed)?'disabled':'' }}><strong>Enviar</strong></button>
                                 <input name="payment_id" class="d-none">
                                 {{ csrf_field() }}
+                                @endcan
                             </div>
                         </div>
 
