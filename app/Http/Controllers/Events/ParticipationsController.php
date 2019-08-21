@@ -51,7 +51,7 @@ class ParticipationsController extends Controller
 
 
 
-    private function getUnits($snapshot){
+    public function getUnits($snapshot){
         $units_list = [];
         $units = $this->__getUnits($snapshot);
         if ($units){
@@ -61,7 +61,7 @@ class ParticipationsController extends Controller
         }
         return $units_list;
     }
-    private function getMembers($snapshot){
+    public function getMembers($snapshot){
         $members_list = [];
         $members = $this->__getMembers($snapshot);
         if ($members){
@@ -71,21 +71,21 @@ class ParticipationsController extends Controller
         }
         return $members_list;
     }
-    private function __getMembers($snapshot){
+    public function __getMembers($snapshot){
         $snapshot = \GuzzleHttp\json_decode($snapshot);
         if ($snapshot->members) {
             return $snapshot->members;
         }
         return [];
     }
-    private function __getUnits($snapshot){
+    public function __getUnits($snapshot){
         $snapshot = \GuzzleHttp\json_decode($snapshot);
         if ($snapshot->units){
             return $snapshot->units;
         }
         return false;
     }
-    private function getMembersFromUnits($units){
+    public function getMembersFromUnits($units){
         $members = [];
         if ($units){
             foreach ($units as $unit){
@@ -97,13 +97,13 @@ class ParticipationsController extends Controller
         }
         return $members;
     }
-    private function getAllMembers($snapshot){
+    public function getAllMembers($snapshot){
         $members = $this->__getMembers($snapshot);
         $unit_members = $this->getMembersFromUnits($this->__getUnits($snapshot));
         return array_merge($members, $unit_members);
     }
-    private function getRegistrations($event){
-        $participant =$event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->whereNotNull('snapshot');
+    public function getRegistrations($event, $club){
+        $participant =$event->participants()->where('eventable_id', $club->id)->where('eventable_type', 'App\Club')->whereNotNull('snapshot');
         $snapshot = $participant->first()->snapshot;
         $members = collect($this->getAllMembers($snapshot));
 
