@@ -178,11 +178,11 @@
                                         <td class="center">
                                             <a class="see_voucher" data-id="{{ $payment->id }}" href="{{ Storage::url($payment->voucher) }}" target="_blank" class="btn"><i class="fa fa-eye"></i>&nbsp;</a>
                                         </td>
+                                        @can('see-my-club')
                                         <td class="center">
-                                            @can('see-my-club')
                                             <a class="remove_payment" data-url="{{ route('delete_payment') }}" data-id="{{ $payment->id }}" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
-                                            @endcan
                                         </td>
+                                        @endcan
                                     </tr>
                                 @endforeach
                                 </tbody>
