@@ -29,11 +29,10 @@ class ParticipationsController extends Controller
 
 
         $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->first();
-        $participant = $participation->club->participants->first();
-
+        $participant = $participation->club->participants()->where('event_id', $event->id)->first();
         $members_participate = collect($this->getAllMembers($participant->pivot->snapshot))->count();
         $members_no_participate = $club->members->count() - $members_participate;
-        $total = $this->getRegistrations($event)->get('total');
+        $total = $this->getRegistrations($event, $club)->get('total');
 
 
         return view('modules.participation.index',[
@@ -103,7 +102,7 @@ class ParticipationsController extends Controller
         return array_merge($members, $unit_members);
     }
     public function getRegistrations($event, $club){
-        $participant =$event->participants()->where('eventable_id', $club->id)->where('eventable_type', 'App\Club')->whereNotNull('snapshot');
+        $participant = $event->participants()->where('eventable_id', $club->id)->where('eventable_type', 'App\Club')->whereNotNull('snapshot');
         $snapshot = $participant->first()->snapshot;
         $members = collect($this->getAllMembers($snapshot));
 
