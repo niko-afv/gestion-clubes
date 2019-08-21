@@ -76,6 +76,7 @@ class PaymentsController extends Controller
             'error' => false,
             'data' => [
                 'payment' => $payment,
+                'total_amount' => number_format($invoice->payments->sum('amount'),0,'.',','),
                 'payment_completed' => checkPayment($payment->invoice),
                 'file_path' => Storage::url($local_path_to_file)
             ],
@@ -84,13 +85,16 @@ class PaymentsController extends Controller
     }
 
     public function deletePayment(Request $request){
-        $event = Payment::find($request->payment_id);
-        $event->delete();
+        $payment = Payment::find($request->payment_id);
+        $invoice = $payment->invoice;
+        $payment->delete();
+        $sum = $invoice->payments->sum('amount');
 
-        event(new RemovePaymentEvent($event));
+        event(new RemovePaymentEvent($payment));
 
         return response()->json([
             'error' => false,
+            'total_amount' => number_format($sum,0,'.',','),
             'message' => 'Has eliminado un pago'
         ]);
     }

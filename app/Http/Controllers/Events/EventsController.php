@@ -156,10 +156,9 @@ class EventsController extends Controller
         $participants = collect([]);
         $club = Auth::user()->member->institutable;
         $participant = $event->participants()->where('eventable_id', $club->id)->where('eventable_type','App\Club');
-        //dd($participant->count());
         $snapshot = null;
         if($participant->count() && $participant->first()->snapshot){
-            $participants = $this->getRegistrations($event);
+            $participants = $this->getRegistrations($event, $club);
         }
 
         return view('modules.events.inscribe',[
@@ -229,7 +228,7 @@ class EventsController extends Controller
             'error' => false,
             'participate' => 1,
             'message' => $message,
-            'participants' => $this->getRegistrations($event)
+            'participants' => $this->getRegistrations($event, $club)
         ]);
     }
 
@@ -273,7 +272,7 @@ class EventsController extends Controller
             'error' => false,
             'participate' => 0,
             'message' => $message,
-            'participants' => $this->getRegistrations($event)
+            'participants' => $this->getRegistrations($event, $club)
         ]);
     }
 
@@ -283,7 +282,7 @@ class EventsController extends Controller
             $participation =$club->participations()->create([
                 'event_id' => $request->event
             ]);
-            $data = $this->getRegistrations(Event::find($request->event));
+            $data = $this->getRegistrations(Event::find($request->event), $club);
             $invoice = $participation->invoice()->create([
                 'total' => $data->get('total'),
                 'subtotal' => $data->get('total')
@@ -477,10 +476,31 @@ class EventsController extends Controller
     }
 
     public function clubDetail(AdminEventsRequest $request, Event $event, Club $club){
-        return view('modules.events.club_detail',[
-            'event' => $event,
-            'club' => $club
-        ]);
+        $data = [];
+        if ($club->hasParticipation($event->id)){
+            $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->first();
+            $participant = $participation->club->participants->first();
+            $members_participate = collect($this->getAllMembers($participant->pivot->snapshot))->count();
+            $members_no_participate = $club->members->count() - $members_participate;
+            $total = $this->getRegistrations($event, $club)->get('total');
+            $data['participation'] = $participation;
+            $data['members_participate'] = $members_participate;
+            $data['members_no_participate'] = $members_no_participate;
+            $data['total'] = $total;
+            $data['participation_status'] = $participation->status;
+        }
+        $participant = $event->participants()->where('eventable_id', $club->id)->where('eventable_type','App\Club');
+        $snapshot = null;
+        if($participant->count() && $participant->first()->snapshot){
+            $participants = $this->getRegistrations($event, $club);
+            $data['participants'] = $participants;
+        }
+
+
+        $data['event'] = $event;
+        $data['club'] = $club;
+
+        return view('modules.events.club_detail',$data);
     }
 
     public function uploadLogo(AdminEventsRequest $request){
@@ -558,8 +578,8 @@ class EventsController extends Controller
         $unit_members = $this->getMembersFromUnits($this->__getUnits($snapshot));
         return array_merge($members, $unit_members);
     }
-    public function getRegistrations($event){
-        $participant =$event->participants()->where('eventable_id', Auth::user()->member->institutable->id)->whereNotNull('snapshot');
+    public function getRegistrations($event, $club){
+        $participant =$event->participants()->where('eventable_id', $club->id)->where('eventable_type', 'App\Club')->whereNotNull('snapshot');
         $snapshot = $participant->first()->snapshot;
         $members = collect($this->getAllMembers($snapshot));
 

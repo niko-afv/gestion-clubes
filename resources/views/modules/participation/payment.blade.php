@@ -73,7 +73,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -115,7 +114,7 @@
                                     <!--
                                     <a><i class="fa fa-money big-icon"></i></a>
                                     -->
-                                        Pagado: {{ number_format($invoice->payments->sum('amount'),0,'.',',') }}
+                                        Pagado: $<span class="sum">{{ number_format($invoice->payments->sum('amount'),0,'.',',') }}</span>
                                 </p>
                                 <div class="hr-line-dashed"></div>
                                 <p class="text-center total-label">
@@ -130,7 +129,7 @@
                                 </p>
                             </div>
                             <div class="col-8">
-                                <button data-url="{{ route('save_payment', $invoice->id) }}" class="btn btn-block btn-primary payment-send" type="button" {{ ($payment_completed)?'disabled':'' }}><strong>Enviar</strong></button>
+                                <button data-url="{{ route('save_payment', $invoice->id) }}" class="btn btn-block btn-primary payment-send" name="send" type="button" {{ ($payment_completed)?'disabled':'' }}><strong>Enviar</strong></button>
                                 <input name="payment_id" class="d-none">
                                 {{ csrf_field() }}
                             </div>
@@ -207,10 +206,11 @@
 
       var dropzone =Dropzone.options.myAwesomeDropzone = {
         autoProcessQueue: false,
+        addRemoveLinks: true,
         paramName: "file", // The name that will be used to transfer the file
         maxFilesize: 2, // MB
         maxFiles: 1,
-        dictDefaultMessage: "<strong>Arrastra la imagen del logo </strong></br> o búscala haciendo click",
+        dictDefaultMessage: "<strong>Arrastra el comprobante </strong></br> o búscalo haciendo click",
         sending: function (file,xhr, data) {
           var token = $("input[name='_token']").val();
           var payment_id = $("input[name='payment_id']").data('value');
@@ -229,8 +229,14 @@
               $clone.find('.remove_payment').attr('data-id',response.data.payment.id);
               $clone.removeClass('d-none');
               $clone.appendTo($forCopy.parents('table'));
+              $("input[name='amount']").val("");
+              this.removeAllFiles();
+              $('.sum').html(response.data.total_amount);
+
               if(response.data.payment_completed == true){
                 updateStatus();
+                $("input[name='amount']").attr('disabled', 'disabled');
+                $("button[name='send']").attr('disabled', 'disabled');
               }
               if (response.error){
                 toastr.warning(response.message, 'Cuidado');
@@ -275,6 +281,9 @@
                         //toastr.success(response.message, 'Excelente');
                         $element.parent().parent().fadeOut(400);
                         swal("Hecho!", response.message, "success");
+                        $("input[name='amount']").removeAttr('disabled');
+                        $("button[name='send']").removeAttr('disabled');
+                        $('.sum').html(response.total_amount);
                     }
                 })
             }
