@@ -478,7 +478,7 @@ class EventsController extends Controller
     public function clubDetail(AdminEventsRequest $request, Event $event, Club $club){
         $data = [];
         if ($club->hasParticipation($event->id)){
-            $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->first();
+            $participation = $club->participations()->with(['club', 'event', 'club.participants'])->where('event_id', $event->id)->where('eventable_type', 'App\Club')->first();
             $participant = $participation->club->participants->first();
             $members_participate = collect($this->getAllMembers($participant->pivot->snapshot))->count();
             $members_no_participate = $club->members->count() - $members_participate;
