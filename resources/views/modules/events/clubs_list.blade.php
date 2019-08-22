@@ -138,12 +138,12 @@
                                                     <button onclick="window.location.replace('{{ route('event_club_detail',['event'=>$event->id, 'club'=>$club->id]) }}');" title="Ver Inscripción" class="btn btn-primary" type="button">
                                                         <i class="fa fa-eye"></i>&nbsp;
                                                     </button>
-                                                    @endif
 
                                                     @if($club->participation($event->id)->status < 2)
                                                         <button data-url="{{ route('delete-participation', [$event->id, $club->id]) }}" title="Eliminar Confirmación" class="btn btn-danger participation-delete" type="button">
                                                             <i class="fa fa-close"></i>&nbsp;
                                                         </button>
+                                                    @endif
                                                     @endif
                                                 </td>
                                             </tr>
