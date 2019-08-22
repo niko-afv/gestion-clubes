@@ -46,10 +46,15 @@ class MyFieldController extends Controller
     }
 
     public function showAddMember(AsRegionalRequest $request){
-
+        $breadcrumb = collect([
+            route('home') => 'Principal',
+            route('my_field') => Auth::user()->member->institutable->name ,
+            'active' => 'Nuevo Miembro'
+        ]);
         $position = Position::all();
         return view('modules.fields.member_form', [
-            'positions' => $position
+            'positions' => $position,
+            'breadcrumb' => $breadcrumb
         ]);
     }
 
