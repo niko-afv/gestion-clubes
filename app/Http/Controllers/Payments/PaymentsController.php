@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -15,11 +16,14 @@ class PaymentsController extends Controller
 {
 
     public function showPaymentForm(Invoice $invoice){
+
+        $route_name = (isClubLeader(Auth::user()))?'participation_event_list':'event_club_detail';
+
         $breadcrumb = collect([
             route('home') => 'Inicio',
             route('events_list') => 'Eventos',
             route('event_detail', $invoice->participation->event->id) => $invoice->participation->event->name,
-            route('event_club_detail',[$invoice->participation->event->id,$invoice->participation->club->id]) => 'Inscripción',
+            route($route_name,[$invoice->participation->event->id,$invoice->participation->club->id]) => 'Inscripción',
             'active' => 'Pagar'
 
         ]);
