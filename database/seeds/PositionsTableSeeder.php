@@ -61,10 +61,14 @@ class PositionsTableSeeder extends Seeder
                 'name' => 'Equipo de Apoyo',
                 'level' => 1
             ],
-
             [
                 'id' => 10,
                 'name' => 'Staff',
+                'level' => 1
+            ],
+            [
+                'id' => 11,
+                'name' => 'Regional de Zona',
                 'level' => 1
             ],
         ];
