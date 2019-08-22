@@ -19,7 +19,7 @@ class PaymentsController extends Controller
             route('home') => 'Inicio',
             route('events_list') => 'Eventos',
             route('event_detail', $invoice->participation->event->id) => $invoice->participation->event->name,
-            route('participation_event_list',[$invoice->participation->event->id,$invoice->participation->club->id]) => 'Inscripción',
+            route('event_club_detail',[$invoice->participation->event->id,$invoice->participation->club->id]) => 'Inscripción',
             'active' => 'Pagar'
 
         ]);
