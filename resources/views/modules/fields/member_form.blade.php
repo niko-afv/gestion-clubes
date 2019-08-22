@@ -43,7 +43,7 @@
 
                         @if(isset($member))
                             <form method="post" action="{{ route('update_field_member', $member) }}">
-                        @elseif(Gate::allows('add-club-director'))
+                        @elseif(Gate::allows('add-club-director') && isset($club))
                             <form method="post" action="{{ route('save_club_director', $club) }}">
                                 <input hidden name="club" value="{{ $club->id }}"  />
                         @else
