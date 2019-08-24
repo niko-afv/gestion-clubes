@@ -19,14 +19,14 @@ class PaymentsController extends Controller
 {
 
     public function showPaymentForm(Invoice $invoice){
-
         $route_name = (isClubLeader(Auth::user()))?'participation_event_list':'event_club_detail';
 
         $breadcrumb = collect([
             route('home') => 'Inicio',
             route('events_list') => 'Eventos',
             route('event_detail', $invoice->participation->event->id) => $invoice->participation->event->name,
-            route($route_name,[$invoice->participation->event->id,$invoice->participation->club->id]) => 'Inscripción',
+            route('event_clubs', [$invoice->participation->event->id]) => 'Clubes inscritos',
+            route($route_name,[$invoice->participation->event->id,$invoice->participation->club->id]) => $invoice->participation->club->name,
             'active' => 'Pagar'
 
         ]);
