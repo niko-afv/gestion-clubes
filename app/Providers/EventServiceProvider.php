@@ -27,6 +27,7 @@ use App\Events\UpdatedEventEvent;
 use App\Events\UpdatedMemberEvent;
 use App\Events\UpdatedUnitEvent;
 use App\Listeners\LogEventsListener;
+use App\Listeners\MarkClubRegistrationAndPaymentNotVerified;
 use App\Listeners\MarkClubRegistrationAndPaymentVerified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -116,6 +117,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PaymentNotVerifiedEvent::class => [
             LogEventsListener::class,
+            MarkClubRegistrationAndPaymentNotVerified::class
         ],
     ];
 

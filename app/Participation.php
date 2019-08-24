@@ -28,4 +28,10 @@ class Participation extends Model implements Jsonable
             'status' => 3
         ]);
     }
+
+    public function unfinish(){
+        return tap($this)->update([
+            'status' => 2
+        ]);
+    }
 }
