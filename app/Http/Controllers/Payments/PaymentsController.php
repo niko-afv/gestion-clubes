@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Payments;
 
 use App\Events\NewPaymentEvent;
+use App\Events\PaymentNotVerifiedEvent;
+use App\Events\PaymentVerifiedEvent;
 use App\Events\RemovePaymentEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentVerifiedRequest;
 use App\Invoice;
 use App\Payment;
 use Illuminate\Http\Request;
@@ -28,9 +31,16 @@ class PaymentsController extends Controller
 
         ]);
 
+
+        $participant = $invoice->participation->event->participants()->where('eventable_id', $invoice->participation->club->id)->where('eventable_type','App\Club');
+        if($participant->count() && $participant->first()->snapshot){
+            $participants = getRegistrations($invoice->participation->event, $invoice->participation->club);
+        }
+
         return view('modules.participation.payment', [
             'invoice' => $invoice,
             'payment_completed' => checkPayment($invoice),
+            'participants' => $participants,
             'breadcrumb' => $breadcrumb
         ]);
     }
@@ -102,4 +112,31 @@ class PaymentsController extends Controller
             'message' => 'Has eliminado un pago'
         ]);
     }
+
+    public function paymentVerification(PaymentVerifiedRequest $request){
+        $payment = Payment::find($request->payment_id)->verified();
+        event( new PaymentVerifiedEvent($payment));
+
+        return response()->json([
+            'error' => false,
+            'message' => "Ha verificado un pago equivalente a ". asMoney($payment->amount),
+            'data' => [
+                'payment' => $payment
+            ]
+        ]);
+    }
+
+    public function cancelPaymentVerification(PaymentVerifiedRequest $request){
+        $payment = Payment::find($request->payment_id)->notVerified();
+        event( new PaymentNotVerifiedEvent($payment));
+
+        return response()->json([
+            'error' => false,
+            'message' => "Ha cancelado la verificación de un pago equivalente a ". asMoney($payment->amount),
+            'data' => [
+                'payment' => $payment
+            ]
+        ]);
+    }
+
 }

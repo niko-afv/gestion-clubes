@@ -26,7 +26,8 @@ class MarkClubRegistrationAndPaymentNotVerified
      */
     public function handle(PaymentNotVerifiedEvent $event)
     {
-        $invoice = $event->getObject();
-        $invoice->participation->unfinish();
+        $payment = $event->getObject();
+        $payment->invoice->markAsNotPaid();
+        $payment->invoice->participation->unfinish();
     }
 }

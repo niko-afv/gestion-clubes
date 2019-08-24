@@ -279,32 +279,6 @@ class EventsController extends Controller
         ]);
     }
 
-    public function paymentVerification(PaymentVerifiedRequest $request){
-        $invoice = Invoice::find($request->invoice_id)->verified();
-        event( new PaymentVerifiedEvent($invoice));
-
-        return response()->json([
-            'error' => false,
-            'message' => "Ha verificado un pago equivalente a ". asMoney($invoice->total),
-            'data' => [
-                'invoice' => $invoice
-            ]
-        ]);
-    }
-
-    public function cancelPaymentVerification(PaymentVerifiedRequest $request){
-        $invoice = Invoice::find($request->invoice_id)->notVerified();
-        event( new PaymentNotVerifiedEvent($invoice));
-
-        return response()->json([
-            'error' => false,
-            'message' => "Ha cancelado la verificación de un pago equivalente a ". asMoney($invoice->total),
-            'data' => [
-                'invoice' => $invoice
-            ]
-        ]);
-    }
-
     public function finishInscribe(Request $request){
         if ($request->confirmation == true){
             $club = Club::find($request->club);

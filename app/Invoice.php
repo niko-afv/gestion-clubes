@@ -20,13 +20,13 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function verified(){
+    public function markAsPaid(){
         return tap($this)->update([
             'paid' => 1
         ]);
     }
 
-    public function notVerified(){
+    public function markAsNotPaid(){
         return tap($this)->update([
             'paid' => 0
         ]);

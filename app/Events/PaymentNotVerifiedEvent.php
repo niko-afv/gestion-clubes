@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Contracts\ILog;
-use App\Invoice;
+use App\Payment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -23,7 +23,7 @@ class PaymentNotVerifiedEvent extends LogEvent implements ILog
      *
      * @return void
      */
-    public function __construct(Invoice $invoice)
+    public function __construct(Payment $invoice)
     {
         $this->object = $invoice;
     }

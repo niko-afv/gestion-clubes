@@ -42,42 +42,11 @@
 
         <div class="row">
             <div class="col-lg-3">
-                <div class="ibox ">
-                    <div class="ibox-title">
-                        <h5>Estado de la inscripción</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="activity-stream">
-                            <div class="stream">
-                                <div class="stream-badge">
-                                    <i class="fa fa-list bg-primary"></i>
-                                </div>
-                                <div class="stream-panel">
-                                    Inscripción completada
-                                </div>
-                            </div>
-                            <div class="stream">
-                                <div class="stream-badge payment-status-label">
-                                    <i class="fa fa-money {{ ($payment_completed)?'bg-primary':'bg-danger' }}"></i>
-                                </div>
-                                <div class="stream-panel">
-                                    Pago Realizado
-                                </div>
-                            </div>
-                            <div class="stream">
-                                <div class="stream-badge">
-                                    <i class="fa fa-check-square bg-danger"></i>
-                                </div>
-                                <div class="stream-panel">
-                                    Pago Verificado
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('partials.inscription-process-status')
             </div>
 
-            <div class="col-lg-9">
+            @can('make-payment')
+                <div class="col-lg-9">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>Nuevo Pago <small></small></h5>
@@ -138,6 +107,66 @@
                     </div>
                 </div>
             </div>
+            @endcan
+
+            @can('verify-payment')
+                <div class="col-lg-9">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Detalle de Pago </h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="table-responsive m-t">
+                                <table class="table invoice-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @if($participants->has('items'))
+                                        @foreach($participants->get('items') as $key => $registration)
+                                            <tr class="item-{{ $key }}">
+                                                <td>
+                                                    <div class="registration-description">Inscripción {{ $registration['description'] }}</div>
+                                                    <small class="registration-text">Valor {{ ($key == 0)?'General':'Preferencial' }}</small>
+                                                </td>
+                                                <td class="registration-count">{{ $registration['count'] }}</td>
+                                                <td class="registration-price">$ {{ number_format($registration['price'],0,'.',',') }}</td>
+                                                <td class="registration-subtotal">$ {{ number_format( ($registration['subtotal']),0,'.',',') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <table class="table invoice-total">
+                                <tbody>
+                                <tr>
+                                    <td><strong>Sub Total :</strong></td>
+                                    <td class="registration-total">${{ number_format($participants->get('total'),0,'.',',') }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TOTAL :</strong></td>
+                                    <td class="registration-total">${{ number_format($participants->get('total'),0,'.',',') }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                </div>
+            @endcan
         </div>
 
         <div class="form-group row">
@@ -158,6 +187,7 @@
                                     @can('see-my-club')
                                     <th>Remover</th>
                                     @endcan
+                                    <th>Verificar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -178,9 +208,27 @@
                                         <td class="center">
                                             <a class="see_voucher" data-id="{{ $payment->id }}" href="{{ Storage::url($payment->voucher) }}" target="_blank" class="btn"><i class="fa fa-eye"></i>&nbsp;</a>
                                         </td>
-                                        @can('see-my-club')
+                                        @can('make-payment')
                                         <td class="center">
                                             <a class="remove_payment" data-url="{{ route('delete_payment') }}" data-id="{{ $payment->id }}" class="btn"><i class="fa fa-trash"></i>&nbsp;</a>
+                                        </td>
+                                        @endcan
+                                        @can('verify-payment')
+                                        <td>
+                                            <div class="switch">
+                                                <div class="onoffswitch">
+                                                    <input type="checkbox" {{ ($payment->verified == 1)?'checked':'' }} class="onoffswitch-checkbox" id="payment-{{ $payment->id }}">
+                                                    <label class="onoffswitch-label"
+                                                           data-id="{{ $payment->id }}"
+                                                           for="payment-{{ $payment->id }}"
+                                                           data-verified-url="{{ route('payment-verification',[$payment->invoice->participation->event->id,$payment->invoice->participation->club->id]) }}"
+                                                           data-not-verified-url="{{ route('cancel-payment-verification',[$payment->invoice->participation->event->id,$payment->invoice->participation->club->id]) }}"
+                                                    >
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </td>
                                         @endcan
                                     </tr>
@@ -192,6 +240,8 @@
                 </div>
             </div>
         </div>
+
+        {{ csrf_field() }}
 
         @if (session('error_message'))
             <span id="error_message">{{ session('error_message') }}</span>
@@ -271,6 +321,30 @@
 
       $(document).ready(function(){
 
+        $('.onoffswitch-label').click(function () {
+          $element = $(this);
+
+          var payment_id = $(this).data('id');
+          var token = $("input[name='_token']").val();
+          var checked = $element.parent().children('input').attr('checked');
+
+          if( checked == undefined){
+            var url = $element.data('verified-url');
+          }else{
+            var url = $element.data('not-verified-url');
+          }
+
+          $.post(url, {payment_id: payment_id, _token: token }, function (response) {
+            if (response.data.payment.verified == 0){
+              toastr.warning(response.message, 'Cuidado');
+              $element.parent().children('input').removeAttr('checked');
+            }else {
+              $element.parent().children('input').attr('checked','checked');
+              toastr.success(response.message, 'Excelente');
+            }
+          })
+        });
+
         $('.see_voucher').click(function(event) {
             event = event || window.event
             var target = event.target || event.srcElement,
@@ -280,7 +354,6 @@
             console.log(options);
             blueimp.Gallery(links, options)
         });
-
 
         $('.remove_payment').click(function () {
           var url = $(this).data('url');
@@ -323,5 +396,29 @@
     <style>
         .total-label{font-size: 4vw;}
         .payed-label{font-size: 2vw;}
+
+        .onoffswitch-inner:before {
+            content: "VERIFICADO" !important;
+            padding: 6px 20px;
+            height: 30px;
+        }
+        .onoffswitch-inner:after {
+            content: "NO VERIFICADO" !important;
+            padding: 6px 20px;
+            height: 30px;
+        }
+        .switch{
+            width: 100%;
+        }
+        .onoffswitch-label{
+            height: 30px;
+            width: 100%;
+        }
+        .onoffswitch{
+            width: 100%;
+        }
+        .onoffswitch-switch{
+            right: inherit;
+        }
     </style>
 @endsection

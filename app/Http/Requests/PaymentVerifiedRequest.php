@@ -15,7 +15,7 @@ class PaymentVerifiedRequest extends AsRegionalRequest
     public function rules()
     {
         return [
-            'invoice_id' => 'required|exists:invoices,id'
+            'payment_id' => 'required|exists:payments,id'
         ];
     }
 }

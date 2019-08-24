@@ -69,26 +69,7 @@
         <div class="col-lg-6">
             <div class="ibox ">
                 <div class="ibox-title">
-                    @can('see-my-club')
-                        @include('partials.status_label',['data'=>participationStatusAsLabel($club->paymentStatus($event->id)), 'classes' => 'float-right'])
-                    @endcan
-                    @can('crud-events')
-                        <div class="switch float-right">
-                            <div class="onoffswitch">
-                                <input type="checkbox" {{ ($participation->invoice->paid == 1)?'checked':'' }} class="onoffswitch-checkbox" id="invoice-{{ $participation->invoice->id }}">
-                                <label class="onoffswitch-label"
-                                       data-id="{{ $participation->invoice->id }}"
-                                       for="invoice-{{ $participation->invoice->id }}"
-                                       data-verified-url="{{ route('payment-verification',[$event->id,$club->id]) }}"
-                                       data-not-verified-url="{{ route('cancel-payment-verification',[$event->id,$club->id]) }}"
-                                >
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                </label>
-                            </div>
-                        </div>
-                        {{ csrf_field() }}
-                    @endcan
+                    @include('partials.status_label',['data'=>participationStatusAsLabel($club->paymentStatus($event->id)), 'classes' => 'float-right'])
                 </div>
                 <div class="ibox-content">
                     <div class="table-responsive m-t">
@@ -299,31 +280,6 @@
           dom: '<"html5buttons"B>lTfgitp'
         });
 
-        $('.onoffswitch-label').click(function () {
-          $element = $(this);
-
-          var invoice_id = $(this).data('id');
-          var token = $("input[name='_token']").val();
-          var checked = $element.parent().children('input').attr('checked');
-
-          if( checked == undefined){
-            var url = $element.data('verified-url');
-          }else{
-            var url = $element.data('not-verified-url');
-          }
-
-          $.post(url, {invoice_id: invoice_id, _token: token }, function (response) {
-            if (response.data.invoice.paid == 0){
-              toastr.warning(response.message, 'Cuidado');
-              $element.parent().children('input').removeAttr('checked');
-            }else {
-              $element.parent().children('input').attr('checked','checked');
-              toastr.success(response.message, 'Excelente');
-            }
-          })
-        });
-
-
         var participate = $("input[name='participate']").val();
         var noParticipate = $("input[name='no-participate']").val();
 
@@ -344,21 +300,4 @@
       });
 
     </script>
-@endsection
-
-@section('style')
-    <style>
-        .onoffswitch-inner:before {
-            content: "PAGO VERIFICADO" !important;
-        }
-        .onoffswitch-inner:after {
-            content: "PAGO NO VERIFICADO" !important;
-        }
-        .onoffswitch{
-            width: 150px;
-        }
-        .onoffswitch-switch{
-            right: inherit;
-        }
-    </style>
 @endsection

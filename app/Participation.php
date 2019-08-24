@@ -22,6 +22,14 @@ class Participation extends Model implements Jsonable
         return $this->hasOne(Invoice::class);
     }
 
+    public function isFinished(){
+        return ($this->status == 3)?true:false;
+    }
+
+    public function isJustPaid(){
+        return ($this->status >= 2)?true:false;
+    }
+
 
     public function finish(){
         return tap($this)->update([
