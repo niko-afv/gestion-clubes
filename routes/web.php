@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function (){
         Route::post('/detail/{event}/clubs/{club}', 'EventsController@deleteConfirmation')->name('delete-participation');
         Route::get('/detail/{event}/clubs/{club}', 'EventsController@clubDetail')->name('event_club_detail');
 
+        Route::post('/detail/{event}/clubs/{club}/verificar-pago', 'EventsController@paymentVerification')->name('payment-verification');
+        Route::post('/detail/{event}/clubs/{club}/cancelar-verificion-pago', 'EventsController@cancelPaymentVerification')->name('cancel-payment-verification');
+
         Route::get('/create', 'EventsController@create')->name('events_create');
         Route::post('/save', 'EventsController@save')->name('events_save');
         Route::post('/{event}/toggle', 'EventsController@toggle')->name('event_toggle');
@@ -82,6 +85,8 @@ Route::middleware('auth')->group(function (){
         Route::post('/{invoice}/pagar', 'PaymentsController@savePayment')->name('save_payment');
         Route::post('{invoice}/pagar/comprobante', 'PaymentsController@uploadPayment')->name('upload_payment_file');
         Route::post('/eliminar-pago', 'PaymentsController@deletePayment')->name('delete_payment');
+
+
     });
 
     Route::prefix('perfil')->namespace('Profile')->group(function (){

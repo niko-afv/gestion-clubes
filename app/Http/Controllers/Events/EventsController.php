@@ -9,6 +9,8 @@ use App\Event;
 use App\Events\ActivatedEventEvent;
 use App\Events\CreatedEventEvent;
 use App\Events\DeactivatedEventEvent;
+use App\Events\PaymentNotVerifiedEvent;
+use App\Events\PaymentVerifiedEvent;
 use App\Events\UpdatedEventEvent;
 use App\Field;
 use App\Http\Controllers\Controller;
@@ -16,6 +18,7 @@ use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
 use App\Http\Requests\AsClubRequest;
 use App\Http\Requests\EventSuscribeRequest;
+use App\Http\Requests\PaymentVerifiedRequest;
 use App\Http\Requests\SaveEventRequest;
 use App\Invoice;
 use App\Member;
@@ -273,6 +276,32 @@ class EventsController extends Controller
             'participate' => 0,
             'message' => $message,
             'participants' => $this->getRegistrations($event, $club)
+        ]);
+    }
+
+    public function paymentVerification(PaymentVerifiedRequest $request){
+        $invoice = Invoice::find($request->invoice_id)->verified();
+        event( new PaymentVerifiedEvent($invoice));
+
+        return response()->json([
+            'error' => false,
+            'message' => "Ha verificado un pago equivalente a ". asMoney($invoice->total),
+            'data' => [
+                'invoice' => $invoice
+            ]
+        ]);
+    }
+
+    public function cancelPaymentVerification(PaymentVerifiedRequest $request){
+        $invoice = Invoice::find($request->invoice_id)->notVerified();
+        event( new PaymentNotVerifiedEvent($invoice));
+
+        return response()->json([
+            'error' => false,
+            'message' => "Ha cancelado la verificación de un pago equivalente a ". asMoney($invoice->total),
+            'data' => [
+                'invoice' => $invoice
+            ]
         ]);
     }
 

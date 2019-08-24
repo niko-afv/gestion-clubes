@@ -28,3 +28,13 @@
         $payed = $invoice->payments->sum('amount');
         return ($payed >= $total)?true:false;
     }
+
+
+    /**
+     * @name asMoney
+     * @param $value Number to format
+     * @return string
+     */
+    function asMoney($value){
+        return '$' . number_format($value, 0,'.',',');
+    }

@@ -124,6 +124,16 @@ class LogTypesTableSeeder extends Seeder
                 'name' => 'Remove Payment',
                 'description' => 'Ha eliminado un pago'
             ],
+            [
+                'id' => 23,
+                'name' => 'Payment Verified',
+                'description' => 'Ha verificado un pago'
+            ],
+            [
+                'id' => 24,
+                'name' => 'Payment Not Verified',
+                'description' => 'Ha cancelado la verificación de un pago'
+            ],
         ];
 
         foreach ($log_types as $log_type){

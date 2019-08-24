@@ -18,6 +18,8 @@ use App\Events\DeletedUnitEvent;
 use App\Events\ImportedMembersEvent;
 use App\Events\LoginEvent;
 use App\Events\NewPaymentEvent;
+use App\Events\PaymentNotVerifiedEvent;
+use App\Events\PaymentVerifiedEvent;
 use App\Events\RemovedClubDirectorEvent;
 use App\Events\RemovePaymentEvent;
 use App\Events\UpdatedClubEvent;
@@ -25,6 +27,7 @@ use App\Events\UpdatedEventEvent;
 use App\Events\UpdatedMemberEvent;
 use App\Events\UpdatedUnitEvent;
 use App\Listeners\LogEventsListener;
+use App\Listeners\MarkClubRegistrationAndPaymentVerified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -105,6 +108,13 @@ class EventServiceProvider extends ServiceProvider
             LogEventsListener::class,
         ],
         RemovePaymentEvent::class => [
+            LogEventsListener::class,
+        ],
+        PaymentVerifiedEvent::class => [
+            LogEventsListener::class,
+            MarkClubRegistrationAndPaymentVerified::class
+        ],
+        PaymentNotVerifiedEvent::class => [
             LogEventsListener::class,
         ],
     ];

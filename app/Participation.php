@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Participation extends Model implements Jsonable
 {
     protected $table = 'club_participations';
-    protected $fillable = ['event_id'];
+    protected $fillable = ['event_id', 'status'];
 
     public function club(){
         return $this->belongsTo(Club::class);
@@ -20,5 +20,12 @@ class Participation extends Model implements Jsonable
 
     public function invoice(){
         return $this->hasOne(Invoice::class);
+    }
+
+
+    public function finish(){
+        return tap($this)->update([
+            'status' => 3
+        ]);
     }
 }
