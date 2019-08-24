@@ -106,6 +106,11 @@ class PaymentsController extends Controller
 
         event(new RemovePaymentEvent($payment));
 
+        if(!checkPayment($payment->invoice)){
+            $invoice->participation->status = 1;
+            $invoice->participation->save();
+        }
+
         return response()->json([
             'error' => false,
             'total_amount' => number_format($sum,0,'.',','),

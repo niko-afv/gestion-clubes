@@ -187,7 +187,9 @@
                                     @can('see-my-club')
                                     <th>Remover</th>
                                     @endcan
+                                    @can('verify-payment')
                                     <th>Verificar</th>
+                                    @endcan
                                 </tr>
                                 </thead>
                                 <tbody>

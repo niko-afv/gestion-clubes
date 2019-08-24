@@ -25,8 +25,14 @@
 
     function checkPayment($invoice){
         $total = $invoice->total;
-        $payed = $invoice->payments->sum('amount');
-        return ($payed >= $total)?true:false;
+        $paid_amount = $invoice->payments->sum('amount');
+        return ($paid_amount >= $total)?true:false;
+    }
+
+    function checkVerifiedPayment($invoice){
+        $total = $invoice->total;
+        $paid_amount = $invoice->payments()->where('verified',1)->get()->sum('amount');
+        return ($paid_amount >= $total)?true:false;
     }
 
     function asMoney($value){

@@ -27,7 +27,9 @@ class MarkClubRegistrationAndPaymentVerified
     public function handle(PaymentVerifiedEvent $event)
     {
         $payment = $event->getObject();
-        $payment->invoice->markAsPaid();
-        $payment->invoice->participation->finish();
+        if (checkVerifiedPayment($payment->invoice)){
+            $payment->invoice->markAsPaid();
+            $payment->invoice->participation->finish();
+        }
     }
 }
