@@ -9,7 +9,9 @@
 @endif
 @can('sync-data')
     @if(isset($club))
+        <!--
         <button data-url="{{ route('club_sync',['club'=>$club->id]) }}" title="Sincronizar Club" class="btn btn-primary club_sync" type="button"><i class="fa fa-repeat"></i>&nbsp; </button>
+        -->
     @endif
 @endif
 

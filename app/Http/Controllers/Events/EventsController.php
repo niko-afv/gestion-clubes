@@ -9,8 +9,6 @@ use App\Event;
 use App\Events\ActivatedEventEvent;
 use App\Events\CreatedEventEvent;
 use App\Events\DeactivatedEventEvent;
-use App\Events\PaymentNotVerifiedEvent;
-use App\Events\PaymentVerifiedEvent;
 use App\Events\UpdatedEventEvent;
 use App\Field;
 use App\Http\Controllers\Controller;
@@ -18,23 +16,18 @@ use App\Http\Requests\AdminEventsRequest;
 use App\Http\Requests\AdminUsersRequest;
 use App\Http\Requests\AsClubRequest;
 use App\Http\Requests\EventSuscribeRequest;
-use App\Http\Requests\PaymentVerifiedRequest;
 use App\Http\Requests\SaveEventRequest;
-use App\Invoice;
 use App\Member;
-use App\Participation;
 use App\Position;
 use App\Registration;
 use App\Unit;
 use App\Zone;
 use Carbon\Carbon;
-use Google\Cloud\Firestore\FieldPath;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Matrix\Exception;
+use Morrislaptop\Firestore\DocumentReference;
 use Morrislaptop\Firestore\Firestore;
 
 class EventsController extends Controller
@@ -420,7 +413,6 @@ class EventsController extends Controller
         ])->snapshot();
         $event->save();
 
-
         foreach ($event->activities as $activity){
             $fsActivities = $firestore->collection('activities');
 
@@ -449,12 +441,86 @@ class EventsController extends Controller
             $activity->save();
         }
 
+
+
+        $clubs = $event->clubs()->has('participations')->get();
+        foreach ($clubs as $club){
+            $fsClubs = $firestore->collection('clubs');
+            if( is_null($club->firestore_reference)){
+                $club->firestore_reference = Str::random(20);
+                $club->save();
+            }
+            $newFsClub = $fsClubs->document($club->firestore_reference);
+            $data = [
+                'databaseID' => $club->id,
+                'name' => $club->name,
+                'active' => ($club->active == 1)?true:false,
+                'zoneName' => $club->zone->name
+            ];
+            $newFsClub->set($data);
+
+
+
+            $units = $this->getUnits($club->pivot->snapshot);
+            foreach ($units as $unit){
+                $oUnit = Unit::find($unit);
+                $fsUnits = $firestore->collection('units');
+
+                if( is_null($oUnit->firestore_reference)){
+                    $oUnit->firestore_reference = Str::random(20);
+                    $oUnit->save();
+                }
+                $newFsUnit = $fsUnits->document($oUnit->firestore_reference);
+                $data = [
+                    'databaseID' => $oUnit->id,
+                    'name' => $oUnit->name,
+                    'code' => $oUnit->code,
+                    'clubName' => $oUnit->club->name,
+                    'zoneName' => $oUnit->club->zone->name,
+                    'active' => true,
+                    'image' => '',
+                    'count_members' => $oUnit->members->count(),
+                    'club' => '/clubs/'.$club->firestore_reference
+                ];
+                $newFsUnit->set($data);
+
+                $fsUnitsEvents = $firestore->collection('unitsInEvents');
+                $found = false;
+                foreach ($fsUnitsEvents->documents()->rows() as $participation){
+                    $data = $participation->data();
+                    if ( $data['unit'] instanceof DocumentReference){
+                        continue;
+                    }
+
+                    if ($data['unit'] == '/units/'.$oUnit->firestore_reference){
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if ($found == false){
+                    $newFsUnitEvent = $fsUnitsEvents->document(Str::random(20));
+                    $data = [
+                        'clubName' => $club->name,
+                        'event' => '/events/'.$event->firestore_reference,
+                        'unit' => '/units/'.$oUnit->firestore_reference,
+                        'unitName' => $oUnit->name
+                    ];
+                    $newFsUnitEvent->set($data);
+                }
+
+            }
+
+
+        }
+
         $data = $snapshot->data();
         return response()->json([
             'error' => false,
             'data' => $data,
             'message' => 'El <strong> evento ' . $data['name']. '</strong> se ha sicnronizado con éxito.'
         ]);
+
     }
 
     public function clubs(AdminEventsRequest $request,Event $event){

@@ -20,7 +20,7 @@ class Event extends Model
     }
 
     public function clubs(){
-        return $this->morphedByMany(Club::class,'eventable', 'participants');
+        return $this->morphedByMany(Club::class,'eventable', 'participants')->withPivot('snapshot');
     }
 
     public function units($club_id = null){
